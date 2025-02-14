@@ -1,6 +1,10 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
+import reactPlugin from "eslint-plugin-react";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -9,30 +13,32 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
-  ...compat.extends(
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
-    "next/core-web-vitals",
-    "next/typescript",
-    "prettier",
-  ),
+export default tseslint.config(
   {
-    files: ["*.ts", "*.tsx"],
-    languageOptioins: {
-      parser: "@typescript-eslint/parser",
+    ignores: [".next/*", "node_modules/*", "!src/**/*"],
+  },
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+  {
+    files: ["src/**/*.{ts,tsx}"],
+    plugins: {
+      "@typescript-eslint": tsPlugin,
+      react: reactPlugin,
+    },
+    languageOptions: {
       parserOptions: {
-        project: "./tsconfig.json",
-        ecmaVersion: "latest",
-        sourceType: "module",
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
-    plugins: ["@typescript-eslint", "react"],
     rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
       "react/react-in-jsx-scope": "off",
       "@typescript-eslint/no-unused-vars": "warn",
     },
   },
-];
-
-export default eslintConfig;
+  ...compat.config({
+    extends: ["next", "next/core-web-vitals", "prettier"],
+  }),
+);
