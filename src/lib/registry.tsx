@@ -23,6 +23,14 @@ export default function StyledComponentsRegistry({
     return <>{styles}</>;
   });
 
+  if (typeof window !== "undefined")
+    return (
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        {children}
+      </ThemeProvider>
+    );
+
   return (
     <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
       <ThemeProvider theme={theme}>

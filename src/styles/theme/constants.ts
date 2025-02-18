@@ -12,6 +12,7 @@ export const COLORS = {
   white: "#fff",
   cultured: "#f7f9f9",
   blueGray: "#e6ebee",
+  ghostGray: "#fafbfd",
   gray1: "#3e3e3e",
   gray2: "#6e6e6e",
   gray3: "#9e9e9e",

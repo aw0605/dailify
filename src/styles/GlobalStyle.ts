@@ -33,8 +33,8 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     line-height: 1;
-    background-color: #9e9e9e;
     font-family: "Noto Sans", Roboto, Arial, sans-serif;
+    color: ${({ theme }) => theme.colors.gray1};
   }
 
   ol,

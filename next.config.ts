@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
   experimental: {
     forceSwcTransforms: true,
   },
+  images: {
+    domains: ["cdn.pixabay.com"],
+  },
 };
 
 export default nextConfig;
