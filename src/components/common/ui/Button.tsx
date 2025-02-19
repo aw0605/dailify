@@ -3,7 +3,7 @@
 import { forwardRef } from "react";
 import styled, { css, useTheme } from "styled-components";
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   leftIcon?: React.ReactNode;
   size?: number;
   variant?: "solid" | "outline" | "ghost";
