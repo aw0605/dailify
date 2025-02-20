@@ -1,5 +1,3 @@
-"use client";
-
 import { forwardRef } from "react";
 import styled, { css, useTheme } from "styled-components";
 
@@ -48,7 +46,7 @@ const InputWrapper = styled.input<{
     &:focus {
       border-color: ${$focusBorderColor};
     }
-    
+
     &:disabled {
       opacity: 0.4;
       cursor: not-allowed;
