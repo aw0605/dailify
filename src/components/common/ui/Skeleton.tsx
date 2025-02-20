@@ -6,7 +6,7 @@ interface SkeletonProps {
   radius?: string;
 }
 
-function Skeleton({
+export default function Skeleton({
   width = "100%",
   height = "1.25rem",
   radius = "0.125rem",
@@ -16,8 +16,6 @@ function Skeleton({
     <SkeletonDiv $width={width} $height={height} $radius={radius} {...props} />
   );
 }
-
-export default Skeleton;
 
 const skeletonGradient = keyframes`
   0%{
