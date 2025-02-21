@@ -33,7 +33,7 @@ const Container = styled.div<{ $hasSide?: boolean; $isVertical?: boolean }>`
     }
     > div:last-child {
       flex: 1;
-      min-width: 200px;
+      min-width: 300px;
       max-width: 350px;
       background: ${theme.colors.blueGray};
       padding: 20px;
@@ -45,7 +45,10 @@ const Container = styled.div<{ $hasSide?: boolean; $isVertical?: boolean }>`
           ? `
           flex-direction: column;
           align-items: center;
-          div:last-child {
+          > div:first-child{
+            width: 100%;
+          }
+          > div:last-child {
             width: calc(100% - 40px);
             min-width: initial;
             max-width: initial;
@@ -54,7 +57,7 @@ const Container = styled.div<{ $hasSide?: boolean; $isVertical?: boolean }>`
           }
       `
           : `
-          div:last-child {
+          > div:last-child {
             display: none;
           }
       `

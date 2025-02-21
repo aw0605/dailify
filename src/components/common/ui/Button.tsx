@@ -76,8 +76,7 @@ const ButtonWrapper = styled.button<{
             color: ${$color};
             border: none;
             &:hover {
-              background-color: ${$color};
-              color: #fff;
+              color: ${theme.colors.darkOrange};
             }
           `}
   `}
