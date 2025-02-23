@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import StyledComponentsRegistry from "@/lib/registry";
-import Layout from "@/components/common/layout/layout";
+import ModalContainer from "@/components/common/ui/Modal/Modal";
 
 export const metadata: Metadata = {
   title: "Dailify",
@@ -16,7 +16,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <StyledComponentsRegistry>
-          <Layout>{children}</Layout>
+          <ModalContainer />
+          {children}
         </StyledComponentsRegistry>
       </body>
     </html>

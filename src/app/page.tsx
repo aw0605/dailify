@@ -1,7 +1,7 @@
 "use client";
 
 import useModalStore from "@/zustand/useModalStore";
-import MainLayout from "@/components/common/layout/MainLayout";
+import Layout from "@/components/common/layout/layout";
 import Button from "@/components/common/ui/Button";
 import Input from "@/components/common/ui/Input";
 import Loading from "@/components/common/ui/Loading";
@@ -42,7 +42,7 @@ export default function Home() {
   const theme = useTheme();
 
   return (
-    <MainLayout hasSide isVertical>
+    <Layout showSide={true}>
       <div>
         <StyledButton
           onClick={() => openModal("todo", <TodoModal id={"todo"} />)}
@@ -69,7 +69,7 @@ export default function Home() {
         ))}
       </div>
       <div>사이드 콘텐츠</div>
-    </MainLayout>
+    </Layout>
   );
 }
 

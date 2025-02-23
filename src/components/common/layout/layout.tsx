@@ -2,31 +2,80 @@
 
 import styled, { css } from "styled-components";
 import Navbar, { NAVBAR_HEIGHT } from "./Navbar";
-import { usePathname } from "next/navigation";
-import ModalContainer from "../ui/Modal/Modal";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const isAuthPage = pathname === "/login" || pathname === "/signup";
+interface LayoutsProps {
+  children: React.ReactNode;
+  showNav?: boolean;
+  hasSide?: boolean;
+  showSide?: boolean;
+}
 
+export default function Layout({
+  children,
+  showNav = true,
+  hasSide = true,
+  showSide = false,
+}: LayoutsProps) {
   return (
-    <Container $isAuthPage={isAuthPage}>
-      <ModalContainer />
-      {!isAuthPage && <Navbar />}
-      <Main $isAuthPage={isAuthPage}>{children}</Main>
+    <Container>
+      {showNav && <Navbar />}
+      <Main $showNav={showNav} $hasSide={hasSide} $showSide={showSide}>
+        {children}
+      </Main>
     </Container>
   );
 }
 
-const Container = styled.div<{ $isAuthPage: boolean }>`
+const Container = styled.div`
   width: 100%;
   height: 100%;
 `;
 
-const Main = styled.div<{ $isAuthPage: boolean }>`
-  ${({ theme, $isAuthPage }) => css`
-    padding-top: ${$isAuthPage ? 0 : NAVBAR_HEIGHT};
+const Main = styled.div<{
+  $showNav: boolean;
+  $hasSide: boolean;
+  $showSide: boolean;
+}>`
+  ${({ theme, $showNav, $hasSide, $showSide }) => css`
+    padding-top: ${$showNav ? NAVBAR_HEIGHT : 0};
     min-height: 100vh;
-    ${$isAuthPage ? theme.mixins.flexBox({}) : ""}
+    ${theme.mixins.flexBox({ align: "stretch" })}
+    > div:first-child {
+      flex: 2;
+      padding: 20px;
+    }
+    ${$hasSide &&
+    `
+    > div:last-child {
+      flex: 1;
+      min-width: 300px;
+      max-width: 350px;
+      background: ${theme.colors.blueGray};
+      padding: 20px;
+    }
+    `}
+    ${theme.media.md`
+      ${
+        $hasSide && $showSide
+          ? `
+        flex-direction: column;
+        align-items: center;
+        > div:first-child {
+          width: 100%;
+        }
+        > div:last-child {
+          width: calc(100% - 40px);
+          max-width: initial;
+          border-radius: 20px;
+          margin-bottom: 20px;
+        }
+      `
+          : `
+        > div:last-child {
+          display: none;
+        }
+      `
+      }
+    `}
   `}
 `;

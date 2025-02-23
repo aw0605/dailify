@@ -63,8 +63,8 @@ export default function Navbar() {
 const Container = styled.nav<{ $isOpen: boolean }>`
   ${({ theme, $isOpen }) => css`
     width: 100%;
-    height: NAVBAR_HEIGHT;
-    padding: 10px 20px;
+    height: ${NAVBAR_HEIGHT};
+    padding: 0 20px;
     ${theme.mixins.flexBox({ justify: "space-between" })};
     background-color: ${theme.colors.primary};
 
