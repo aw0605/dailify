@@ -24,7 +24,7 @@ export default function Accordion({
     if (contentRef.current) {
       setContentHight(contentRef.current.scrollHeight);
     }
-  }, [children]);
+  }, [isOpen]);
 
   const theme = useTheme();
 

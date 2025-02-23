@@ -89,7 +89,7 @@ const PinIcon = styled(BsPinAngleFill)`
 `;
 
 const Title = styled.div<{ $type: TodoItem["type"] }>`
-  ${({ theme, $type }) => css`ㅆ
+  ${({ theme, $type }) => css`
     ${theme.mixins.flexBox({
       direction: $type === "monthly" ? "column" : "row",
       align: $type === "monthly" ? "flex-start" : "center",

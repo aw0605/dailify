@@ -3,6 +3,7 @@
 import styled, { css } from "styled-components";
 import Navbar, { NAVBAR_HEIGHT } from "./Navbar";
 import { usePathname } from "next/navigation";
+import ModalContainer from "../ui/Modal/Modal";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -10,6 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <Container $isAuthPage={isAuthPage}>
+      <ModalContainer />
       {!isAuthPage && <Navbar />}
       <Main $isAuthPage={isAuthPage}>{children}</Main>
     </Container>

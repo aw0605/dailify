@@ -1,5 +1,6 @@
 "use client";
 
+import useModalStore from "@/zustand/useModalStore";
 import MainLayout from "@/components/common/layout/MainLayout";
 import Button from "@/components/common/ui/Button";
 import Input from "@/components/common/ui/Input";
@@ -7,6 +8,7 @@ import Loading from "@/components/common/ui/Loading";
 import Skeleton from "@/components/common/ui/Skeleton";
 import Accordion from "@/components/common/ui/Accordion/Accordion";
 import AccordionHeader from "@/components/common/ui/Accordion/AccordionHeader";
+import TodoModal from "@/components/common/ui/Modal/TodoModal";
 import styled, { useTheme } from "styled-components";
 
 import { TodoItem } from "@/types/todo";
@@ -36,13 +38,16 @@ const mockData: TodoItem[] = [
 ];
 
 export default function Home() {
+  const { openModal } = useModalStore();
   const theme = useTheme();
 
   return (
     <MainLayout hasSide isVertical>
       <div>
-        <StyledButton type="submit" color={theme.colors.darkOrange}>
-          버튼 테스트
+        <StyledButton
+          onClick={() => openModal("todo", <TodoModal id={"todo"} />)}
+        >
+          모달 테스트
         </StyledButton>
         <StyledInput
           type="text"
