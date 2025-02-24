@@ -5,6 +5,9 @@ import ModalContainer from "@/components/common/ui/Modal/Modal";
 export const metadata: Metadata = {
   title: "Dailify",
   description: "Dailify에서 매일을 간단하고 명확하게 계획하세요.",
+  icons: {
+    icon: "/Dailify.svg",
+  },
 };
 
 export default function RootLayout({

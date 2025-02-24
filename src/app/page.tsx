@@ -43,7 +43,7 @@ export default function Home() {
 
   return (
     <Layout showSide={true}>
-      <div>
+      <div className="main">
         <StyledButton
           onClick={() => openModal("todo", <TodoModal id={"todo"} />)}
         >
@@ -68,7 +68,7 @@ export default function Home() {
           </Accordion>
         ))}
       </div>
-      <div>사이드 콘텐츠</div>
+      <div className="side">사이드 콘텐츠</div>
     </Layout>
   );
 }

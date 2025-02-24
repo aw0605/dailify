@@ -40,13 +40,13 @@ const Main = styled.div<{
     padding-top: ${$showNav ? NAVBAR_HEIGHT : 0};
     min-height: 100vh;
     ${theme.mixins.flexBox({ align: "stretch" })}
-    > div:first-child {
+    > div.main {
       flex: 2;
       padding: 20px;
     }
     ${$hasSide &&
     `
-    > div:last-child {
+    > div.side {
       flex: 1;
       min-width: 300px;
       max-width: 350px;
@@ -60,10 +60,10 @@ const Main = styled.div<{
           ? `
         flex-direction: column;
         align-items: center;
-        > div:first-child {
+        > div.main {
           width: 100%;
         }
-        > div:last-child {
+        > div.side {
           width: calc(100% - 40px);
           max-width: initial;
           border-radius: 20px;
@@ -71,7 +71,7 @@ const Main = styled.div<{
         }
       `
           : `
-        > div:last-child {
+        > div.side {
           display: none;
         }
       `
