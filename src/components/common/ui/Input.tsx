@@ -8,7 +8,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ color, focusBorderColor, size = 16, ...props }, ref) => {
+  ({ color, focusBorderColor, size = 14, ...props }, ref) => {
     const theme = useTheme();
 
     return (
@@ -34,6 +34,7 @@ const InputWrapper = styled.input<{
 }>`
   ${({ theme, $color, $focusBorderColor, $size }) => css`
   ${theme.typography.p({ size: $size, color: $color })};
+  width: 100%;
   outline: none;
   padding: 10px 20px;
   border: 2px solid ${theme.colors.gray3};

@@ -44,6 +44,7 @@ const ButtonWrapper = styled.button<{
   ${({ theme, $size, $variant, $color }) => css`
     ${theme.typography.title({ size: $size })}
     ${theme.mixins.flexBox({})}
+    width: 100%;
     gap: 8px;
     padding: 10px 20px;
     border-radius: 5px;
@@ -56,9 +57,7 @@ const ButtonWrapper = styled.button<{
           color: #fff;
           border: none;
           &:hover {
-            background-color: #fff;
-            color: ${$color};
-            border: 2px solid ${$color};
+            background-color: ${theme.colors.darkOrange};
           }
         `
       : $variant === "outline"
