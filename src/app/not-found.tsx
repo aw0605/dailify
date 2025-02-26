@@ -1,18 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import Layout from "@/components/common/layout/layout";
 import Button from "@/components/common/ui/Button";
+import DailifyLogo from "../../public/Dailify.svg";
 import styled, { css } from "styled-components";
 
 function notFound() {
   return (
     <Layout showNav={false} hasSide={false}>
       <Container className="main">
-        <div>
-          <Image src="/Dailify.svg" alt="Dailify" width={180} height={180} />
-        </div>
+        <DailifyLogo width="180" height="180" />
         <div>
           <h1>Page Not Found</h1>
           <p>페이지를 찾을 수 없습니다.</p>
@@ -31,11 +29,7 @@ const Container = styled.div`
   ${({ theme }) => css`
     height: 100vh;
     ${theme.mixins.flexBox({ direction: "column" })}
-    > div:first-child {
-      width: 180px;
-      height: 180px;
-    }
-    > div:nth-child(2) {
+    > div {
       ${({ theme }) => css`
         margin: 20px 0 40px;
         ${theme.mixins.flexBox({ direction: "column" })}

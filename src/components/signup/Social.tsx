@@ -1,5 +1,5 @@
-import GoogleIcon from "@/assets/icons/google";
-import KaKaoIcon from "@/assets/icons/kakao";
+import GoogleIcon from "../../../public/googleIcon.svg";
+import KaKaoIcon from "../../../public/kakaoIcon.svg";
 import styled, { css } from "styled-components";
 
 function Social() {
@@ -10,10 +10,10 @@ function Social() {
       </Title>
       <ButtonGroup>
         <button>
-          <KaKaoIcon />
+          <KaKaoIcon width="25" height="25" />
         </button>
         <button>
-          <GoogleIcon />
+          <GoogleIcon width="30" height="30" />
         </button>
       </ButtonGroup>
     </div>
