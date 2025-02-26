@@ -1,3 +1,4 @@
+import { signInWithGoogle, signInWithKakao } from "@/lib/supabase/actions";
 import GoogleIcon from "../../../public/googleIcon.svg";
 import KaKaoIcon from "../../../public/kakaoIcon.svg";
 import styled, { css } from "styled-components";
@@ -9,10 +10,10 @@ function Social() {
         <span>소셜 로그인</span>
       </Title>
       <ButtonGroup>
-        <button>
+        <button onClick={signInWithKakao}>
           <KaKaoIcon width="25" height="25" />
         </button>
-        <button>
+        <button onClick={signInWithGoogle}>
           <GoogleIcon width="30" height="30" />
         </button>
       </ButtonGroup>
