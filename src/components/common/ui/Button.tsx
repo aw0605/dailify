@@ -23,6 +23,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         $size={size}
         $variant={variant}
         $color={btnColor}
+        disabled={props.disabled}
         {...props}
       >
         {leftIcon && <span>{leftIcon}</span>}
@@ -78,5 +79,11 @@ const ButtonWrapper = styled.button<{
               color: ${theme.colors.darkOrange};
             }
           `}
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: ${theme.colors.gray4};
+      color: ${theme.colors.gray2};
+    }
   `}
 `;
