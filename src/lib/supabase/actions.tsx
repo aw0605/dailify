@@ -4,6 +4,7 @@ import { Provider } from "@supabase/supabase-js";
 import { createClientForServer } from "./server";
 import { redirect } from "next/navigation";
 import { FormValuesProps } from "@/types/user";
+import { revalidatePath } from "next/cache";
 
 const signUpWithEmail = async (formValues: FormValuesProps) => {
   const supabase = await createClientForServer();
@@ -12,6 +13,31 @@ const signUpWithEmail = async (formValues: FormValuesProps) => {
     email: formValues.email,
     password: formValues.password,
   });
+
+  if (error) {
+    console.log(error);
+    revalidatePath("/signup");
+  } else {
+    redirect("/");
+  }
+
+  return { data, error };
+};
+
+const signInWithEmail = async (formValues: FormValuesProps) => {
+  const supabase = await createClientForServer();
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: formValues.email,
+    password: formValues.password,
+  });
+
+  if (error) {
+    console.log(error);
+    revalidatePath("/login");
+  } else {
+    redirect("/");
+  }
 
   return { data, error };
 };
@@ -43,4 +69,10 @@ const signOut = async () => {
   await supabase.auth.signOut();
 };
 
-export { signUpWithEmail, signInWithGoogle, signInWithKakao, signOut };
+export {
+  signUpWithEmail,
+  signInWithEmail,
+  signInWithGoogle,
+  signInWithKakao,
+  signOut,
+};
