@@ -1,10 +1,5 @@
-export interface SignupProps {
+export interface FormValuesProps {
   email: string;
   password: string;
-  rePassword: string;
-}
-
-export interface LoginProps {
-  email: string;
-  password: string;
+  rePassword?: string;
 }

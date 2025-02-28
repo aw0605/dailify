@@ -1,0 +1,47 @@
+import { useState, useMemo, useCallback, ChangeEvent } from "react";
+import { ValidationErrors } from "@/utils/validate";
+
+interface UseFormProps<T> {
+  initialValues: T;
+  validate: (values: T) => ValidationErrors;
+  onSubmit: (values: T) => void;
+}
+
+function useForm<T>({ initialValues, validate, onSubmit }: UseFormProps<T>) {
+  const [formValues, setFormValues] = useState<T>(initialValues);
+  const [dirty, setDirty] = useState<Partial<T>>({});
+
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setFormValues((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value.trim(),
+    }));
+  }, []);
+
+  const handleBlur = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setDirty((prev) => ({
+      ...prev,
+      [e.target.name]: true,
+    }));
+  }, []);
+
+  const errors = useMemo(() => validate(formValues), [formValues, validate]);
+  const isAble = Object.keys(errors).length === 0;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isAble) onSubmit(formValues);
+  };
+
+  return {
+    formValues,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    errors,
+    dirty,
+    isAble,
+  };
+}
+
+export default useForm;

@@ -1,7 +1,7 @@
-import React, { forwardRef, InputHTMLAttributes, useState } from "react";
-import styled, { css } from "styled-components";
+import { forwardRef, InputHTMLAttributes, useState } from "react";
 import Input from "./Input";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import styled, { css } from "styled-components";
 
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: React.ReactNode;

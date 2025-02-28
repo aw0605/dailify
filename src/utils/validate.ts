@@ -1,3 +1,5 @@
+import { FormValuesProps } from "@/types/user";
+
 export interface ValidationErrors {
   email?: string;
   password?: string;
@@ -21,11 +23,9 @@ export const validateLogin = (formValues: {
   return errors;
 };
 
-export const validateSignup = (formValues: {
-  email: string;
-  password: string;
-  rePassword: string;
-}): ValidationErrors => {
+export const validateSignup = (
+  formValues: FormValuesProps,
+): ValidationErrors => {
   const errors: ValidationErrors = validateLogin(formValues);
 
   if (!formValues.rePassword || formValues.password !== formValues.rePassword) {

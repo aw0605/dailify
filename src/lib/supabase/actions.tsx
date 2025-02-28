@@ -3,6 +3,18 @@
 import { Provider } from "@supabase/supabase-js";
 import { createClientForServer } from "./server";
 import { redirect } from "next/navigation";
+import { FormValuesProps } from "@/types/user";
+
+const signUpWithEmail = async (formValues: FormValuesProps) => {
+  const supabase = await createClientForServer();
+
+  const { data, error } = await supabase.auth.signUp({
+    email: formValues.email,
+    password: formValues.password,
+  });
+
+  return { data, error };
+};
 
 const signInWith = (provider: Provider) => async () => {
   const supabase = await createClientForServer();
@@ -31,4 +43,4 @@ const signOut = async () => {
   await supabase.auth.signOut();
 };
 
-export { signInWithGoogle, signInWithKakao, signOut };
+export { signUpWithEmail, signInWithGoogle, signInWithKakao, signOut };

@@ -6,12 +6,11 @@ import Social from "@/components/signup/Social";
 import styled, { css } from "styled-components";
 
 function SignUpPage() {
-  const handleSubmit = async () => {};
   return (
     <Layout showNav={false} hasSide={false}>
       <Wrapper>
         <h1>회원가입</h1>
-        <Form onSubmit={handleSubmit} />
+        <Form />
         <Social />
       </Wrapper>
     </Layout>
