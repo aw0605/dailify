@@ -3,13 +3,15 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 
 interface AccordionProps {
+  type?: "monthly" | "todo";
   header: React.ReactNode;
-  children?: React.ReactNode;
+  children?: string;
   color?: string;
   style?: React.CSSProperties;
 }
 
 export default function Accordion({
+  type = "todo",
   header,
   children,
   color,
@@ -29,26 +31,39 @@ export default function Accordion({
   const theme = useTheme();
 
   return (
-    <AccordionWrapper $color={color || theme.colors.white} {...props}>
+    <AccordionWrapper
+      $color={color || theme.colors.white}
+      $type={type}
+      {...props}
+    >
       <Header>
         {header}
-        <ToggleButton onClick={() => setIsOpen((prev) => !prev)}>
-          {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
-        </ToggleButton>
+        {children && (
+          <ToggleButton onClick={() => setIsOpen((prev) => !prev)} $type={type}>
+            {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
+          </ToggleButton>
+        )}
       </Header>
-      <Content ref={contentRef} $isOpen={isOpen} $height={contentHeight}>
+      <Content
+        ref={contentRef}
+        $type={type}
+        $isOpen={isOpen}
+        $height={contentHeight}
+      >
         {children}
       </Content>
     </AccordionWrapper>
   );
 }
 
-const AccordionWrapper = styled.div<{ $color: string }>`
+const AccordionWrapper = styled.div<{ $color: string; $type: string }>`
   width: 100%;
   min-width: 280px;
   border-radius: 10px;
   background-color: ${({ $color }) => $color};
   overflow: hidden;
+  box-shadow: ${({ $type }) =>
+    $type === "monthly" ? "3px 3px 5px rgba(0, 0, 0, 0.1)" : "none"};
 `;
 
 const Header = styled.div`
@@ -58,16 +73,31 @@ const Header = styled.div`
   `}
 `;
 
-const ToggleButton = styled.button`
-  border: none;
-  margin-left: 10px;
-  font-size: 18px;
+const ToggleButton = styled.button<{ $type: string }>`
+  ${({ theme, $type }) => css`
+    background-color: transparent;
+    padding: 3px;
+    color: ${theme.colors.gray2};
+    font-size: ${$type === "todo" ? theme.pxToRem(18) : theme.pxToRem(14)};
+    margin-left: ${$type === "todo" ? "10px" : "5px"};
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      color: ${theme.colors.darkOrange};
+    }
+  `}
 `;
 
-const Content = styled.div<{ $isOpen: boolean; $height: number }>`
-  ${({ theme, $isOpen, $height }) => css`
-    ${theme.typography.p({})};
-    padding: 0 20px 0 60px;
+const Content = styled.div<{
+  $type: string;
+  $isOpen: boolean;
+  $height: number;
+}>`
+  ${({ theme, $type, $isOpen, $height }) => css`
+    ${$type == "todo"
+      ? theme.typography.p({})
+      : theme.typography.p({ size: 12 })}
+    padding-left: ${$type == "todo" ? "60px" : "50px"};
     height: ${$isOpen ? `${$height + 10}px` : "0"};
     transform: ${$isOpen ? "translateY(0)" : "translateY(-10px)"};
     transition: all 0.3s ease;

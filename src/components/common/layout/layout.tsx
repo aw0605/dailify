@@ -48,9 +48,9 @@ const Main = styled.div<{
     `
     > div.side {
       flex: 1;
-      min-width: 300px;
-      max-width: 350px;
-      background: ${theme.colors.blueGray};
+      min-width: 320px;
+      max-width: 400px;
+      background: ${theme.colors.cultured};
       padding: 20px;
     }
     `}

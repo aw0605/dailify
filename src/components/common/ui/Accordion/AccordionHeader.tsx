@@ -5,7 +5,8 @@ import Button from "../Button";
 import { TodoItem } from "@/types/todo";
 
 interface AccordionHeaderProps {
-  item: TodoItem;
+  item: any;
+  type?: "monthly" | "todo";
   onCheck?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
@@ -13,11 +14,12 @@ interface AccordionHeaderProps {
 
 export default function AccordionHeader({
   item,
+  type = "todo",
   onCheck,
   onEdit,
   onDelete,
 }: AccordionHeaderProps) {
-  const { type, title, subject, date, checked } = item;
+  const { subject, title, date, checked } = item;
 
   const theme = useTheme();
 
@@ -37,10 +39,10 @@ export default function AccordionHeader({
           {type === "monthly" && <DateText>{date}</DateText>}
         </Title>
       </LeftSection>
-      <RightSection>
+      <RightSection $type={type}>
         <Button
           onClick={onEdit}
-          size={20}
+          size={type === "monthly" ? 18 : 20}
           variant="ghost"
           color={theme.colors.gray2}
           style={{ padding: "0" }}
@@ -49,7 +51,7 @@ export default function AccordionHeader({
         </Button>
         <Button
           onClick={onDelete}
-          size={20}
+          size={type === "monthly" ? 18 : 20}
           variant="ghost"
           color={theme.colors.gray2}
           style={{ padding: "0" }}
@@ -84,11 +86,11 @@ const CheckBox = styled.input`
 
 const PinIcon = styled(BsPinAngleFill)`
   color: ${({ theme }) => theme.colors.primary};
-  font-size: 20px;
-  margin-right: 10px;
+  font-size: 1rem;
+  margin-right: 3px;
 `;
 
-const Title = styled.div<{ $type: TodoItem["type"] }>`
+const Title = styled.div<{ $type: string }>`
   ${({ theme, $type }) => css`
     ${theme.mixins.flexBox({
       direction: $type === "monthly" ? "column" : "row",
@@ -100,7 +102,8 @@ const Title = styled.div<{ $type: TodoItem["type"] }>`
     width: 0px;
 
     div {
-      ${theme.typography.title({ size: $type === "monthly" ? 18 : 20 })};
+      ${theme.typography.title({ size: $type === "monthly" ? 14 : 18 })};
+      width: 100%;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -118,9 +121,9 @@ const DateText = styled.span`
   `}
 `;
 
-const RightSection = styled.div`
-  ${({ theme }) => css`
+const RightSection = styled.div<{ $type: string }>`
+  ${({ theme, $type }) => css`
     ${theme.mixins.flexBox({})};
-    gap: 15px;
+    gap: ${$type === "monthly" ? "10px" : "15px"};
   `}
 `;
