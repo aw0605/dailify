@@ -35,6 +35,7 @@ function useForm<T>({ initialValues, validate, onSubmit }: UseFormProps<T>) {
 
   return {
     formValues,
+    setFormValues,
     handleChange,
     handleBlur,
     handleSubmit,

@@ -1,9 +1,11 @@
 import { FormValuesProps } from "@/types/user";
+import { TimeFormValuesProps } from "@/types/time";
 
 export interface ValidationErrors {
   email?: string;
   password?: string;
   rePassword?: string;
+  time?: string;
 }
 
 export const validateLogin = (formValues: {
@@ -30,6 +32,19 @@ export const validateSignup = (
 
   if (!formValues.rePassword || formValues.password !== formValues.rePassword) {
     errors.rePassword = "비밀번호가 일치하지 않습니다.";
+  }
+
+  return errors;
+};
+
+export const validateTime = (
+  formValues: TimeFormValuesProps,
+): ValidationErrors => {
+  const errors: ValidationErrors = {};
+  const { h, m, s } = formValues;
+
+  if (h < 0 || h > 23 || m < 0 || m > 59 || s < 0 || s > 59) {
+    errors.time = "잘못된 시간입니다.";
   }
 
   return errors;

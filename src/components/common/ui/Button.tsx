@@ -47,7 +47,7 @@ const ButtonWrapper = styled.button<{
     ${theme.mixins.flexBox({})}
     width: 100%;
     gap: 8px;
-    padding: 10px 20px;
+    padding: 10px 0;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
@@ -58,7 +58,7 @@ const ButtonWrapper = styled.button<{
           color: #fff;
           border: none;
           &:hover {
-            background-color: ${theme.colors.darkOrange};
+            background-color: ${theme.colors.orange};
           }
         `
       : $variant === "outline"
@@ -67,8 +67,8 @@ const ButtonWrapper = styled.button<{
             color: ${$color};
             border: 2px solid ${$color};
             &:hover {
-              background-color: ${$color};
-              color: #fff;
+              color: ${theme.colors.orange};
+              border: 2px solid ${theme.colors.orange};
             }
           `
         : css`
