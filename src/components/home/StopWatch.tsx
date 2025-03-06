@@ -1,16 +1,31 @@
+import useStopWatch from "@/hooks/useStopwatch";
+import formatTime from "@/utils/formatTime";
 import { IoIosPause, IoIosPlay } from "react-icons/io";
 import Button from "@/components/common/ui/Button";
 import styled, { css, useTheme } from "styled-components";
 
 function StopWatch() {
+  const { elapsedTime, startStopWatch, pauseStopWatch } = useStopWatch();
+
   const theme = useTheme();
+
   return (
     <StopWatchWrapper>
-      <h2>00:00:00</h2>
-      <Button variant="ghost" size={18} color={theme.colors.primary}>
+      <h2>{formatTime(elapsedTime)}</h2>
+      <Button
+        variant="ghost"
+        size={18}
+        color={theme.colors.primary}
+        onClick={startStopWatch}
+      >
         <IoIosPlay />
       </Button>
-      <Button variant="ghost" size={18} color={theme.colors.primary}>
+      <Button
+        variant="ghost"
+        size={18}
+        color={theme.colors.primary}
+        onClick={pauseStopWatch}
+      >
         <IoIosPause />
       </Button>
     </StopWatchWrapper>
