@@ -8,12 +8,15 @@ import { MdHomeFilled } from "react-icons/md";
 import { LiaCalendarWeekSolid, LiaChartBar } from "react-icons/lia";
 import { IoMdTrophy } from "react-icons/io";
 import styled, { css } from "styled-components";
+import useUser from "@/hooks/useUser";
 
 export const NAVBAR_HEIGHT = "50px";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const { user } = useUser();
 
   return (
     <Container $isOpen={isMobileMenuOpen}>
@@ -45,13 +48,17 @@ export default function Navbar() {
         <User href="/my">
           <div>
             <Image
-              src="https://cdn.pixabay.com/photo/2021/07/25/08/03/account-6491185_1280.png"
-              alt="user"
+              src={
+                user?.image
+                  ? user.image
+                  : "https://cdn.pixabay.com/photo/2021/07/25/08/03/account-6491185_1280.png"
+              }
+              alt={user?.nickname ? user.nickname : "user"}
               fill
             />
           </div>
           <div>
-            <p>Ganada</p>
+            <p>{user?.nickname}</p>
             <p>현재 148373위</p>
           </div>
         </User>

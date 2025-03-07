@@ -1,35 +1,25 @@
+"use client";
+
+import useUser from "@/hooks/useUser";
 import { signOut } from "@/lib/supabase/actions";
-import { createClientForServer } from "@/lib/supabase/server";
 
-export default async function testPage() {
-  const supabase = await createClientForServer();
+export default function TestPage() {
+  const { user, clearUser } = useUser();
 
-  const session = await supabase.auth.getUser();
+  const handleSignout = async () => {
+    await signOut();
+    clearUser();
+  };
 
-  if (!session.data.user) {
-    return (
-      <div>
-        <h1>Not Authenticated</h1>
-      </div>
-    );
+  if (!user) {
+    return <div>로그인된 사용자가 없습니다.</div>;
   }
 
-  const {
-    data: {
-      user: { user_metadata, app_metadata },
-    },
-  } = session;
-
-  const { email } = user_metadata;
-
-  const Email = email ? `${email}` : "email Not Set";
-
-  console.log(session);
   return (
     <div>
-      <p>Email: {Email}</p>
-
-      <form action={signOut}>
+      <h2>{user?.nickname}</h2>
+      <h2>{user?.email}</h2>
+      <form action={handleSignout}>
         <button type="submit">로그아웃</button>
       </form>
     </div>

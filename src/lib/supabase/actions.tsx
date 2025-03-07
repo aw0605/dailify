@@ -64,9 +64,30 @@ const signInWith = (provider: Provider) => async () => {
 const signInWithGoogle = signInWith("google");
 const signInWithKakao = signInWith("kakao");
 
+const getUser = async () => {
+  const supabase = await createClientForServer();
+
+  const { data: session } = await supabase.auth.getUser();
+  if (!session?.user) return null;
+
+  const { data: user, error } = await supabase
+    .from("usersinfo")
+    .select("*")
+    .eq("id", session.user.id)
+    .single();
+
+  if (error) {
+    console.error("유저 정보 가져오는 중 에러 발생:", error);
+    return null;
+  }
+
+  return user;
+};
+
 const signOut = async () => {
   const supabase = await createClientForServer();
   await supabase.auth.signOut();
+  // redirect("/login");
 };
 
 export {
@@ -74,5 +95,6 @@ export {
   signInWithEmail,
   signInWithGoogle,
   signInWithKakao,
+  getUser,
   signOut,
 };
