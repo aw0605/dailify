@@ -1,0 +1,98 @@
+import React from "react";
+import { setTodayTime } from "@/lib/supabase/todayTodo";
+import useCalendarStore from "@/zustand/useCalendarStore";
+import useModalStore from "@/zustand/useModalStore";
+import useUser from "@/hooks/useUser";
+import useForm from "@/hooks/useForm";
+import { validateTime } from "@/utils/validate";
+import { convertToMs } from "@/utils/convertToMs";
+import Input from "../common/ui/Input";
+import ModalButtons from "../common/ui/Modal/ModalButtons";
+import styled, { css } from "styled-components";
+
+function GoalTimeModal() {
+  const { user, userId } = useUser();
+  const { selectedDate } = useCalendarStore();
+  const { closeModal } = useModalStore();
+  const {
+    formValues: time,
+    handleChange,
+    handleSubmit,
+    errors,
+  } = useForm({
+    initialValues: { h: 0, m: 0, s: 0 },
+    validate: validateTime,
+    onSubmit: async () => {
+      if (!user) return;
+      const goalTime = convertToMs(time);
+      await setTodayTime(userId!, selectedDate!, "goal_time", goalTime);
+      closeModal("goalTimeModal");
+    },
+  });
+
+  return (
+    <ModalWrapper onSubmit={handleSubmit}>
+      <Title>목표 시간</Title>
+      <InputContainer>
+        <Input
+          type="number"
+          name="h"
+          value={time.h}
+          onChange={handleChange}
+          min={0}
+          max={23}
+        />
+        h
+        <Input
+          type="number"
+          name="m"
+          value={time.m}
+          onChange={handleChange}
+          min={0}
+          max={59}
+        />
+        m
+      </InputContainer>
+      {errors.time && <ErrorMsg>{errors.time}</ErrorMsg>}
+      <ModalButtons modalId="goalTimeModal" />
+    </ModalWrapper>
+  );
+}
+
+export default GoalTimeModal;
+
+const ModalWrapper = styled.form`
+  ${({ theme }) => css`
+    ${theme.mixins.flexBox({ direction: "column" })}
+    gap: 24px;
+  `}
+`;
+
+const Title = styled.div`
+  ${({ theme }) => css`
+    ${theme.typography.title({ size: 24, color: theme.colors.orange })}
+  `}
+`;
+
+const InputContainer = styled.div`
+  ${({ theme }) => css`
+    ${theme.mixins.flexBox({})}
+    gap: 10px;
+    font-size: ${theme.pxToRem(18)};
+
+    input {
+      width: 50px;
+      height: 40px;
+      padding: 0;
+      text-align: center;
+      margin-right: 2px;
+    }
+  `}
+`;
+
+const ErrorMsg = styled.p`
+  ${({ theme }) => css`
+    ${theme.typography.p({ size: 12, color: theme.colors.orangeRed })}
+    margin-bottom: 10px;
+  `}
+`;

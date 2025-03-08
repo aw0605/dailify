@@ -1,4 +1,4 @@
-import useStopWatch from "@/hooks/useStopwatch";
+import useStopWatch from "@/hooks/useStopWatch";
 import formatTime from "@/utils/formatTime";
 import { IoIosPause, IoIosPlay } from "react-icons/io";
 import Button from "@/components/common/ui/Button";

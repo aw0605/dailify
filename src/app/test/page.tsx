@@ -1,7 +1,7 @@
 "use client";
 
 import useUser from "@/hooks/useUser";
-import { signOut } from "@/lib/supabase/actions";
+import { signOut } from "@/lib/supabase/auth";
 
 export default function TestPage() {
   const { user, clearUser } = useUser();

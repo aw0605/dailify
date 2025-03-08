@@ -1,9 +1,28 @@
 import useModalStore from "@/zustand/useModalStore";
+import GoalTimeModal from "./GoalTimeModal";
 import StopWatch from "./StopWatch";
 import styled, { css } from "styled-components";
+import { useEffect, useState } from "react";
+import useUser from "@/hooks/useUser";
+import useCalendarStore from "@/zustand/useCalendarStore";
+import { getTodayTime } from "@/lib/supabase/todayTodo";
+import formatTime from "@/utils/formatTime";
 
 function Time() {
   const { openModal } = useModalStore();
+  const [goalTime, setGoalTime] = useState<number>(0);
+  const { user, userId } = useUser();
+  const { selectedDate } = useCalendarStore();
+
+  useEffect(() => {
+    const fetchGolaTime = async () => {
+      if (!user) return;
+      const time = await getTodayTime(userId!, selectedDate!);
+      setGoalTime(time!);
+    };
+
+    fetchGolaTime();
+  }, [selectedDate, userId]);
 
   return (
     <TimesWrapper>
@@ -12,9 +31,9 @@ function Time() {
         <h3>목표 공부 시간</h3>
         <button
           className="time"
-          onClick={() => openModal("targetTimeModal", <div></div>)}
+          onClick={() => openModal("goalTimeModal", <GoalTimeModal />)}
         >
-          00h 00m
+          {formatTime(goalTime, true)}
         </button>
       </TimeContainer>
       <TimeContainer>

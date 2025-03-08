@@ -2,6 +2,7 @@ import useForm from "@/hooks/useForm";
 import useTimer from "@/hooks/useTimer";
 import { validateTime } from "@/utils/validate";
 import formatTime from "@/utils/formatTime";
+import { convertToMs } from "@/utils/convertToMs";
 import TimerInputs from "./TimerInputs";
 import TimerButtons from "./TimerButtons";
 import styled, { css } from "styled-components";
@@ -23,7 +24,7 @@ const TimerModal = () => {
     { onTimerEnd: () => setFormValues({ h: 0, m: 0, s: 0 }) },
   );
 
-  const totalMs = time.h * 3600000 + time.m * 60000 + time.s * 1000;
+  const totalMs = convertToMs(time);
 
   return (
     <TimerWrapper>

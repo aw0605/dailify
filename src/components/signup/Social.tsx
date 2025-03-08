@@ -1,4 +1,4 @@
-import { signInWithGoogle, signInWithKakao } from "@/lib/supabase/actions";
+import { signInWithGoogle, signInWithKakao } from "@/lib/supabase/auth";
 import GoogleIcon from "../../../public/googleIcon.svg";
 import KaKaoIcon from "../../../public/kakaoIcon.svg";
 import styled, { css } from "styled-components";

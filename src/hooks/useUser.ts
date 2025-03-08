@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useUserStore from "@/zustand/useUserStore";
-import { getUser } from "@/lib/supabase/actions";
+import { getUser } from "@/lib/supabase/auth";
 
 const useUser = () => {
   const { user, setUser, clearUser } = useUserStore();

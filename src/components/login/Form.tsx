@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import useForm from "@/hooks/useForm";
-import { signInWithEmail } from "@/lib/supabase/actions";
+import { signInWithEmail } from "@/lib/supabase/auth";
 import { validateLogin } from "@/utils/validate";
 import TextField from "@/components/common/ui/TextField";
 import Button from "@/components/common/ui/Button";
