@@ -4,9 +4,10 @@ let startTime = 0;
 let isRunning = false;
 const MAX_TIME = 86400000;
 
-function intervalStopwatch() {
+function intervalStopwatch(initialElapsedTime = 0) {
   if (isRunning) return;
   isRunning = true;
+  elapsedTime = initialElapsedTime;
   startTime = Date.now() - elapsedTime;
 
   timerId = setInterval(() => {
@@ -17,10 +18,10 @@ function intervalStopwatch() {
 }
 
 onmessage = function (e) {
-  const { type } = e.data;
+  const { type, elapsedTime: initialElapsedTime } = e.data;
   switch (type) {
     case "start-stopwatch":
-      intervalStopwatch();
+      intervalStopwatch(initialElapsedTime || elapsedTime);
       break;
     case "pause-stopwatch":
       clearInterval(timerId);

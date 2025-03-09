@@ -24,24 +24,27 @@ const setTodayTime = async (
 const getTodayTime = async (
   uid: string,
   date: Date,
-): Promise<number | null> => {
+): Promise<{ goal_time: number | null; actual_time: number | null }> => {
   const supabase = await createClientForServer();
 
   const isoDate = date.toISOString();
 
   const { data, error } = await supabase
     .from("today_time")
-    .select("goal_time")
+    .select("goal_time, actual_time")
     .eq("uid", uid)
     .eq("date", isoDate)
     .single();
 
   if (error) {
     console.error("Error fetching time:", error);
-    return null;
+    return { goal_time: null, actual_time: null };
   }
 
-  return data?.goal_time ?? null;
+  return {
+    goal_time: data?.goal_time ?? null,
+    actual_time: data?.actual_time ?? null,
+  };
 };
 
 export { setTodayTime, getTodayTime };

@@ -1,27 +1,33 @@
+import { useEffect, useState } from "react";
 import useModalStore from "@/zustand/useModalStore";
+import useCalendarStore from "@/zustand/useCalendarStore";
+import useUser from "@/hooks/useUser";
+import formatTime from "@/utils/formatTime";
+import { getTodayTime } from "@/lib/supabase/todayTodo";
 import GoalTimeModal from "./GoalTimeModal";
 import StopWatch from "./StopWatch";
 import styled, { css } from "styled-components";
-import { useEffect, useState } from "react";
-import useUser from "@/hooks/useUser";
-import useCalendarStore from "@/zustand/useCalendarStore";
-import { getTodayTime } from "@/lib/supabase/todayTodo";
-import formatTime from "@/utils/formatTime";
 
 function Time() {
   const { openModal } = useModalStore();
   const [goalTime, setGoalTime] = useState<number>(0);
+  const [actualTime, setActualTime] = useState<number>(0);
+
   const { user, userId } = useUser();
   const { selectedDate } = useCalendarStore();
 
   useEffect(() => {
-    const fetchGolaTime = async () => {
+    const fetchTodayTime = async () => {
       if (!user) return;
-      const time = await getTodayTime(userId!, selectedDate!);
-      setGoalTime(time!);
+      const { goal_time, actual_time } = await getTodayTime(
+        userId!,
+        selectedDate!,
+      );
+      setGoalTime(goal_time!);
+      setActualTime(actual_time!);
     };
 
-    fetchGolaTime();
+    fetchTodayTime();
   }, [selectedDate, userId]);
 
   return (
@@ -38,7 +44,7 @@ function Time() {
       </TimeContainer>
       <TimeContainer>
         <h3>현재 공부 시간</h3>
-        <StopWatch />
+        <StopWatch actualTime={actualTime} />
       </TimeContainer>
     </TimesWrapper>
   );

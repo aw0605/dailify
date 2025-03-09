@@ -1,13 +1,19 @@
+import { useEffect } from "react";
 import useStopWatch from "@/hooks/useStopWatch";
 import formatTime from "@/utils/formatTime";
 import { IoIosPause, IoIosPlay } from "react-icons/io";
 import Button from "@/components/common/ui/Button";
 import styled, { css, useTheme } from "styled-components";
 
-function StopWatch() {
-  const { elapsedTime, startStopWatch, pauseStopWatch } = useStopWatch();
+function StopWatch({ actualTime }: { actualTime: number }) {
+  const { elapsedTime, setElapsedTime, startStopWatch, pauseStopWatch } =
+    useStopWatch();
 
   const theme = useTheme();
+
+  useEffect(() => {
+    setElapsedTime(actualTime);
+  }, [actualTime]);
 
   return (
     <StopWatchWrapper>
