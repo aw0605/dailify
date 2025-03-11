@@ -89,6 +89,33 @@ const getTodayTodos = async (uid: string, date: Date): Promise<TodoItem[]> => {
   return data || [];
 };
 
+const editTodayTodo = async (
+  todo: Pick<TodoItem, "id" | "subject" | "title" | "content">,
+) => {
+  const supabase = await createClientForServer();
+
+  const { data, error } = await supabase
+    .from("today_todos")
+    .update({
+      subject: todo.subject,
+      title: todo.title,
+      content: todo.content,
+    })
+    .eq("id", todo.id)
+    .select();
+
+  if (error) throw error;
+  return data;
+};
+
+const deleteTodayTodo = async (id: string) => {
+  const supabase = await createClientForServer();
+
+  const { error } = await supabase.from("today_todos").delete().eq("id", id);
+
+  if (error) throw error;
+};
+
 const toggleTodayTodo = async (id: string, completed: boolean) => {
   const supabase = await createClientForServer();
 
@@ -107,5 +134,7 @@ export {
   getTodayTime,
   setTodayTodo,
   getTodayTodos,
+  editTodayTodo,
+  deleteTodayTodo,
   toggleTodayTodo,
 };

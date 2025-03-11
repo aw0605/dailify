@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
 import useUser from "@/hooks/useUser";
 import useCalendarStore from "@/zustand/useCalendarStore";
-import { getTodayTodos, toggleTodayTodo } from "@/lib/supabase/todayTodo";
-import Accordion from "../common/ui/Accordion/Accordion";
-import AccordionHeader from "../common/ui/Accordion/AccordionHeader";
+import useModalStore from "@/zustand/useModalStore";
+import {
+  deleteTodayTodo,
+  getTodayTodos,
+  toggleTodayTodo,
+} from "@/lib/supabase/todayTodo";
+import Accordion from "@/components/common/ui/Accordion/Accordion";
+import AccordionHeader from "@/components/common/ui/Accordion/AccordionHeader";
+import TodoModal from "./TodoModal";
 import styled, { css, useTheme } from "styled-components";
 
 import { TodoItem } from "@/types/todo";
 
 function TodoList() {
   const theme = useTheme();
+  const { openModal } = useModalStore();
+
   const { user, userId } = useUser();
   const { selectedDate } = useCalendarStore();
+
   const [todos, setTodos] = useState<TodoItem[]>([]);
 
   const fetchTodos = async () => {
@@ -28,6 +37,15 @@ function TodoList() {
   const handleToggle = async (id: string, completed: boolean) => {
     try {
       await toggleTodayTodo(id, completed);
+      fetchTodos();
+    } catch (error) {
+      console.error("Failed to update todo:", error);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteTodayTodo(id);
       fetchTodos();
     } catch (error) {
       console.error("Failed to update todo:", error);
@@ -51,6 +69,10 @@ function TodoList() {
               <AccordionHeader
                 item={todo}
                 onCheck={() => handleToggle(todo.id, todo.completed)}
+                onEdit={() =>
+                  openModal("todoModal", <TodoModal editTodo={todo} />)
+                }
+                onDelete={() => handleDelete(todo.id)}
               />
             }
             style={{ marginBottom: "10px" }}
@@ -72,11 +94,3 @@ const AlertMsg = styled.h1`
     ${theme.typography.title({ size: 24 })}
   `}
 `;
-
-// const handleCheck = (id: string) => {
-//   setTodos((prevTodos) =>
-//     prevTodos.map((todo) =>
-//       todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-//     ),
-//   );
-// };

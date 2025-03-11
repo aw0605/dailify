@@ -3,7 +3,7 @@
 import Layout from "@/components/common/layout/layout";
 import Header from "@/components/home/Header";
 import Time from "@/components/home/Time";
-import TodoList from "@/components/home/TodoList";
+import TodoList from "@/components/home/Todo/TodoList";
 import CalendarComponent from "@/components/home/Calendar";
 import MonthlyList from "@/components/home/MonthlyList";
 
