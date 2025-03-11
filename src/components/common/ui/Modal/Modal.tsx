@@ -48,4 +48,7 @@ const ModalContent = styled.div`
   background: ${({ theme }) => theme.colors.white};
   padding: 20px;
   border-radius: 10px;
+  width: 50%;
+  max-width: 400px;
+  min-width: 280px;
 `;

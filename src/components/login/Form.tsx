@@ -50,6 +50,7 @@ function Form() {
           name="email"
           type="email"
           value={formValues.email}
+          essential={true}
           placeholder="이메일을 입력하세요"
           onChange={handleChange}
           onBlur={handleBlur}
@@ -63,6 +64,7 @@ function Form() {
           name="password"
           type="password"
           value={formValues.password}
+          essential={true}
           placeholder="비밀번호를 입력하세요"
           onChange={handleChange}
           onBlur={handleBlur}

@@ -85,6 +85,10 @@ const GlobalStyle = createGlobalStyle`
   input[type="number"] {
     -moz-appearance: textfield;
   }
+
+  textarea {
+    font-family: "Noto Sans" !important;
+  }
 `;
 
 export default GlobalStyle;

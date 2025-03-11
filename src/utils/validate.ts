@@ -1,11 +1,13 @@
 import { FormValuesProps } from "@/types/user";
 import { TimeFormValuesProps } from "@/types/time";
+import { TodoFormValuesProps } from "@/types/todo";
 
 export interface ValidationErrors {
   email?: string;
   password?: string;
   rePassword?: string;
   time?: string;
+  todo?: string;
 }
 
 export const validateLogin = (formValues: {
@@ -45,6 +47,18 @@ export const validateTime = (
 
   if (h < 0 || h > 23 || m < 0 || m > 59 || s < 0 || s > 59) {
     errors.time = "잘못된 시간입니다.";
+  }
+
+  return errors;
+};
+
+export const validateTodo = (
+  formValues: TodoFormValuesProps,
+): ValidationErrors => {
+  const errors: ValidationErrors = {};
+
+  if (!formValues.subject.trim() || !formValues.title.trim()) {
+    errors.todo = "분류와 제목은 필수 항목입니다.";
   }
 
   return errors;

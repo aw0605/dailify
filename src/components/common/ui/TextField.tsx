@@ -5,12 +5,25 @@ import styled, { css } from "styled-components";
 
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: React.ReactNode;
+  essential?: boolean;
   hasError?: boolean;
   helpMsg?: React.ReactNode;
 }
 
 const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
-  ({ label, hasError, helpMsg, onFocus, onBlur, type, ...props }, ref) => {
+  (
+    {
+      label,
+      essential = false,
+      hasError,
+      helpMsg,
+      onFocus,
+      onBlur,
+      type,
+      ...props
+    },
+    ref,
+  ) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -18,9 +31,14 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     };
 
     return (
-      <Container>
-        {label ? <h2>{label}</h2> : null}
-        <InputWrapper>
+      <Wrapper>
+        {label ? (
+          <label>
+            {label}
+            {essential && <span>*필수</span>}
+          </label>
+        ) : null}
+        <Container>
           <Input
             ref={ref}
             aria-invalid={hasError}
@@ -29,6 +47,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             onBlur={onBlur}
             {...props}
           />
+
           {type === "password" && (
             <PasswordToggleButton
               type="button"
@@ -37,9 +56,9 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
               {isPasswordVisible ? <FaRegEye /> : <FaRegEyeSlash />}
             </PasswordToggleButton>
           )}
-        </InputWrapper>
+        </Container>
         {helpMsg ? <p>{helpMsg}</p> : null}
-      </Container>
+      </Wrapper>
     );
   },
 );
@@ -48,13 +67,17 @@ TextField.displayName = "TextField";
 
 export default TextField;
 
-const Container = styled.div`
+const Wrapper = styled.div`
   ${({ theme }) => css`
     ${theme.mixins.flexBox({ direction: "column", align: "flex-start" })};
     gap: 3px;
-    h2 {
+    label {
       padding-left: 5px;
       ${theme.typography.title({ size: 16 })};
+      span {
+        margin-left: 5px;
+        ${theme.typography.title({ size: 12, color: theme.colors.orange })};
+      }
     }
     p {
       padding-left: 5px;
@@ -63,7 +86,7 @@ const Container = styled.div`
   `}
 `;
 
-const InputWrapper = styled.div`
+const Container = styled.div`
   position: relative;
   width: 100%;
 `;

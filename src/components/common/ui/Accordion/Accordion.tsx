@@ -1,6 +1,6 @@
-import styled, { css, useTheme } from "styled-components";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import styled, { css, useTheme } from "styled-components";
 
 interface AccordionProps {
   type?: "monthly" | "todo";

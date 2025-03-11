@@ -5,6 +5,7 @@ import { IoAlarmOutline } from "react-icons/io5";
 import Button from "@/components/common/ui/Button";
 import TimerModal from "@/components/home/Timer/TimerModal";
 import styled, { css } from "styled-components";
+import CreateTodoModal from "./CreateTodoModal";
 
 function Header() {
   const { selectedDate: cur, prevDay, nextDay } = useCalendarStore();
@@ -38,7 +39,7 @@ function Header() {
         </StyledButton>
         <StyledButton
           size={22}
-          onClick={() => openModal("createTodoModal", <div></div>)}
+          onClick={() => openModal("createTodoModal", <CreateTodoModal />)}
         >
           +
         </StyledButton>

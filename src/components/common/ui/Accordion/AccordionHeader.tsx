@@ -2,7 +2,6 @@ import styled, { css, useTheme } from "styled-components";
 import { BsPinAngleFill } from "react-icons/bs";
 import { HiOutlineTrash, HiOutlinePencilAlt } from "react-icons/hi";
 import Button from "../Button";
-import { TodoItem } from "@/types/todo";
 
 interface AccordionHeaderProps {
   item: any;
@@ -19,7 +18,7 @@ export default function AccordionHeader({
   onEdit,
   onDelete,
 }: AccordionHeaderProps) {
-  const { subject, title, date, checked } = item;
+  const { subject, title, date, completed } = item;
 
   const theme = useTheme();
 
@@ -27,7 +26,7 @@ export default function AccordionHeader({
     <AccordionHeaderWrapper>
       <LeftSection>
         {type !== "monthly" ? (
-          <CheckBox type="checkbox" checked={checked} onChange={onCheck} />
+          <CheckBox type="checkbox" checked={completed} onChange={onCheck} />
         ) : (
           <PinIcon />
         )}
@@ -82,6 +81,7 @@ const CheckBox = styled.input`
   width: 20px;
   height: 20px;
   cursor: pointer;
+  accent-color: ${({ theme }) => theme.colors.primary};
 `;
 
 const PinIcon = styled(BsPinAngleFill)`

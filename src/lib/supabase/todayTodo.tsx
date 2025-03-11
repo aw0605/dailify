@@ -1,5 +1,6 @@
 "use server";
 
+import { TodoItem } from "@/types/todo";
 import { createClientForServer } from "./server";
 
 const setTodayTime = async (
@@ -47,4 +48,64 @@ const getTodayTime = async (
   };
 };
 
-export { setTodayTime, getTodayTime };
+const setTodayTodo = async (
+  todo: Omit<TodoItem, "id" | "completed"> & { uid: string },
+) => {
+  const supabase = await createClientForServer();
+
+  const isoDate = todo.date.toISOString();
+
+  const { data, error } = await supabase.from("today_todos").insert([
+    {
+      uid: todo.uid,
+      date: isoDate,
+      subject: todo.subject,
+      title: todo.title,
+      content: todo.content || null,
+      completed: false,
+    },
+  ]);
+
+  if (error) throw error;
+  return data;
+};
+
+const getTodayTodos = async (uid: string, date: Date): Promise<TodoItem[]> => {
+  const supabase = await createClientForServer();
+
+  const isoDate = date.toISOString();
+
+  const { data, error } = await supabase
+    .from("today_todos")
+    .select("*")
+    .eq("uid", uid)
+    .eq("date", isoDate);
+
+  if (error) {
+    console.error("Error fetching time:", error);
+    return [];
+  }
+
+  return data || [];
+};
+
+const toggleTodayTodo = async (id: string, completed: boolean) => {
+  const supabase = await createClientForServer();
+
+  const { data, error } = await supabase
+    .from("today_todos")
+    .update({ completed: !completed })
+    .eq("id", id)
+    .select();
+
+  if (error) throw error;
+  return data;
+};
+
+export {
+  setTodayTime,
+  getTodayTime,
+  setTodayTodo,
+  getTodayTodos,
+  toggleTodayTodo,
+};
