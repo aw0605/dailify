@@ -1,6 +1,7 @@
 import { FormValuesProps } from "@/types/user";
 import { TimeFormValuesProps } from "@/types/time";
 import { TodoFormValuesProps } from "@/types/todo";
+import { MonthlyFormValuesProps } from "@/types/monthly";
 
 export interface ValidationErrors {
   email?: string;
@@ -8,6 +9,7 @@ export interface ValidationErrors {
   rePassword?: string;
   time?: string;
   todo?: string;
+  event?: string;
 }
 
 export const validateLogin = (formValues: {
@@ -59,6 +61,18 @@ export const validateTodo = (
 
   if (!formValues.subject.trim() || !formValues.title.trim()) {
     errors.todo = "분류와 제목은 필수 항목입니다.";
+  }
+
+  return errors;
+};
+
+export const validateEvent = (
+  formValues: MonthlyFormValuesProps,
+): ValidationErrors => {
+  const errors: ValidationErrors = {};
+
+  if (!formValues.title.trim() || !formValues.date) {
+    errors.event = "제목과 날짜는 필수 항목입니다.";
   }
 
   return errors;

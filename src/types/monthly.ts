@@ -1,6 +1,12 @@
-export interface MonthlyItem {
+export interface MonthlyFormValuesProps {
+  title: string;
+  date: Date;
+  content?: string;
+}
+
+export interface MonthlyEvent {
   id: string;
   title: string;
-  date: string;
+  date: Date;
   content?: string;
 }

@@ -15,7 +15,8 @@ function useForm<T>({ initialValues, validate, onSubmit }: UseFormProps<T>) {
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setFormValues((prev) => ({
         ...prev,
-        [e.target.name]: e.target.value,
+        [e.target.name]:
+          e.target.name === "date" ? new Date(e.target.value) : e.target.value,
       }));
     },
     [],

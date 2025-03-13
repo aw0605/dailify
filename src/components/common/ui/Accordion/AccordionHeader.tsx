@@ -2,6 +2,7 @@ import styled, { css, useTheme } from "styled-components";
 import { BsPinAngleFill } from "react-icons/bs";
 import { HiOutlineTrash, HiOutlinePencilAlt } from "react-icons/hi";
 import Button from "../Button";
+import { formatDateTime } from "@/utils/formatDate";
 
 interface AccordionHeaderProps {
   item: any;
@@ -35,7 +36,7 @@ export default function AccordionHeader({
             {type !== "monthly" && <span>[{subject}]</span>}
             {title}
           </div>
-          {type === "monthly" && <DateText>{date}</DateText>}
+          {type === "monthly" && <DateText>{formatDateTime(date)}</DateText>}
         </Title>
       </LeftSection>
       <RightSection $type={type}>

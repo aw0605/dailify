@@ -48,7 +48,7 @@ function TodoList() {
       await deleteTodayTodo(id);
       fetchTodos();
     } catch (error) {
-      console.error("Failed to update todo:", error);
+      console.error("Failed to delete todo:", error);
     }
   };
 

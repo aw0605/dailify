@@ -5,7 +5,7 @@ import Header from "@/components/home/Header";
 import Time from "@/components/home/Time";
 import TodoList from "@/components/home/Todo/TodoList";
 import CalendarComponent from "@/components/home/Calendar";
-import MonthlyList from "@/components/home/MonthlyList";
+import MonthlyList from "@/components/home/Monthly/MonthlyList";
 
 export default function Home() {
   return (
