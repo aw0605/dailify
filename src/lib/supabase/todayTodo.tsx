@@ -82,7 +82,7 @@ const getTodayTodos = async (uid: string, date: Date): Promise<TodoItem[]> => {
     .eq("date", isoDate);
 
   if (error) {
-    console.error("Error fetching time:", error);
+    console.error("Error fetching todos:", error);
     return [];
   }
 

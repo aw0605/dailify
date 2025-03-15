@@ -3,18 +3,23 @@ import useModalStore from "@/zustand/useModalStore";
 import useCalendarStore from "@/zustand/useCalendarStore";
 import useUser from "@/hooks/useUser";
 import formatTime from "@/utils/formatTime";
+import calcDday from "@/utils/calcDday";
+import { getDDay } from "@/lib/supabase/dday";
 import { getTodayTime } from "@/lib/supabase/todayTodo";
 import GoalTimeModal from "./GoalTimeModal";
 import StopWatch from "./StopWatch";
 import styled, { css } from "styled-components";
 
-function Time() {
-  const { openModal } = useModalStore();
-  const [goalTime, setGoalTime] = useState<number>(0);
-  const [actualTime, setActualTime] = useState<number>(0);
+import { DdayEvent } from "@/types/dday";
 
+function Time() {
   const { user, userId } = useUser();
   const { selectedDate } = useCalendarStore();
+  const { openModal } = useModalStore();
+
+  const [dday, setDday] = useState<string>("");
+  const [goalTime, setGoalTime] = useState<number>(0);
+  const [actualTime, setActualTime] = useState<number>(0);
 
   useEffect(() => {
     const fetchTodayTime = async () => {
@@ -23,8 +28,12 @@ function Time() {
         userId!,
         selectedDate!,
       );
+      const ddayData: DdayEvent = await getDDay(userId!);
       setGoalTime(goal_time!);
       setActualTime(actual_time!);
+      setDday(
+        `${ddayData.title} ${calcDday(new Date(ddayData.date), selectedDate!)}`,
+      );
     };
 
     fetchTodayTime();
@@ -32,7 +41,7 @@ function Time() {
 
   return (
     <TimesWrapper>
-      <div className="d-day">수능 D-300</div>
+      <div className="d-day">{dday}</div>
       <TimeContainer>
         <h3>목표 공부 시간</h3>
         <button

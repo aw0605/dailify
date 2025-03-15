@@ -35,7 +35,6 @@ function MonthlyList() {
 
   useEffect(() => {
     fetchEvents();
-    console.log("이벤트:", events);
   }, [userId]);
 
   return (
