@@ -1,10 +1,10 @@
 "use server";
 
-import { MonthlyEvent } from "@/types/monthly";
+import { MonthlyEvent, MonthlyFormValuesProps } from "@/types/monthly";
 import { createClientForServer } from "./server";
 
 const setMonthlyEvent = async (
-  event: Omit<MonthlyEvent, "id"> & { uid: string },
+  event: MonthlyFormValuesProps & { uid: string },
 ) => {
   const supabase = await createClientForServer();
 
@@ -20,6 +20,7 @@ const setMonthlyEvent = async (
   ]);
 
   if (error) throw error;
+
   return data;
 };
 
@@ -43,7 +44,8 @@ const getMonthlyEvents = async (
     .select("*")
     .eq("uid", uid)
     .gte("date", date.toISOString())
-    .lte("date", endOfMonth.toISOString());
+    .lte("date", endOfMonth.toISOString())
+    .order("date", { ascending: true });
 
   if (error) {
     console.error("Error fetching time:", error);

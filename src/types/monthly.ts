@@ -4,9 +4,6 @@ export interface MonthlyFormValuesProps {
   content?: string;
 }
 
-export interface MonthlyEvent {
+export interface MonthlyEvent extends MonthlyFormValuesProps {
   id: string;
-  title: string;
-  date: Date;
-  content?: string;
 }

@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useUser from "@/hooks/useUser";
+import { useShallow } from "zustand/shallow";
+import useMonthlyStore from "@/zustand/useMonthlyStore";
 import useModalStore from "@/zustand/useModalStore";
-import { deleteMonthlyEvent, getMonthlyEvents } from "@/lib/supabase/monthly";
 import Accordion from "@/components/common/ui/Accordion/Accordion";
 import AccordionHeader from "@/components/common/ui/Accordion/AccordionHeader";
 import Button from "@/components/common/ui/Button";
@@ -11,30 +12,21 @@ import styled, { css } from "styled-components";
 import { MonthlyEvent } from "@/types/monthly";
 
 function MonthlyList() {
-  const { user, userId } = useUser();
-  const { openModal } = useModalStore();
+  const { userId } = useUser();
+  const openModal = useModalStore((state) => state.openModal);
 
-  const [events, setEvnets] = useState<MonthlyEvent[]>([]);
-
-  const fetchEvents = async () => {
-    if (!user) return;
-    const fetchedEvents = await getMonthlyEvents(userId!);
-    if (fetchedEvents) {
-      setEvnets(fetchedEvents);
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteMonthlyEvent(id);
-      fetchEvents();
-    } catch (error) {
-      console.error("Failed to delete event:", error);
-    }
-  };
+  const { events, fetchMonthlyEvents, deleteEvent } = useMonthlyStore(
+    useShallow((state) => ({
+      events: state.events,
+      fetchMonthlyEvents: state.fetchMonthlyEvents,
+      deleteEvent: state.deleteEvent,
+    })),
+  );
 
   useEffect(() => {
-    fetchEvents();
+    if (userId) {
+      fetchMonthlyEvents(userId);
+    }
   }, [userId]);
 
   return (
@@ -63,7 +55,7 @@ function MonthlyList() {
                 onEdit={() =>
                   openModal("monthlyModal", <MonthlyModal editEvent={event} />)
                 }
-                onDelete={() => handleDelete(event.id)}
+                onDelete={() => deleteEvent(event.id)}
               />
             }
             style={{ marginBottom: "10px" }}

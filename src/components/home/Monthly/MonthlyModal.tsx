@@ -1,7 +1,8 @@
 import useUser from "@/hooks/useUser";
 import useForm from "@/hooks/useForm";
+import { useShallow } from "zustand/shallow";
+import useMonthlyStore from "@/zustand/useMonthlyStore";
 import useModalStore from "@/zustand/useModalStore";
-import { editMonthlyEvent, setMonthlyEvent } from "@/lib/supabase/monthly";
 import { validateEvent } from "@/utils/validate";
 import { convertTime } from "@/utils/convertTime";
 import TextField from "@/components/common/ui/TextField";
@@ -13,7 +14,14 @@ import { MonthlyEvent } from "@/types/monthly";
 
 function MonthlyModal({ editEvent }: { editEvent?: MonthlyEvent }) {
   const { user, userId } = useUser();
-  const { closeModal } = useModalStore();
+  const closeModal = useModalStore((state) => state.closeModal);
+
+  const { addEvent, updateEvent } = useMonthlyStore(
+    useShallow((state) => ({
+      addEvent: state.addEvent,
+      updateEvent: state.updateEvent,
+    })),
+  );
 
   const isEdit = !!editEvent;
 
@@ -30,7 +38,7 @@ function MonthlyModal({ editEvent }: { editEvent?: MonthlyEvent }) {
 
       try {
         if (isEdit) {
-          await editMonthlyEvent({
+          await updateEvent({
             id: editEvent.id,
             date: event.date,
             title: event.title,
@@ -38,7 +46,7 @@ function MonthlyModal({ editEvent }: { editEvent?: MonthlyEvent }) {
           });
           alert("이벤트가 수정되었습니다.");
         } else {
-          await setMonthlyEvent({
+          await addEvent({
             uid: userId!,
             date: event.date,
             title: event.title,
@@ -121,7 +129,3 @@ const TextFieldContainer = styled.div`
     }
   `}
 `;
-
-// event.date instanceof Date
-//   ? event.date.toISOString().slice(0, 16)
-//   : ""
