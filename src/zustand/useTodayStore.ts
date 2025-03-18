@@ -17,6 +17,7 @@ interface TodayStoreState {
   dday: DdayEvent | null;
   todayTime: TimeProps;
   todos: TodoItem[];
+  loading: boolean;
   fetchTodayData: (uid: string, date: Date) => Promise<void>;
   updateTodayTime: (
     uid: string,
@@ -37,11 +38,13 @@ const useTodayStore = create<TodayStoreState>((set, get) => ({
   loading: false,
 
   fetchTodayData: async (uid, date) => {
+    set({ loading: true });
     const data = await getTodayData(uid, date);
     set({
       dday: data.dday,
       todayTime: data.todayTime || { goal_time: 0, actual_time: 0 },
       todos: data.todos,
+      loading: false,
     });
   },
 

@@ -7,19 +7,26 @@ import TodoModal from "./TodoModal";
 import styled, { css, useTheme } from "styled-components";
 
 import { TodoItem } from "@/types/todo";
+import Loading from "@/components/common/ui/Loading";
+import Skeleton from "@/components/common/ui/Skeleton";
 
 function TodoList() {
   const theme = useTheme();
   const openModal = useModalStore((state) => state.openModal);
 
-  const { todos, toggleTodo, deleteTodo } = useTodayStore(
+  const { todos, toggleTodo, deleteTodo, loading } = useTodayStore(
     useShallow((state) => ({
       todos: state.todos,
       fetchTodayData: state.fetchTodayData,
       toggleTodo: state.toggleTodo,
       deleteTodo: state.deleteTodo,
+      loading: state.loading,
     })),
   );
+
+  if (loading) {
+    return <Skeleton height="45px" radius="10px" />;
+  }
 
   return (
     <>

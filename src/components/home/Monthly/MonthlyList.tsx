@@ -10,16 +10,18 @@ import MonthlyModal from "./MonthlyModal";
 import styled, { css } from "styled-components";
 
 import { MonthlyEvent } from "@/types/monthly";
+import Skeleton from "@/components/common/ui/Skeleton";
 
 function MonthlyList() {
   const { userId } = useUser();
   const openModal = useModalStore((state) => state.openModal);
 
-  const { events, fetchMonthlyEvents, deleteEvent } = useMonthlyStore(
+  const { events, fetchMonthlyEvents, deleteEvent, loading } = useMonthlyStore(
     useShallow((state) => ({
       events: state.events,
       fetchMonthlyEvents: state.fetchMonthlyEvents,
       deleteEvent: state.deleteEvent,
+      loading: state.loading,
     })),
   );
 
@@ -28,6 +30,10 @@ function MonthlyList() {
       fetchMonthlyEvents(userId);
     }
   }, [userId]);
+
+  if (loading) {
+    return <Skeleton height="45px" radius="10px" />;
+  }
 
   return (
     <div>
@@ -41,6 +47,7 @@ function MonthlyList() {
           +
         </Button>
       </Header>
+
       {events.length === 0 ? (
         <AlertMsg>이번 달 이벤트가 없습니다.</AlertMsg>
       ) : (

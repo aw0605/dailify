@@ -11,6 +11,7 @@ import { MonthlyEvent, MonthlyFormValuesProps } from "@/types/monthly";
 
 interface MonthlyStore {
   events: MonthlyEvent[];
+  loading: boolean;
   fetchMonthlyEvents: (uid: string) => Promise<void>;
   addEvent: (event: MonthlyFormValuesProps & { uid: string }) => Promise<void>;
   updateEvent: (event: MonthlyEvent) => Promise<void>;
@@ -38,10 +39,12 @@ const filterAndSortEvents = (events: MonthlyEvent[]) => {
 
 const useMonthlyStore = create<MonthlyStore>((set) => ({
   events: [],
+  loading: false,
 
   fetchMonthlyEvents: async (uid) => {
+    set({ loading: true });
     const data = await getMonthlyEvents(uid);
-    set({ events: data });
+    set({ events: data, loading: false });
   },
 
   addEvent: async (event) => {
