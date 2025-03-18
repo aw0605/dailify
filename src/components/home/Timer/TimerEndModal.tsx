@@ -3,7 +3,7 @@ import useModalStore from "@/zustand/useModalStore";
 import styled, { css } from "styled-components";
 
 function TimerEndModal() {
-  const { closeModal } = useModalStore();
+  const closeModal = useModalStore((state) => state.closeModal);
 
   return (
     <TimerEndWrapper>

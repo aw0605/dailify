@@ -1,59 +1,45 @@
-import { useEffect, useState } from "react";
+import { useShallow } from "zustand/shallow";
+import useTodayStore from "@/zustand/useTodayStore";
 import useModalStore from "@/zustand/useModalStore";
-import useCalendarStore from "@/zustand/useCalendarStore";
-import useUser from "@/hooks/useUser";
 import formatTime from "@/utils/formatTime";
 import calcDday from "@/utils/calcDday";
-import { getDDay } from "@/lib/supabase/dday";
-import { getTodayTime } from "@/lib/supabase/todayTodo";
 import GoalTimeModal from "./GoalTimeModal";
 import StopWatch from "./StopWatch";
 import styled, { css } from "styled-components";
-
-import { DdayEvent } from "@/types/dday";
+import useCalendarStore from "@/zustand/useCalendarStore";
 
 function Time() {
-  const { user, userId } = useUser();
-  const { selectedDate } = useCalendarStore();
-  const { openModal } = useModalStore();
+  const openModal = useModalStore((state) => state.openModal);
+  const selectedDate = useCalendarStore((state) => state.selectedDate);
 
-  const [dday, setDday] = useState<string>("");
-  const [goalTime, setGoalTime] = useState<number>(0);
-  const [actualTime, setActualTime] = useState<number>(0);
+  const { dday, todayTime } = useTodayStore(
+    useShallow((state) => ({
+      dday: state.dday,
+      todayTime: state.todayTime,
+    })),
+  );
 
-  useEffect(() => {
-    const fetchTodayTime = async () => {
-      if (!user) return;
-      const { goal_time, actual_time } = await getTodayTime(
-        userId!,
-        selectedDate!,
-      );
-      const ddayData: DdayEvent = await getDDay(userId!);
-      setGoalTime(goal_time!);
-      setActualTime(actual_time!);
-      setDday(
-        `${ddayData.title} ${calcDday(new Date(ddayData.date), selectedDate!)}`,
-      );
-    };
+  const { goal_time, actual_time } = todayTime;
 
-    fetchTodayTime();
-  }, [selectedDate, userId]);
+  const ddayStr = dday
+    ? `${dday?.title} ${calcDday(new Date(dday!.date), selectedDate!)}`
+    : "D-day";
 
   return (
     <TimesWrapper>
-      <div className="d-day">{dday}</div>
+      <div className="d-day">{ddayStr}</div>
       <TimeContainer>
         <h3>목표 공부 시간</h3>
         <button
           className="time"
           onClick={() => openModal("goalTimeModal", <GoalTimeModal />)}
         >
-          {formatTime(goalTime, true)}
+          {formatTime(goal_time, true)}
         </button>
       </TimeContainer>
       <TimeContainer>
         <h3>현재 공부 시간</h3>
-        <StopWatch actualTime={actualTime} />
+        <StopWatch actualTime={actual_time} />
       </TimeContainer>
     </TimesWrapper>
   );

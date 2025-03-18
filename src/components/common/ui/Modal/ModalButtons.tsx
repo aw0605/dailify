@@ -8,7 +8,7 @@ interface ButtonGroupProps {
 }
 
 const ModalButtons = ({ modalId, disabled }: ButtonGroupProps) => {
-  const { closeModal } = useModalStore();
+  const closeModal = useModalStore((state) => state.closeModal);
 
   return (
     <Container>

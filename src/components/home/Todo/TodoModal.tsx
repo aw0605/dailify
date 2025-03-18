@@ -1,6 +1,7 @@
 import useUser from "@/hooks/useUser";
-import { editTodayTodo, setTodayTodo } from "@/lib/supabase/todayTodo";
 import useForm from "@/hooks/useForm";
+import { useShallow } from "zustand/shallow";
+import useTodayStore from "@/zustand/useTodayStore";
 import useCalendarStore from "@/zustand/useCalendarStore";
 import useModalStore from "@/zustand/useModalStore";
 import { validateTodo } from "@/utils/validate";
@@ -14,9 +15,17 @@ import { TodoItem } from "@/types/todo";
 
 function TodoModal({ editTodo }: { editTodo?: TodoItem }) {
   const { user, userId } = useUser();
-  const { selectedDate } = useCalendarStore();
+  const closeModal = useModalStore((state) => state.closeModal);
+
+  const selectedDate = useCalendarStore((state) => state.selectedDate);
   const { formattedDate } = formatDate(selectedDate);
-  const { closeModal } = useModalStore();
+
+  const { addTodo, updateTodo } = useTodayStore(
+    useShallow((state) => ({
+      addTodo: state.addTodo,
+      updateTodo: state.updateTodo,
+    })),
+  );
 
   const isEdit = !!editTodo;
 
@@ -33,15 +42,17 @@ function TodoModal({ editTodo }: { editTodo?: TodoItem }) {
 
       try {
         if (isEdit) {
-          await editTodayTodo({
+          updateTodo({
             id: editTodo.id,
             subject: todo.subject,
             title: todo.title,
             content: todo.content,
+            completed: editTodo.completed,
+            date: editTodo.date,
           });
           alert("할 일이 수정되었습니다.");
         } else {
-          await setTodayTodo({
+          addTodo({
             uid: userId!,
             date: selectedDate!,
             subject: todo.subject,

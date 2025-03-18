@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import useUser from "./useUser";
 import useCalendarStore from "@/zustand/useCalendarStore";
-import { setTodayTime } from "@/lib/supabase/todayTodo";
+import { setTodayTime } from "@/lib/supabase/today";
 
 interface UseTimerOptions {
   onStopWatchPause?: () => void;
@@ -9,7 +9,7 @@ interface UseTimerOptions {
 
 const useStopWatch = ({ onStopWatchPause }: UseTimerOptions = {}) => {
   const { user, userId } = useUser();
-  const { selectedDate } = useCalendarStore();
+  const selectedDate = useCalendarStore((state) => state.selectedDate);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 

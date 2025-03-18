@@ -1,19 +1,22 @@
-import React from "react";
-import { setTodayTime } from "@/lib/supabase/todayTodo";
-import useCalendarStore from "@/zustand/useCalendarStore";
-import useModalStore from "@/zustand/useModalStore";
 import useUser from "@/hooks/useUser";
 import useForm from "@/hooks/useForm";
+import useTodayStore from "@/zustand/useTodayStore";
+import useCalendarStore from "@/zustand/useCalendarStore";
+import useModalStore from "@/zustand/useModalStore";
 import { validateTime } from "@/utils/validate";
 import { convertToMs } from "@/utils/convertToMs";
-import Input from "../common/ui/Input";
-import ModalButtons from "../common/ui/Modal/ModalButtons";
+import Input from "@/components/common/ui/Input";
+import ModalButtons from "@/components/common/ui/Modal/ModalButtons";
+
 import styled, { css } from "styled-components";
 
 function GoalTimeModal() {
   const { user, userId } = useUser();
-  const { selectedDate } = useCalendarStore();
-  const { closeModal } = useModalStore();
+  const selectedDate = useCalendarStore((state) => state.selectedDate);
+  const closeModal = useModalStore((state) => state.closeModal);
+
+  const updateTodayTime = useTodayStore((state) => state.updateTodayTime);
+
   const {
     formValues: time,
     handleChange,
@@ -25,7 +28,7 @@ function GoalTimeModal() {
     onSubmit: async () => {
       if (!user) return;
       const goalTime = convertToMs(time);
-      await setTodayTime(userId!, selectedDate!, "goal_time", goalTime);
+      await updateTodayTime(userId!, selectedDate!, "goal_time", goalTime);
       closeModal("goalTimeModal");
     },
   });

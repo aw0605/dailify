@@ -4,10 +4,16 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import useModalStore from "@/zustand/useModalStore";
 import styled, { css } from "styled-components";
+import { useShallow } from "zustand/shallow";
 
 export default function ModalContainer() {
   const [mounted, setMounted] = useState(false);
-  const { modals, closeModal } = useModalStore();
+  const { modals, closeModal } = useModalStore(
+    useShallow((state) => ({
+      modals: state.modals,
+      closeModal: state.closeModal,
+    })),
+  );
 
   useEffect(() => setMounted(true), []);
   useEffect(() => {

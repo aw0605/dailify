@@ -12,7 +12,7 @@ const useTimer = ({ onTimerEnd }: UseTimerOptions = {}) => {
 
   const [worker, setWorker] = useState<Worker | null>(null);
 
-  const { openModal } = useModalStore();
+  const openModal = useModalStore((state) => state.openModal);
 
   useEffect(() => {
     const newWorker = new Worker("timerWorker.js");

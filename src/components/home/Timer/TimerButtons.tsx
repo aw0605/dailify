@@ -13,7 +13,7 @@ const ButtonGroup = ({
   isRunning,
   isDisabled,
 }: ButtonGroupProps) => {
-  const { closeModal } = useModalStore();
+  const closeModal = useModalStore((state) => state.closeModal);
 
   return (
     <Container>

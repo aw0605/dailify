@@ -11,7 +11,7 @@ function Header() {
   const { selectedDate: cur, prevDay, nextDay } = useCalendarStore();
   const { formattedDate, weekday } = formatDate(cur);
 
-  const { openModal } = useModalStore();
+  const openModal = useModalStore((state) => state.openModal);
 
   const isToday = cur
     ? cur.toDateString() === new Date().toDateString()

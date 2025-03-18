@@ -1,7 +1,37 @@
 "use server";
 
-import { TodoItem } from "@/types/todo";
+import { DdayEvent } from "@/types/dday";
 import { createClientForServer } from "./server";
+import { TimeProps } from "@/types/time";
+import { TodoItem } from "@/types/todo";
+
+interface TodayProps {
+  dday: DdayEvent | null;
+  todayTime: TimeProps | null;
+  todos: TodoItem[];
+}
+
+const getTodayData = async (uid: string, date: Date): Promise<TodayProps> => {
+  const supabase = await createClientForServer();
+
+  const isoDate = date.toISOString().split("T")[0];
+
+  const { data, error } = await supabase.rpc("get_today_data", {
+    uid,
+    selected_date: isoDate,
+  });
+
+  if (error) {
+    console.error("오늘 데이터 불러오는 중 에러 발생!:", error);
+    return {
+      dday: null,
+      todayTime: { goal_time: 0, actual_time: 0 },
+      todos: [],
+    };
+  }
+
+  return data;
+};
 
 const setTodayTime = async (
   uid: string,
@@ -20,32 +50,6 @@ const setTodayTime = async (
 
   if (error) throw error;
   return data;
-};
-
-const getTodayTime = async (
-  uid: string,
-  date: Date,
-): Promise<{ goal_time: number | null; actual_time: number | null }> => {
-  const supabase = await createClientForServer();
-
-  const isoDate = date.toISOString();
-
-  const { data, error } = await supabase
-    .from("today_time")
-    .select("goal_time, actual_time")
-    .eq("uid", uid)
-    .eq("date", isoDate)
-    .single();
-
-  if (error) {
-    console.error("Error fetching time:", error);
-    return { goal_time: null, actual_time: null };
-  }
-
-  return {
-    goal_time: data?.goal_time ?? null,
-    actual_time: data?.actual_time ?? null,
-  };
 };
 
 const setTodayTodo = async (
@@ -68,25 +72,6 @@ const setTodayTodo = async (
 
   if (error) throw error;
   return data;
-};
-
-const getTodayTodos = async (uid: string, date: Date): Promise<TodoItem[]> => {
-  const supabase = await createClientForServer();
-
-  const isoDate = date.toISOString();
-
-  const { data, error } = await supabase
-    .from("today_todos")
-    .select("*")
-    .eq("uid", uid)
-    .eq("date", isoDate);
-
-  if (error) {
-    console.error("Error fetching todos:", error);
-    return [];
-  }
-
-  return data || [];
 };
 
 const editTodayTodo = async (
@@ -130,10 +115,9 @@ const toggleTodayTodo = async (id: string, completed: boolean) => {
 };
 
 export {
+  getTodayData,
   setTodayTime,
-  getTodayTime,
   setTodayTodo,
-  getTodayTodos,
   editTodayTodo,
   deleteTodayTodo,
   toggleTodayTodo,
