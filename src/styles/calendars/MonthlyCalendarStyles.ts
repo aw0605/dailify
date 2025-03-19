@@ -1,7 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Calendar from "react-calendar";
 
-export const StyledCalendar = styled(Calendar)`
+export const StyledCalendar = styled(Calendar)<{ $isWeekly: boolean }>`
+  width: 100%;
   background: none;
   border: none;
   line-height: normal;
@@ -21,10 +22,12 @@ export const StyledCalendar = styled(Calendar)`
   }
 
   .react-calendar__navigation__label {
-    ${({ theme }) => theme.typography.title({ size: 18 })}
-    pointer-events: none;
-    position: absolute;
-    left: 5px;
+    ${({ theme, $isWeekly }) => css`
+      ${theme.typography.title({ size: $isWeekly ? 24 : 18 })}
+      pointer-events: none;
+      position: absolute;
+      left: 5px;
+    `}
   }
 
   .react-calendar__navigation__arrow {
@@ -51,10 +54,12 @@ export const StyledCalendar = styled(Calendar)`
   }
 
   .react-calendar__viewContainer {
-    border-radius: 10px;
-    padding: 10px 5px;
-    background-color: ${({ theme }) => theme.colors.white};
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    ${({ theme, $isWeekly }) => css`
+      border-radius: 10px;
+      padding: 10px 5px;
+      background-color: ${theme.colors.white};
+      box-shadow: ${$isWeekly ? "none" : "5px 5px 10px rgba(0, 0, 0, 0.1)"};
+    `}
   }
 
   .react-calendar__month-view__weekdays {
@@ -77,7 +82,7 @@ export const StyledCalendar = styled(Calendar)`
 
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
-    background-color: inherit;
+    background: inherit;
   }
 
   .react-calendar__tile--now {
@@ -85,12 +90,14 @@ export const StyledCalendar = styled(Calendar)`
   }
 
   .react-calendar__tile--now::before {
-    content: "";
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: ${({ theme }) => theme.colors.gray4};
+    ${({ theme, $isWeekly }) => css`
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: ${$isWeekly ? "none" : theme.colors.gray4};
+    `}
   }
 
   .react-calendar__tile--now:enabled:hover,
@@ -109,16 +116,35 @@ export const StyledCalendar = styled(Calendar)`
   }
 
   .react-calendar__tile--active::before {
-    content: "";
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: ${({ theme }) => theme.colors.primary};
+    ${({ theme, $isWeekly }) => css`
+      content: "";
+      position: absolute;
+      width: ${$isWeekly ? "100%" : "20px"};
+      height: ${$isWeekly ? "100%" : "20px"};
+      border-radius: ${$isWeekly ? 0 : "50%"};
+      background: ${theme.colors.primary};
+    `}
   }
 
   .react-calendar__tile--active:enabled:hover,
   .react-calendar__tile--active:enabled:focus {
     background: none;
+  }
+
+  .react-calendar__month-view__weekdays__weekday abbr {
+    text-decoration: none;
+  }
+
+  .active-week {
+    position: relative;
+    background: ${({ theme }) => theme.colors.primary};
+  }
+
+  .active-week.start {
+    border-radius: 10px 0 0 10px;
+  }
+
+  .active-week.end {
+    border-radius: 0 10px 10px 0;
   }
 `;
