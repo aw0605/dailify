@@ -7,7 +7,6 @@ import TodoModal from "./TodoModal";
 import styled, { css, useTheme } from "styled-components";
 
 import { TodoItem } from "@/types/todo";
-import Loading from "@/components/common/ui/Loading";
 import Skeleton from "@/components/common/ui/Skeleton";
 
 function TodoList() {

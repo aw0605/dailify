@@ -7,7 +7,6 @@ import { validateTime } from "@/utils/validate";
 import { convertToMs } from "@/utils/convertToMs";
 import Input from "@/components/common/ui/Input";
 import ModalButtons from "@/components/common/ui/Modal/ModalButtons";
-
 import styled, { css } from "styled-components";
 
 function GoalTimeModal() {

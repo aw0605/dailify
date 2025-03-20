@@ -1,12 +1,12 @@
 import { useShallow } from "zustand/shallow";
 import useTodayStore from "@/zustand/useTodayStore";
+import useCalendarStore from "@/zustand/useCalendarStore";
 import useModalStore from "@/zustand/useModalStore";
 import formatTime from "@/utils/formatTime";
 import calcDday from "@/utils/calcDday";
 import GoalTimeModal from "./GoalTimeModal";
 import StopWatch from "./StopWatch";
 import styled, { css } from "styled-components";
-import useCalendarStore from "@/zustand/useCalendarStore";
 
 function Time() {
   const openModal = useModalStore((state) => state.openModal);

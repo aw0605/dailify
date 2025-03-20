@@ -1,31 +1,14 @@
+import useWeeklyStore from "@/zustand/useWeeklyStore";
 import useModalStore from "@/zustand/useModalStore";
-import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
-import GoalTimeModal from "./GoalTimeModal";
-import { getActualTime, getGoalTime } from "@/lib/supabase/weekly";
-import useCalendarStore from "@/zustand/useCalendarStore";
-import useUser from "@/hooks/useUser";
 import formatTime from "@/utils/formatTime";
+import GoalTimeModal from "./GoalTimeModal";
+import styled, { css } from "styled-components";
 
 function Time() {
-  const [goalTime, setGoalTime] = useState(0);
-  const [actualTime, setActualTime] = useState(0);
-
   const openModal = useModalStore((state) => state.openModal);
-  const { user, userId } = useUser();
-  const selectedWeek = useCalendarStore((state) => state.selectedWeek);
 
-  useEffect(() => {
-    if (!user) return;
-    const fetchData = async () => {
-      const goal = await getGoalTime(userId!, selectedWeek!.start);
-      const actual = await getActualTime(userId!, selectedWeek!);
-      setGoalTime(goal);
-      setActualTime(actual);
-    };
-
-    fetchData();
-  }, [userId, selectedWeek]);
+  const weeklyTime = useWeeklyStore((state) => state.weeklyTime);
+  const { goal_time, actual_time } = weeklyTime;
 
   return (
     <TimesWrapper>
@@ -33,14 +16,14 @@ function Time() {
         <h3>이번주 목표 공부 시간</h3>
         <button
           className="time"
-          onClick={() => openModal("goalTimeModal", <GoalTimeModal />)}
+          onClick={() => openModal("weeklyGoalTimeModal", <GoalTimeModal />)}
         >
-          {formatTime(goalTime, true)}
+          {formatTime(goal_time, true)}
         </button>
       </TimeContainer>
       <TimeContainer>
         <h3>이번주 현재 공부 시간</h3>
-        <h2>{formatTime(actualTime)}</h2>
+        <h2>{formatTime(actual_time)}</h2>
       </TimeContainer>
     </TimesWrapper>
   );

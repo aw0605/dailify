@@ -1,36 +1,32 @@
 import { useShallow } from "zustand/shallow";
-import useTodayStore from "@/zustand/useTodayStore";
+import useWeeklyStore from "@/zustand/useWeeklyStore";
 import useModalStore from "@/zustand/useModalStore";
 import Button from "@/components/common/ui/Button";
 import Accordion from "@/components/common/ui/Accordion/Accordion";
 import AccordionHeader from "@/components/common/ui/Accordion/AccordionHeader";
 import Skeleton from "@/components/common/ui/Skeleton";
+import TodoModal from "./TodoModal";
 import styled, { css, useTheme } from "styled-components";
 
 import { TodoItem } from "@/types/todo";
 
-const mockTodos = [
-  {
-    id: "1",
-    subject: "운동",
-    title: "근력 운동",
-    content: "사레레 5kg 10회 - 3세트",
-    completed: false,
-    date: new Date(),
-  },
-  {
-    id: "2",
-    subject: "영어",
-    title: "해커스 토익 RC",
-    content: "~ S2, 동사구",
-    completed: false,
-    date: new Date(),
-  },
-];
-
 function TodoList() {
   const theme = useTheme();
   const openModal = useModalStore((state) => state.openModal);
+
+  const { todos, toggleTodo, deleteTodo, loading } = useWeeklyStore(
+    useShallow((state) => ({
+      todos: state.todos,
+      fetchWeeklyData: state.fetchWeeklyData,
+      toggleTodo: state.toggleTodo,
+      deleteTodo: state.deleteTodo,
+      loading: state.loading,
+    })),
+  );
+
+  if (loading) {
+    return <Skeleton height="45px" radius="10px" />;
+  }
 
   return (
     <>
@@ -39,25 +35,27 @@ function TodoList() {
         <Button
           variant="ghost"
           size={24}
-          onClick={() => openModal("todoModal", <div />)}
+          onClick={() => openModal("todoModal", <TodoModal />)}
         >
           +
         </Button>
       </Header>
 
-      {mockTodos.length === 0 ? (
-        <AlertMsg>오늘의 할 일이 없습니다.</AlertMsg>
+      {todos.length === 0 ? (
+        <AlertMsg>이번주 할 일이 없습니다.</AlertMsg>
       ) : (
-        mockTodos.map((todo: TodoItem) => (
+        todos.map((todo: TodoItem) => (
           <Accordion
             key={todo.id}
             color={todo.completed ? theme.colors.primary : theme.colors.gray4}
             header={
               <AccordionHeader
                 item={todo}
-                onCheck={() => {}}
-                onEdit={() => openModal("todoModal", <div></div>)}
-                onDelete={() => {}}
+                onCheck={() => toggleTodo(todo.id)}
+                onEdit={() =>
+                  openModal("weeklyTodoModal", <TodoModal editTodo={todo} />)
+                }
+                onDelete={() => deleteTodo(todo.id)}
               />
             }
             style={{ marginBottom: "10px" }}
@@ -87,7 +85,7 @@ const Header = styled.div`
 
 const AlertMsg = styled.h1`
   ${({ theme }) => css`
-    margin-top: 150px;
+    margin-top: 50px;
     ${theme.mixins.flexBox({})};
     ${theme.typography.title({ size: 24 })}
   `}
