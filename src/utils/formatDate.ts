@@ -39,3 +39,11 @@ export function formatDateTime(date: string | null) {
 
   return `${y.slice(2)}.${m}.${d} - ${hour}:${min} ${ampm}`;
 }
+
+export function formatMonth(date: Date | null) {
+  if (!date) return "";
+
+  return date
+    .toLocaleDateString("en-US", { month: "long", year: "numeric" })
+    .replace(" ", ", ");
+}

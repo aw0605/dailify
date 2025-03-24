@@ -21,15 +21,13 @@ const getWeeklyData = async (
     end_date: date.end.toISOString().split("T")[0],
   });
 
-  if (error) {
+  if (error || !data) {
     console.error("이번주 데이터 불러오는 중 에러 발생!:", error);
     return {
       weeklyTime: { goal_time: 0, actual_time: 0 },
       todos: [],
     };
   }
-
-  console.log("이번주 데이터!:", data);
 
   return data;
 };

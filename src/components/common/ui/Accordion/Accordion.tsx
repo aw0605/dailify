@@ -3,7 +3,7 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import styled, { css, useTheme } from "styled-components";
 
 interface AccordionProps {
-  type?: "monthly" | "todo";
+  type?: "monthly" | "todo" | "unfinish";
   header: React.ReactNode;
   children?: string;
   color?: string;
@@ -63,7 +63,7 @@ const AccordionWrapper = styled.div<{ $color: string; $type: string }>`
   background-color: ${({ $color }) => $color};
   overflow: hidden;
   box-shadow: ${({ $type }) =>
-    $type === "monthly" ? "3px 3px 5px rgba(0, 0, 0, 0.1)" : "none"};
+    $type === "todo" ? "none" : "3px 3px 5px rgba(0, 0, 0, 0.1)"};
 `;
 
 const Header = styled.div`
@@ -97,7 +97,7 @@ const Content = styled.div<{
     ${$type == "todo"
       ? theme.typography.p({})
       : theme.typography.p({ size: 12 })}
-    padding-left: ${$type == "todo" ? "60px" : "50px"};
+    padding-left: ${$type === "todo" ? "60px" : "50px"};
     height: ${$isOpen ? `${$height + 10}px` : "0"};
     transform: ${$isOpen ? "translateY(0)" : "translateY(-10px)"};
     transition: all 0.3s ease;
