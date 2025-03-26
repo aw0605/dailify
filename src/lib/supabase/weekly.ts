@@ -11,14 +11,13 @@ interface WeeklyProps {
 
 const getWeeklyData = async (
   uid: string,
-  date: { start: Date; end: Date },
+  start_date: Date,
 ): Promise<WeeklyProps> => {
   const supabase = await createClientForServer();
 
   const { data, error } = await supabase.rpc("get_weekly_data", {
     uid,
-    start_date: date.start.toISOString().split("T")[0],
-    end_date: date.end.toISOString().split("T")[0],
+    start_date,
   });
 
   if (error || !data) {
@@ -38,7 +37,7 @@ const setWeeklyTime = async (uid: string, date: Date, goalTime: number) => {
   const { data, error } = await supabase
     .from("weekly_time")
     .upsert(
-      { uid, start_date: date.toISOString(), goal_time: goalTime },
+      { uid, start_date: date, goal_time: goalTime },
       { onConflict: "uid, start_date" },
     );
 

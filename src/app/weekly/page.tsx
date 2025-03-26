@@ -18,7 +18,7 @@ function Weeklypage() {
 
   useEffect(() => {
     if (userId && selectedWeek) {
-      fetchWeeklyData(userId, selectedWeek);
+      fetchWeeklyData(userId, selectedWeek.start);
     }
   }, [userId, selectedWeek]);
 

@@ -4,7 +4,7 @@ interface CalendarState {
   selectedDate: Date | null;
   selectedWeek: { start: Date; end: Date } | null;
   selectedMonth: Date | null;
-  setSelectedDate: (date: Date | null, isWeekly: boolean) => void;
+  setSelectedDate: (date: Date | null) => void;
   setSelectedMonth: (date: Date | null) => void;
   prevDay: () => void;
   nextDay: () => void;
@@ -18,8 +18,12 @@ const getMonday = (date: Date) => {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + diff);
 };
 
+const setDayTime = (date: Date) => {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+};
+
 const useCalendarStore = create<CalendarState>((set, get) => ({
-  selectedDate: new Date(),
+  selectedDate: setDayTime(new Date()),
   selectedWeek: (() => {
     const today = new Date();
     const start = getMonday(today);
@@ -28,17 +32,13 @@ const useCalendarStore = create<CalendarState>((set, get) => ({
     return { start, end };
   })(),
   selectedMonth: new Date(),
-  setSelectedDate: (date, isWeekly = false) => {
+  setSelectedDate: (date) => {
     if (!date) return;
 
-    if (isWeekly) {
-      const start = getMonday(date);
-      const end = new Date(start);
-      end.setDate(start.getDate() + 6);
-      set({ selectedDate: date, selectedWeek: { start, end } });
-    } else {
-      set({ selectedDate: date, selectedWeek: null });
-    }
+    const start = getMonday(date);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    set({ selectedDate: date, selectedWeek: { start, end } });
   },
   setSelectedMonth: (date) => {
     if (!date) return;

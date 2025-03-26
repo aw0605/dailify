@@ -16,10 +16,7 @@ interface WeeklyStoreState {
   weeklyTime: TimeProps;
   todos: TodoItem[];
   loading: boolean;
-  fetchWeeklyData: (
-    uid: string,
-    date: { start: Date; end: Date },
-  ) => Promise<void>;
+  fetchWeeklyData: (uid: string, start_date: Date) => Promise<void>;
   updateWeeklyTime: (
     uid: string,
     date: Date,
@@ -36,9 +33,9 @@ const useWeeklyStore = create<WeeklyStoreState>((set, get) => ({
   todos: [],
   loading: false,
 
-  fetchWeeklyData: async (uid, date) => {
+  fetchWeeklyData: async (uid, start_date) => {
     set({ loading: true });
-    const data = await getWeeklyData(uid, date);
+    const data = await getWeeklyData(uid, start_date);
     set({
       weeklyTime: data.weeklyTime || { goal_time: 0, actual_time: 0 },
       todos: data.todos,

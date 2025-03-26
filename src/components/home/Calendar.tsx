@@ -2,10 +2,16 @@ import { useEffect, useState } from "react";
 import useCalendarStore from "@/zustand/useCalendarStore";
 import "react-calendar/dist/Calendar.css";
 import { StyledCalendar } from "@/styles/calendars/MonthlyCalendarStyles";
+import { usePathname } from "next/navigation";
 
 function CalendarComponent({ isWeekly = false }: { isWeekly?: boolean }) {
+  const pathname = usePathname();
   const { selectedDate, setSelectedDate, selectedWeek } = useCalendarStore();
   const [currentMonth, setCurrentMonth] = useState(new Date());
+
+  useEffect(() => {
+    setSelectedDate(new Date());
+  }, [pathname]);
 
   useEffect(() => {
     if (selectedDate) {
@@ -19,7 +25,7 @@ function CalendarComponent({ isWeekly = false }: { isWeekly?: boolean }) {
       value={selectedDate}
       onChange={(date) => {
         if (date instanceof Date) {
-          setSelectedDate(date, isWeekly);
+          setSelectedDate(date);
         }
       }}
       prev2Label={null}

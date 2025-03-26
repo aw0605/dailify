@@ -28,7 +28,7 @@ function GoalTimeModal() {
       if (!user) return;
       const goalTime = convertToMs(time);
       await updateWeeklyTime(userId!, selectedWeek!.start, goalTime);
-      closeModal("goalTimeModal");
+      closeModal("weeklyGoalTimeModal");
     },
   });
 
