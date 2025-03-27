@@ -19,7 +19,7 @@ function TodoModal({ editTodo }: { editTodo?: TodoItem }) {
 
   const selectedWeek = useCalendarStore((state) => state.selectedWeek);
   const { formattedDate: startDate } = formatDate(selectedWeek!.start);
-  const { formattedDate: endDate } = formatDate(selectedWeek!.start);
+  const { formattedDate: endDate } = formatDate(selectedWeek!.end);
 
   const { addTodo, updateTodo } = useWeeklyStore(
     useShallow((state) => ({

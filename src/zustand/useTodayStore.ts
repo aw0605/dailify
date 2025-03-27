@@ -7,7 +7,6 @@ import {
   setTodayTodo,
   toggleTodayTodo,
 } from "@/lib/supabase/today";
-import { v4 as uuidv4 } from "uuid";
 
 import { DdayEvent } from "@/types/dday";
 import { TimeProps } from "@/types/time";
@@ -64,9 +63,10 @@ const useTodayStore = create<TodayStoreState>((set, get) => ({
 
   addTodo: async (todo) => {
     try {
-      await setTodayTodo(todo);
-      const tempTodo = { id: uuidv4(), completed: false, ...todo };
-      set((state) => ({ todos: [...state.todos, tempTodo] }));
+      const newTodo = await setTodayTodo(todo);
+      set((state) => ({
+        todos: [...state.todos, { id: newTodo.id, completed: false, ...todo }],
+      }));
     } catch (error) {
       console.error("오늘 할 일 추가 실패:", error);
     }

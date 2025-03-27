@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Layout from "@/components/common/layout/layout";
 import Header from "@/components/home/Header";
 import Time from "@/components/home/Time";
@@ -9,7 +10,6 @@ import MonthlyList from "@/components/home/Monthly/MonthlyList";
 import useUser from "@/hooks/useUser";
 import useCalendarStore from "@/zustand/useCalendarStore";
 import useTodayStore from "@/zustand/useTodayStore";
-import { useEffect } from "react";
 
 export default function Home() {
   const { userId } = useUser();

@@ -50,21 +50,22 @@ const setWeeklyTodo = async (
 ) => {
   const supabase = await createClientForServer();
 
-  const isoDate = todo.date.toISOString();
-
-  const { data, error } = await supabase.from("weekly_todos").insert([
-    {
-      uid: todo.uid,
-      start_date: isoDate,
-      subject: todo.subject,
-      title: todo.title,
-      content: todo.content || null,
-      completed: false,
-    },
-  ]);
+  const { data, error } = await supabase
+    .from("weekly_todos")
+    .insert([
+      {
+        uid: todo.uid,
+        start_date: todo.date,
+        subject: todo.subject,
+        title: todo.title,
+        content: todo.content || null,
+        completed: false,
+      },
+    ])
+    .select();
 
   if (error) throw error;
-  return data;
+  return data[0];
 };
 
 const editWeeklyTodo = async (

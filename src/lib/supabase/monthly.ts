@@ -10,18 +10,21 @@ const setMonthlyEvent = async (
 
   const isoDate = event.date.toISOString();
 
-  const { data, error } = await supabase.from("monthly_events").insert([
-    {
-      uid: event.uid,
-      title: event.title,
-      date: isoDate,
-      content: event.content || null,
-    },
-  ]);
+  const { data, error } = await supabase
+    .from("monthly_events")
+    .insert([
+      {
+        uid: event.uid,
+        title: event.title,
+        date: isoDate,
+        content: event.content || null,
+      },
+    ])
+    .select();
 
   if (error) throw error;
 
-  return data;
+  return data[0];
 };
 
 const getMonthlyEvents = async (

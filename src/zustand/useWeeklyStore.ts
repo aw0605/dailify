@@ -7,7 +7,6 @@ import {
   setWeeklyTodo,
   toggleWeeklyTodo,
 } from "@/lib/supabase/weekly";
-import { v4 as uuidv4 } from "uuid";
 
 import { TimeProps } from "@/types/time";
 import { TodoItem } from "@/types/todo";
@@ -59,9 +58,10 @@ const useWeeklyStore = create<WeeklyStoreState>((set, get) => ({
 
   addTodo: async (todo) => {
     try {
-      await setWeeklyTodo(todo);
-      const tempTodo = { id: uuidv4(), completed: false, ...todo };
-      set((state) => ({ todos: [...state.todos, tempTodo] }));
+      const newTodo = await setWeeklyTodo(todo);
+      set((state) => ({
+        todos: [...state.todos, { id: newTodo.id, completed: false, ...todo }],
+      }));
     } catch (error) {
       console.error("이번주 할 일 추가 실패:", error);
     }

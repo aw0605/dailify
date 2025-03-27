@@ -5,7 +5,6 @@ import {
   editMonthlyEvent,
   deleteMonthlyEvent,
 } from "@/lib/supabase/monthly";
-import { v4 as uuidv4 } from "uuid";
 
 import { MonthlyEvent, MonthlyFormValuesProps } from "@/types/monthly";
 
@@ -49,10 +48,12 @@ const useMonthlyStore = create<MonthlyStore>((set) => ({
 
   addEvent: async (event) => {
     try {
-      await setMonthlyEvent(event);
-      const tempEvent = { id: uuidv4(), ...event };
+      const newEvent = await setMonthlyEvent(event);
       set((state) => ({
-        events: filterAndSortEvents([...state.events, tempEvent]),
+        events: filterAndSortEvents([
+          ...state.events,
+          { id: newEvent.id, ...event },
+        ]),
       }));
     } catch (error) {
       console.error("이벤트 추가 실패:", error);
