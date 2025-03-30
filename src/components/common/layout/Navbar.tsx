@@ -58,8 +58,7 @@ export default function Navbar() {
             />
           </div>
           <div>
-            <p>{user?.nickname}</p>
-            <p>현재 148373위</p>
+            <h1>{user?.nickname}</h1>
           </div>
         </User>
       </Top>
@@ -188,12 +187,9 @@ const User = styled(Link)`
       position: relative;
     }
 
-    p:first-child {
+    h1 {
       ${theme.typography.title({ size: 20 })};
       margin-bottom: 2px;
-    }
-    p:last-child {
-      ${theme.typography.p({ size: 14, color: theme.colors.orangeRed })};
     }
 
     ${theme.media.sm`
