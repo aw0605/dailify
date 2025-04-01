@@ -4,17 +4,17 @@ import styled, { css } from "styled-components";
 interface InfoProps {
   data: ChartData<ChartType, number[], string>;
   total: number;
-  achievementRate: number;
+  rate: number;
 }
 
-function Info({ data, total, achievementRate }: InfoProps) {
+function Info({ data, total, rate }: InfoProps) {
   const backgroundColor = data.datasets[0].backgroundColor as string[];
 
   return (
     <InfoWrapper>
       <RateContainer>
         <h3>달성률</h3>
-        <h2>{achievementRate}%</h2>
+        <h2>{rate}%</h2>
       </RateContainer>
       <Total>총합 - {total}개</Total>
       <LegendContainer>

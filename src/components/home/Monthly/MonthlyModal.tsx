@@ -90,7 +90,7 @@ function MonthlyModal({ editEvent }: { editEvent?: MonthlyEvent }) {
           name="content"
           rows={5}
           placeholder="내용을 입력하세요"
-          value={event.content}
+          value={event.content ?? ""}
           onChange={handleChange}
         />
       </TextFieldContainer>

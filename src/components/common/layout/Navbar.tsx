@@ -184,6 +184,8 @@ const User = styled(Link)`
     div:first-child {
       width: 30px;
       height: 30px;
+      border-radius: 100%;
+      overflow: hidden;
       position: relative;
     }
 

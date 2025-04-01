@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import { getDashboardData } from "@/lib/supabase/dashboard";
 
-import { MonthlyStatProps, WeeklyStatProps } from "@/types/dashboard";
+import { StatProps, WeeklyStatProps } from "@/types/dashboard";
 import { TodoItem } from "@/types/todo";
 
 interface DashboardState {
-  monthlyStat: MonthlyStatProps;
+  monthlyStat: StatProps;
   weeklyStat: WeeklyStatProps[];
   unfinishedTodos: TodoItem[];
   loading: boolean;
@@ -13,7 +13,7 @@ interface DashboardState {
 }
 
 const useDashboardStore = create<DashboardState>((set) => ({
-  monthlyStat: { total: 0, completed: 0, incompleted: 0 },
+  monthlyStat: { total: 0, completed: 0, incompleted: 0, rate: 0 },
   weeklyStat: [],
   unfinishedTodos: [],
   loading: false,

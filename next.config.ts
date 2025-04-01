@@ -9,7 +9,20 @@ const nextConfig: NextConfig = {
     forceSwcTransforms: true,
   },
   images: {
-    domains: ["cdn.pixabay.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.pixabay.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cffcmqsyljbezaudzpsn.supabase.co",
+        port: "",
+        pathname: "/storage/v1/object/public/**",
+      },
+    ],
   },
   webpack: (config) => {
     config.module.rules.push({

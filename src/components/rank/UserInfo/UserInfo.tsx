@@ -44,6 +44,8 @@ const UserInfoWrapper = styled.div`
 const ImageContainer = styled.div`
   width: 60px;
   height: 60px;
+  border-radius: 100%;
+  overflow: hidden;
   position: relative;
   margin-bottom: 10px;
 `;

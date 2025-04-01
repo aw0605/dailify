@@ -2,11 +2,11 @@
 
 import { createClientForServer } from "./server";
 
-import { MonthlyStatProps, WeeklyStatProps } from "@/types/dashboard";
+import { StatProps, WeeklyStatProps } from "@/types/dashboard";
 import { TodoItem } from "@/types/todo";
 
 interface DashboardProps {
-  monthlyStat: MonthlyStatProps | null;
+  monthlyStat: StatProps | null;
   weeklyStat: WeeklyStatProps[];
   unfinishedTodos: TodoItem[];
 }
@@ -25,7 +25,7 @@ const getDashboardData = async (
   if (error) {
     console.error("대시보드 데이터 불러오는 중 에러 발생!:", error);
     return {
-      monthlyStat: { total: 0, completed: 0, incompleted: 0 },
+      monthlyStat: { total: 0, completed: 0, incompleted: 0, rate: 0 },
       weeklyStat: [],
       unfinishedTodos: [],
     };

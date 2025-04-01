@@ -8,6 +8,7 @@ interface LayoutsProps {
   showNav?: boolean;
   hasSide?: boolean;
   showSide?: boolean;
+  sideBgColor?: string;
 }
 
 export default function Layout({
@@ -15,11 +16,17 @@ export default function Layout({
   showNav = true,
   hasSide = true,
   showSide = false,
+  sideBgColor,
 }: LayoutsProps) {
   return (
     <Container>
       {showNav && <Navbar />}
-      <Main $showNav={showNav} $hasSide={hasSide} $showSide={showSide}>
+      <Main
+        $showNav={showNav}
+        $hasSide={hasSide}
+        $showSide={showSide}
+        $sideBgColor={sideBgColor}
+      >
         {children}
       </Main>
     </Container>
@@ -35,8 +42,9 @@ const Main = styled.div<{
   $showNav: boolean;
   $hasSide: boolean;
   $showSide: boolean;
+  $sideBgColor?: string;
 }>`
-  ${({ theme, $showNav, $hasSide, $showSide }) => css`
+  ${({ theme, $showNav, $hasSide, $showSide, $sideBgColor }) => css`
     padding-top: ${$showNav ? NAVBAR_HEIGHT : 0};
     min-height: 100vh;
     ${theme.mixins.flexBox({ align: "stretch" })}
@@ -50,7 +58,7 @@ const Main = styled.div<{
       flex: 1;
       min-width: 320px;
       max-width: 400px;
-      background: ${theme.colors.cultured};
+      background: ${$sideBgColor || theme.colors.cultured};
       padding: 20px;
     }
     `}

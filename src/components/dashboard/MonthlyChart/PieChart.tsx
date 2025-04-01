@@ -10,13 +10,6 @@ const PieChart = () => {
   const theme = useTheme();
   const monthlyStat = useDashboardStore((state) => state.monthlyStat);
 
-  const achievementRate =
-    monthlyStat.total > 0
-      ? parseFloat(
-          ((monthlyStat.completed / monthlyStat.total) * 100).toFixed(1),
-        )
-      : 0;
-
   const data = {
     labels: ["완료", "미완료"],
     datasets: [
@@ -47,11 +40,7 @@ const PieChart = () => {
           <ChartContainer>
             <Pie data={data} options={options} />
           </ChartContainer>
-          <Info
-            data={data}
-            total={monthlyStat.total}
-            achievementRate={achievementRate}
-          />
+          <Info data={data} total={monthlyStat.total} rate={monthlyStat.rate} />
         </Wrapper>
       )}
     </>

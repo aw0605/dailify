@@ -1,7 +1,8 @@
-import { FormValuesProps } from "@/types/user";
+import { FormValuesProps, UserInfo } from "@/types/user";
 import { TimeFormValuesProps } from "@/types/time";
 import { TodoFormValuesProps } from "@/types/todo";
 import { MonthlyFormValuesProps } from "@/types/monthly";
+import { DdayFormValuesProps } from "@/types/dday";
 
 export interface ValidationErrors {
   email?: string;
@@ -10,6 +11,8 @@ export interface ValidationErrors {
   time?: string;
   todo?: string;
   event?: string;
+  dday?: string;
+  user?: string;
 }
 
 export const validateLogin = (formValues: {
@@ -73,6 +76,28 @@ export const validateEvent = (
 
   if (!formValues.title.trim() || !formValues.date) {
     errors.event = "제목과 날짜는 필수 항목입니다.";
+  }
+
+  return errors;
+};
+
+export const validateDday = (
+  formValues: DdayFormValuesProps,
+): ValidationErrors => {
+  const errors: ValidationErrors = {};
+
+  if (!formValues.title.trim() || !formValues.date) {
+    errors.dday = "제목과 날짜는 필수 항목입니다.";
+  }
+
+  return errors;
+};
+
+export const validateUser = (formValues: UserInfo): ValidationErrors => {
+  const errors: ValidationErrors = {};
+
+  if (formValues.nickname && !formValues.nickname.trim()) {
+    errors.user = "닉네임은 필수 항목입니다.";
   }
 
   return errors;
