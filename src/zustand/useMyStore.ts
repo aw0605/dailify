@@ -28,7 +28,9 @@ const useMyStore = create<MyStoreState>((set, get) => ({
     try {
       const newEvent = await setDdayEvent(event);
       set((state) => ({
-        ddayEvents: [...state.ddayEvents, { id: newEvent.id, ...event }],
+        ddayEvents: [...state.ddayEvents, { id: newEvent.id, ...event }].sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        ),
       }));
     } catch (error) {
       console.error("D-day 이벤트 추가 실패:", error);
