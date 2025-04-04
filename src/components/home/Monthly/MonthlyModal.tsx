@@ -1,7 +1,6 @@
 import useUser from "@/hooks/useUser";
 import useForm from "@/hooks/useForm";
-import { useShallow } from "zustand/shallow";
-import useMonthlyStore from "@/zustand/useMonthlyStore";
+import useMonthlyQuery from "@/hooks/query/useMonthlyQuery";
 import useModalStore from "@/zustand/useModalStore";
 import { validateEvent } from "@/utils/validate";
 import { convertTime } from "@/utils/convertTime";
@@ -13,15 +12,10 @@ import styled, { css } from "styled-components";
 import { MonthlyEvent } from "@/types/monthly";
 
 function MonthlyModal({ editEvent }: { editEvent?: MonthlyEvent }) {
-  const { user, userId } = useUser();
+  const { user } = useUser();
   const closeModal = useModalStore((state) => state.closeModal);
 
-  const { addEvent, updateEvent } = useMonthlyStore(
-    useShallow((state) => ({
-      addEvent: state.addEvent,
-      updateEvent: state.updateEvent,
-    })),
-  );
+  const { addEvent, updateEvent } = useMonthlyQuery();
 
   const isEdit = !!editEvent;
 
@@ -38,16 +32,15 @@ function MonthlyModal({ editEvent }: { editEvent?: MonthlyEvent }) {
 
       try {
         if (isEdit) {
-          await updateEvent({
-            id: editEvent.id,
+          updateEvent.mutate({
+            ...editEvent,
             date: event.date,
             title: event.title,
             content: event.content,
           });
           alert("이벤트가 수정되었습니다.");
         } else {
-          await addEvent({
-            uid: userId!,
+          addEvent.mutate({
             date: event.date,
             title: event.title,
             content: event.content,
