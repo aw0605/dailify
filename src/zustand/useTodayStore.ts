@@ -9,12 +9,12 @@ import {
 } from "@/lib/supabase/today";
 
 import { DdayEvent } from "@/types/dday";
-import { TimeProps } from "@/types/time";
+import { Times } from "@/types/time";
 import { TodoItem } from "@/types/todo";
 
 interface TodayStoreState {
   dday: DdayEvent | null;
-  todayTime: TimeProps;
+  todayTime: Times;
   todos: TodoItem[];
   loading: boolean;
   fetchTodayData: (uid: string, date: Date) => Promise<void>;

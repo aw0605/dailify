@@ -2,10 +2,10 @@
 
 import { TodoItem } from "@/types/todo";
 import { createClientForServer } from "./server";
-import { TimeProps } from "@/types/time";
+import { Times } from "@/types/time";
 
 interface WeeklyProps {
-  weeklyTime: TimeProps | null;
+  weeklyTime: Times | null;
   todos: TodoItem[];
 }
 

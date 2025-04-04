@@ -1,29 +1,25 @@
-import { useShallow } from "zustand/shallow";
-import useTodayStore from "@/zustand/useTodayStore";
+import useTodayQuery from "@/hooks/query/useTodayQuery";
 import useModalStore from "@/zustand/useModalStore";
 import Accordion from "@/components/common/ui/Accordion/Accordion";
 import AccordionHeader from "@/components/common/ui/Accordion/AccordionHeader";
 import TodoModal from "./TodoModal";
+import Skeleton from "@/components/common/ui/Skeleton";
 import styled, { css, useTheme } from "styled-components";
 
 import { TodoItem } from "@/types/todo";
-import Skeleton from "@/components/common/ui/Skeleton";
 
-function TodoList() {
+interface TodoListProps {
+  todos: TodoItem[] | [];
+  isLoading: boolean;
+}
+
+function TodoList({ todos, isLoading }: TodoListProps) {
   const theme = useTheme();
   const openModal = useModalStore((state) => state.openModal);
 
-  const { todos, toggleTodo, deleteTodo, loading } = useTodayStore(
-    useShallow((state) => ({
-      todos: state.todos,
-      fetchTodayData: state.fetchTodayData,
-      toggleTodo: state.toggleTodo,
-      deleteTodo: state.deleteTodo,
-      loading: state.loading,
-    })),
-  );
+  const { toggleTodo, deleteTodo } = useTodayQuery();
 
-  if (loading) {
+  if (isLoading) {
     return <Skeleton height="45px" radius="10px" />;
   }
 
@@ -39,11 +35,16 @@ function TodoList() {
             header={
               <AccordionHeader
                 item={todo}
-                onCheck={() => toggleTodo(todo.id)}
+                onCheck={() =>
+                  toggleTodo.mutate({
+                    id: todo.id,
+                    completed: todo.completed,
+                  })
+                }
                 onEdit={() =>
                   openModal("todoModal", <TodoModal editTodo={todo} />)
                 }
-                onDelete={() => deleteTodo(todo.id)}
+                onDelete={() => deleteTodo.mutate(todo.id)}
               />
             }
             style={{ marginBottom: "10px" }}
@@ -63,5 +64,8 @@ const AlertMsg = styled.h1`
     margin-top: 150px;
     ${theme.mixins.flexBox({})};
     ${theme.typography.title({ size: 24 })}
+    ${theme.media.md`
+      margin: 100px 0;
+    `}
   `}
 `;

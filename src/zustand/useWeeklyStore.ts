@@ -8,11 +8,11 @@ import {
   toggleWeeklyTodo,
 } from "@/lib/supabase/weekly";
 
-import { TimeProps } from "@/types/time";
+import { Times } from "@/types/time";
 import { TodoItem } from "@/types/todo";
 
 interface WeeklyStoreState {
-  weeklyTime: TimeProps;
+  weeklyTime: Times;
   todos: TodoItem[];
   loading: boolean;
   fetchWeeklyData: (uid: string, start_date: Date) => Promise<void>;

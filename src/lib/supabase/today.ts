@@ -2,12 +2,12 @@
 
 import { DdayEvent } from "@/types/dday";
 import { createClientForServer } from "./server";
-import { TimeProps } from "@/types/time";
+import { Times } from "@/types/time";
 import { TodoItem } from "@/types/todo";
 
 interface TodayProps {
   dday: DdayEvent | null;
-  todayTime: TimeProps | null;
+  todayTime: Times | null;
   todos: TodoItem[];
 }
 

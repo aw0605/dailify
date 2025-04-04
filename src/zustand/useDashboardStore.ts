@@ -26,6 +26,7 @@ const useDashboardStore = create<DashboardState>((set) => ({
         total: 0,
         completed: 0,
         incompleted: 0,
+        rate: 1,
       },
       weeklyStat: data.weeklyStat,
       unfinishedTodos: data.unfinishedTodos,

@@ -1,34 +1,25 @@
 "use client";
 
-import { useEffect } from "react";
 import Layout from "@/components/common/layout/layout";
 import Header from "@/components/home/Header";
 import Time from "@/components/home/Time";
 import TodoList from "@/components/home/Todo/TodoList";
 import CalendarComponent from "@/components/home/Calendar";
 import MonthlyList from "@/components/home/Monthly/MonthlyList";
-import useUser from "@/hooks/useUser";
-import useCalendarStore from "@/zustand/useCalendarStore";
-import useTodayStore from "@/zustand/useTodayStore";
+import useTodayQuery from "@/hooks/query/useTodayQuery";
 
 export default function Home() {
-  const { userId } = useUser();
-  const selectedDate = useCalendarStore((state) => state.selectedDate);
-
-  const fetchTodayData = useTodayStore((state) => state.fetchTodayData);
-
-  useEffect(() => {
-    if (userId && selectedDate) {
-      fetchTodayData(userId, selectedDate);
-    }
-  }, [userId, selectedDate]);
+  const { todayData, isLoading } = useTodayQuery();
 
   return (
     <Layout showSide={true}>
       <div className="main">
         <Header />
-        <Time />
-        <TodoList />
+        <Time
+          dday={todayData?.dday ?? null}
+          todayTime={todayData?.todayTime ?? null}
+        />
+        <TodoList todos={todayData?.todos ?? []} isLoading={isLoading} />
       </div>
       <div className="side">
         <CalendarComponent />

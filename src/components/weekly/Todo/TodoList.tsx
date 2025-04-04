@@ -88,5 +88,8 @@ const AlertMsg = styled.h1`
     margin-top: 50px;
     ${theme.mixins.flexBox({})};
     ${theme.typography.title({ size: 24 })}
+    ${theme.media.md`
+      margin: 100px 0;
+    `}
   `}
 `;

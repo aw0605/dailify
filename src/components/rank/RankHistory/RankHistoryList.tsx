@@ -37,5 +37,8 @@ const AlertMsg = styled.h1`
     margin: 20px 0;
     ${theme.mixins.flexBox({})};
     ${theme.typography.title({ size: 24 })}
+    ${theme.media.md`
+      margin: 50px 0;
+    `}
   `}
 `;

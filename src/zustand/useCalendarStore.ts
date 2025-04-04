@@ -18,12 +18,8 @@ const getMonday = (date: Date) => {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + diff);
 };
 
-const setDayTime = (date: Date) => {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-};
-
 const useCalendarStore = create<CalendarState>((set, get) => ({
-  selectedDate: setDayTime(new Date()),
+  selectedDate: new Date(),
   selectedWeek: (() => {
     const today = new Date();
     const start = getMonday(today);
