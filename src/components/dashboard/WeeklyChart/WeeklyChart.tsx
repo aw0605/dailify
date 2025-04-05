@@ -1,11 +1,12 @@
+import { WeeklyStatProps } from "@/types/dashboard";
 import MixedChart from "./MixedChart";
 import styled, { css } from "styled-components";
 
-function WeeklyChart() {
+function WeeklyChart({ weeklyStat }: { weeklyStat: WeeklyStatProps[] }) {
   return (
     <TableWrapper>
       <Title>주간 통계</Title>
-      <MixedChart />
+      <MixedChart weeklyStat={weeklyStat} />
     </TableWrapper>
   );
 }

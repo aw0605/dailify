@@ -31,6 +31,8 @@ const getDashboardData = async (
     };
   }
 
+  console.log(data);
+
   return data;
 };
 

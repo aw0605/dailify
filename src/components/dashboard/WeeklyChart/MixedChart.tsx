@@ -11,8 +11,9 @@ import {
   ChartData,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import useDashboardStore from "@/zustand/useDashboardStore";
 import styled, { css, useTheme } from "styled-components";
+
+import { WeeklyStatProps } from "@/types/dashboard";
 
 ChartJS.register(
   BarElement,
@@ -24,10 +25,8 @@ ChartJS.register(
   Legend,
 );
 
-const MixedChart = () => {
+const MixedChart = ({ weeklyStat }: { weeklyStat: WeeklyStatProps[] }) => {
   const theme = useTheme();
-
-  const weeklyStat = useDashboardStore((state) => state.weeklyStat);
 
   const data: ChartData<ChartType, number[], string> = {
     labels: weeklyStat.map((d) => d.week),

@@ -1,11 +1,12 @@
+import { StatProps } from "@/types/dashboard";
 import PieChart from "./PieChart";
 import styled, { css } from "styled-components";
 
-function MonthlyChart() {
+function MonthlyChart({ monthlyStat }: { monthlyStat: StatProps | null }) {
   return (
     <ChartWrapper>
       <Title>이번 달 통계</Title>
-      <PieChart />
+      <PieChart monthlyStat={monthlyStat} />
     </ChartWrapper>
   );
 }

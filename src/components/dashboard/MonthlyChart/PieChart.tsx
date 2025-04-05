@@ -1,14 +1,18 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import useDashboardStore from "@/zustand/useDashboardStore";
 import Info from "./Info";
 import styled, { css, useTheme } from "styled-components";
 
+import { StatProps } from "@/types/dashboard";
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const PieChart = () => {
+const PieChart = ({ monthlyStat }: { monthlyStat: StatProps | null }) => {
   const theme = useTheme();
-  const monthlyStat = useDashboardStore((state) => state.monthlyStat);
+
+  if (!monthlyStat) {
+    return <AlertMsg>등록된 할 일이 없습니다.</AlertMsg>;
+  }
 
   const data = {
     labels: ["완료", "미완료"],
@@ -33,14 +37,18 @@ const PieChart = () => {
 
   return (
     <>
-      {monthlyStat.total === 0 ? (
+      {monthlyStat!.total === 0 ? (
         <AlertMsg>등록된 할 일이 없습니다.</AlertMsg>
       ) : (
         <Wrapper>
           <ChartContainer>
             <Pie data={data} options={options} />
           </ChartContainer>
-          <Info data={data} total={monthlyStat.total} rate={monthlyStat.rate} />
+          <Info
+            data={data}
+            total={monthlyStat!.total}
+            rate={monthlyStat!.rate}
+          />
         </Wrapper>
       )}
     </>

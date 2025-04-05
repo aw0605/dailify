@@ -7,26 +7,22 @@ import styled, { css } from "styled-components";
 
 import { TodoItem } from "@/types/todo";
 
-function TodoList() {
-  const { unfinishedTodos, loading } = useDashboardStore(
-    useShallow((state) => ({
-      unfinishedTodos: state.unfinishedTodos,
-      loading: state.loading,
-    })),
-  );
-
-  if (loading) {
-    return <Skeleton height="45px" radius="10px" />;
-  }
+function TodoList({ todos }: { todos: TodoItem[] }) {
+  // const { unfinishedTodos, loading } = useDashboardStore(
+  //   useShallow((state) => ({
+  //     unfinishedTodos: state.unfinishedTodos,
+  //     loading: state.loading,
+  //   })),
+  // );
 
   return (
     <div>
       <Title>Unfinished To do</Title>
 
-      {unfinishedTodos.length === 0 ? (
+      {todos.length === 0 ? (
         <AlertMsg>미완료된 할 일이 없습니다.</AlertMsg>
       ) : (
-        unfinishedTodos.map((unfinishedTodo: TodoItem) => (
+        todos.map((unfinishedTodo: TodoItem) => (
           <Accordion
             key={unfinishedTodo.id}
             type="unfinish"
