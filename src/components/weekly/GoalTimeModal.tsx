@@ -9,8 +9,7 @@ import ModalButtons from "@/components/common/ui/Modal/ModalButtons";
 import styled, { css } from "styled-components";
 
 function GoalTimeModal() {
-  const { user, userId } = useUserQuery();
-  const selectedWeek = useCalendarStore((state) => state.selectedWeek);
+  const { user } = useUserQuery();
   const closeModal = useModalStore((state) => state.closeModal);
 
   const { updateWeeklyTime } = useWeeklyQuery();

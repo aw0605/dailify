@@ -9,16 +9,15 @@ import {
   deleteWeeklyTodo,
   toggleWeeklyTodo,
 } from "@/lib/supabase/weekly";
+import { useUserQuery } from "./useUserQuery";
 import { v4 as uuidv4 } from "uuid";
 
 import { TodoItem } from "@/types/todo";
-import useUser from "../useUser";
 
 const useWeeklyQuery = () => {
   const queryClient = useQueryClient();
 
-  // const { userId } = useUserQuery();
-  const { userId } = useUser();
+  const { userId } = useUserQuery();
   const selectedWeek = useCalendarStore((state) => state.selectedWeek);
 
   const uid = userId!;

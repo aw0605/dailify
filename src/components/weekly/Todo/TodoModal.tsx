@@ -13,7 +13,7 @@ import styled, { css } from "styled-components";
 import { TodoItem } from "@/types/todo";
 
 function TodoModal({ editTodo }: { editTodo?: TodoItem }) {
-  const { user, userId } = useUserQuery();
+  const { user } = useUserQuery();
   const closeModal = useModalStore((state) => state.closeModal);
 
   const selectedWeek = useCalendarStore((state) => state.selectedWeek);
