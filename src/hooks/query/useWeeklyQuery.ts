@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useUserQuery } from "./useUserQuery";
 import useCalendarStore from "@/zustand/useCalendarStore";
 import {
   getWeeklyData,
@@ -9,7 +10,6 @@ import {
   deleteWeeklyTodo,
   toggleWeeklyTodo,
 } from "@/lib/supabase/weekly";
-import { useUserQuery } from "./useUserQuery";
 import { v4 as uuidv4 } from "uuid";
 
 import { TodoItem } from "@/types/todo";
