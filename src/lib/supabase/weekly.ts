@@ -18,7 +18,7 @@ const getWeeklyData = async (uid: string, date: Date): Promise<WeeklyProps> => {
     start_date: date,
   });
 
-  if (error || !data) {
+  if (error) {
     console.error("이번주 데이터 불러오는 중 에러 발생!:", error);
     return {
       weeklyTime: { goal_time: 0, actual_time: 0 },

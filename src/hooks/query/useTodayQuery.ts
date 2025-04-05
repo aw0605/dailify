@@ -44,9 +44,7 @@ const useTodayQuery = () => {
       await queryClient.cancelQueries({
         queryKey: ["todayData", uid, date],
       });
-      const prev = queryClient.getQueriesData({
-        queryKey: ["todayData", uid, date],
-      });
+      const prev = queryClient.getQueryData(["todayData", uid, date]);
 
       queryClient.setQueryData(["todayData", uid, date], (old?: any) => {
         if (!old) return old;
