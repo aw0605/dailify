@@ -1,10 +1,10 @@
 import Image from "next/image";
-import useUser from "@/hooks/useUser";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import UserRank, { UserRankProps } from "./UserRank";
 import styled, { css } from "styled-components";
 
 function UserInfo({ currentRank, prevRank }: UserRankProps) {
-  const { user } = useUser();
+  const { user } = useUserQuery();
 
   return (
     <UserInfoWrapper>

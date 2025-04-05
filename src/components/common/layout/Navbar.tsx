@@ -4,19 +4,19 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import { MdHomeFilled } from "react-icons/md";
 import { LiaCalendarWeekSolid, LiaChartBar } from "react-icons/lia";
 import { IoMdTrophy } from "react-icons/io";
 import styled, { css } from "styled-components";
-import useUser from "@/hooks/useUser";
 
 export const NAVBAR_HEIGHT = "50px";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user } = useUserQuery();
 
-  const { user } = useUser();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <Container $isOpen={isMobileMenuOpen}>

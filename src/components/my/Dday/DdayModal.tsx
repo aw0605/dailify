@@ -1,5 +1,5 @@
 import useForm from "@/hooks/useForm";
-import useUser from "@/hooks/useUser";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import useModalStore from "@/zustand/useModalStore";
 import useMyStore from "@/zustand/useMyStore";
 import { validateDday } from "@/utils/validate";
@@ -8,7 +8,7 @@ import TextField from "@/components/common/ui/TextField";
 import styled, { css } from "styled-components";
 
 function DdayModal() {
-  const { userId } = useUser();
+  const { userId } = useUserQuery();
   const closeModal = useModalStore((state) => state.closeModal);
 
   const addEvent = useMyStore((state) => state.addEvent);

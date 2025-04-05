@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getRankData, RankProps } from "@/lib/supabase/rank";
-import useUser from "@/hooks/useUser";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import Layout from "@/components/common/layout/layout";
 import UserInfo from "@/components/rank/UserInfo/UserInfo";
 import RankHistoryList from "@/components/rank/RankHistory/RankHistoryList";
@@ -12,7 +12,7 @@ import styled, { css } from "styled-components";
 import { NAVBAR_HEIGHT } from "@/components/common/layout/Navbar";
 
 function RankPage() {
-  const { userId } = useUser();
+  const { userId } = useUserQuery();
   const [rankData, setRankData] = useState<RankProps | null>(null);
 
   useEffect(() => {

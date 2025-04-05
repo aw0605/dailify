@@ -1,4 +1,4 @@
-import useUser from "@/hooks/useUser";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import useForm from "@/hooks/useForm";
 import useMonthlyQuery from "@/hooks/query/useMonthlyQuery";
 import useModalStore from "@/zustand/useModalStore";
@@ -12,7 +12,7 @@ import styled, { css } from "styled-components";
 import { MonthlyEvent } from "@/types/monthly";
 
 function MonthlyModal({ editEvent }: { editEvent?: MonthlyEvent }) {
-  const { user } = useUser();
+  const { user } = useUserQuery();
   const closeModal = useModalStore((state) => state.closeModal);
 
   const { addEvent, updateEvent } = useMonthlyQuery();

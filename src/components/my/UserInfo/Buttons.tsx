@@ -1,21 +1,15 @@
 import { useRouter } from "next/navigation";
-import { signOut } from "@/lib/supabase/auth";
-import useUser from "@/hooks/useUser";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import Button from "@/components/common/ui/Button";
 import styled, { css } from "styled-components";
 
 function Buttons() {
   const router = useRouter();
-  const { deleteUser, clearUser } = useUser();
-
-  const handleSignout = async () => {
-    await signOut();
-    clearUser();
-  };
+  const { deleteUser, logout } = useUserQuery();
 
   const handleDeleteUser = async () => {
     try {
-      await deleteUser();
+      deleteUser.mutate();
       router.push("/login");
     } catch (error) {
       console.error("회원 탈퇴 중 오류 발생:", error);
@@ -25,7 +19,7 @@ function Buttons() {
 
   return (
     <Container>
-      <Button variant="outline" onClick={handleSignout}>
+      <Button variant="outline" onClick={logout}>
         로그아웃
       </Button>
       <Button onClick={handleDeleteUser}>탈퇴</Button>

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import useUser from "@/hooks/useUser";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import useModalStore from "@/zustand/useModalStore";
 import { HiOutlinePencilAlt } from "react-icons/hi";
 import Button from "@/components/common/ui/Button";
@@ -7,7 +7,7 @@ import EditInfoModal from "./EditInfoModal";
 import styled, { css } from "styled-components";
 
 function UserInfo() {
-  const { user } = useUser();
+  const { user } = useUserQuery();
   const openModal = useModalStore((state) => state.openModal);
 
   return (

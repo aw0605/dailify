@@ -1,4 +1,4 @@
-import useUser from "@/hooks/useUser";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import useForm from "@/hooks/useForm";
 import useWeeklyStore from "@/zustand/useWeeklyStore";
 import useCalendarStore from "@/zustand/useCalendarStore";
@@ -10,7 +10,7 @@ import ModalButtons from "@/components/common/ui/Modal/ModalButtons";
 import styled, { css } from "styled-components";
 
 function GoalTimeModal() {
-  const { user, userId } = useUser();
+  const { user, userId } = useUserQuery();
   const selectedWeek = useCalendarStore((state) => state.selectedWeek);
   const closeModal = useModalStore((state) => state.closeModal);
 

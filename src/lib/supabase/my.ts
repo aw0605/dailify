@@ -4,6 +4,7 @@ import { createClientForServer } from "./server";
 
 import { DdayEvent, DdayFormValuesProps } from "@/types/dday";
 import { StatProps } from "@/types/dashboard";
+import { UserInfo } from "@/types/user";
 
 interface MyProps {
   ddayEvents: DdayEvent[];
@@ -85,7 +86,7 @@ const updateUserInfo = async (
   userId: string,
   nickname: string,
   imageFile: File | null,
-) => {
+): Promise<UserInfo | null> => {
   const supabase = await createClientForServer();
   const bucket = process.env.NEXT_PUBLIC_STORAGE_BUCKET!;
   const userFolder = `profile/${userId}/`;

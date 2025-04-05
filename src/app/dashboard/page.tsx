@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import { useShallow } from "zustand/shallow";
-import useUser from "@/hooks/useUser";
 import useCalendarStore from "@/zustand/useCalendarStore";
 import useDashboardStore from "@/zustand/useDashboardStore";
 import Layout from "@/components/common/layout/layout";
@@ -13,7 +13,7 @@ import TodoList from "@/components/dashboard/Todo/TodoList";
 import Loading from "@/components/common/ui/Loading";
 
 function DashboardPage() {
-  const { userId } = useUser();
+  const { userId } = useUserQuery();
   const selectedMonth = useCalendarStore((state) => state.selectedMonth);
 
   const { fetchDashboardData, loading } = useDashboardStore(

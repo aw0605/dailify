@@ -90,7 +90,11 @@ function Form() {
         <Button disabled={!isAble} type="submit">
           회원가입
         </Button>
-        <Button onClick={() => router.push("/login")} variant="outline">
+        <Button
+          type="button"
+          onClick={() => router.push("/login")}
+          variant="outline"
+        >
           로그인
         </Button>
       </ButtonGroup>

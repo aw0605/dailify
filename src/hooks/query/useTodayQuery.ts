@@ -8,7 +8,7 @@ import {
   setTodayTodo,
   toggleTodayTodo,
 } from "@/lib/supabase/today";
-import useUser from "../useUser";
+import { useUserQuery } from "./useUserQuery";
 import useCalendarStore from "@/zustand/useCalendarStore";
 import { v4 as uuidv4 } from "uuid";
 
@@ -17,7 +17,7 @@ import { TodoItem } from "@/types/todo";
 const useTodayQuery = () => {
   const queryClient = useQueryClient();
 
-  const { userId } = useUser();
+  const { userId } = useUserQuery();
   const selectedDate = useCalendarStore((state) => state.selectedDate);
 
   const uid = userId!;

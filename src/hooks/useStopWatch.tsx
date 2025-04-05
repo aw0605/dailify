@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import useUser from "./useUser";
+import { useUserQuery } from "./query/useUserQuery";
 import useTodayQuery from "./query/useTodayQuery";
 
 interface UseTimerOptions {
@@ -7,7 +7,8 @@ interface UseTimerOptions {
 }
 
 const useStopWatch = ({ onStopWatchPause }: UseTimerOptions = {}) => {
-  const { user } = useUser();
+  const { user } = useUserQuery();
+
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 

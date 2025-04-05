@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import useUser from "../useUser";
+import { useUserQuery } from "./useUserQuery";
 import {
   deleteMonthlyEvent,
   editMonthlyEvent,
@@ -32,7 +32,7 @@ const filterAndSortEvents = (events: MonthlyEvent[]) => {
 const useMonthlyQuery = () => {
   const queryClient = useQueryClient();
 
-  const { userId } = useUser();
+  const { userId } = useUserQuery();
   const uid = userId!;
 
   // 먼슬리 이벤트 데이터 가져오기

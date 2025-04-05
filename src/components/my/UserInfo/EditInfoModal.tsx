@@ -1,8 +1,7 @@
 import { useState } from "react";
 import useForm from "@/hooks/useForm";
-import useUser from "@/hooks/useUser";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import useModalStore from "@/zustand/useModalStore";
-import useUserStore from "@/zustand/useUserStore";
 import { validateUser } from "@/utils/validate";
 import ModalButtons from "@/components/common/ui/Modal/ModalButtons";
 import TextField from "@/components/common/ui/TextField";
@@ -12,9 +11,9 @@ import styled, { css } from "styled-components";
 import { UserInfo } from "@/types/user";
 
 function EditInfoModal({ userInfo }: { userInfo: UserInfo }) {
-  const { userId } = useUser();
-  const updateUser = useUserStore((state) => state.updateUser);
+  const { userId, updateUser } = useUserQuery();
   const closeModal = useModalStore((state) => state.closeModal);
+
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const {
@@ -29,7 +28,7 @@ function EditInfoModal({ userInfo }: { userInfo: UserInfo }) {
       if (!userId) return;
 
       try {
-        updateUser(user.nickname!, imageFile);
+        updateUser.mutate({ nickname: user.nickname!, imageFile: imageFile });
 
         alert("프로필이 수정되었습니다.");
         closeModal("editInfoModal");
