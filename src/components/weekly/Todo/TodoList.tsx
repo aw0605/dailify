@@ -1,5 +1,4 @@
-import { useShallow } from "zustand/shallow";
-import useWeeklyStore from "@/zustand/useWeeklyStore";
+import useWeeklyQuery from "@/hooks/query/useWeeklyQuery";
 import useModalStore from "@/zustand/useModalStore";
 import Button from "@/components/common/ui/Button";
 import Accordion from "@/components/common/ui/Accordion/Accordion";
@@ -10,21 +9,18 @@ import styled, { css, useTheme } from "styled-components";
 
 import { TodoItem } from "@/types/todo";
 
-function TodoList() {
+interface TodoListProps {
+  todos: TodoItem[] | [];
+  isLoading: boolean;
+}
+
+function TodoList({ todos, isLoading }: TodoListProps) {
   const theme = useTheme();
   const openModal = useModalStore((state) => state.openModal);
 
-  const { todos, toggleTodo, deleteTodo, loading } = useWeeklyStore(
-    useShallow((state) => ({
-      todos: state.todos,
-      fetchWeeklyData: state.fetchWeeklyData,
-      toggleTodo: state.toggleTodo,
-      deleteTodo: state.deleteTodo,
-      loading: state.loading,
-    })),
-  );
+  const { toggleTodo, deleteTodo } = useWeeklyQuery();
 
-  if (loading) {
+  if (isLoading) {
     return <Skeleton height="45px" radius="10px" />;
   }
 
@@ -35,7 +31,7 @@ function TodoList() {
         <Button
           variant="ghost"
           size={24}
-          onClick={() => openModal("todoModal", <TodoModal />)}
+          onClick={() => openModal("weeklyTodoModal", <TodoModal />)}
         >
           +
         </Button>
@@ -51,11 +47,13 @@ function TodoList() {
             header={
               <AccordionHeader
                 item={todo}
-                onCheck={() => toggleTodo(todo.id)}
+                onCheck={() =>
+                  toggleTodo.mutate({ id: todo.id, completed: todo.completed })
+                }
                 onEdit={() =>
                   openModal("weeklyTodoModal", <TodoModal editTodo={todo} />)
                 }
-                onDelete={() => deleteTodo(todo.id)}
+                onDelete={() => deleteTodo.mutate(todo.id)}
               />
             }
             style={{ marginBottom: "10px" }}

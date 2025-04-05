@@ -1,7 +1,6 @@
 import useUser from "@/hooks/useUser";
 import useForm from "@/hooks/useForm";
-import { useShallow } from "zustand/shallow";
-import useWeeklyStore from "@/zustand/useWeeklyStore";
+import useWeeklyQuery from "@/hooks/query/useWeeklyQuery";
 import useCalendarStore from "@/zustand/useCalendarStore";
 import useModalStore from "@/zustand/useModalStore";
 import { validateTodo } from "@/utils/validate";
@@ -21,12 +20,7 @@ function TodoModal({ editTodo }: { editTodo?: TodoItem }) {
   const { formattedDate: startDate } = formatDate(selectedWeek!.start);
   const { formattedDate: endDate } = formatDate(selectedWeek!.start);
 
-  const { addTodo, updateTodo } = useWeeklyStore(
-    useShallow((state) => ({
-      addTodo: state.addTodo,
-      updateTodo: state.updateTodo,
-    })),
-  );
+  const { addTodo, updateTodo } = useWeeklyQuery();
 
   const isEdit = !!editTodo;
 
@@ -43,27 +37,24 @@ function TodoModal({ editTodo }: { editTodo?: TodoItem }) {
 
       try {
         if (isEdit) {
-          updateTodo({
-            id: editTodo.id,
+          updateTodo.mutate({
+            ...editTodo,
             subject: todo.subject,
             title: todo.title,
             content: todo.content,
-            completed: editTodo.completed,
-            date: editTodo.date,
           });
           alert("이번주 할 일이 수정되었습니다.");
         } else {
-          addTodo({
-            uid: userId!,
-            date: selectedWeek!.start,
+          addTodo.mutate({
             subject: todo.subject,
             title: todo.title,
             content: todo.content,
+            date: selectedWeek!.start,
           });
           alert("이번주 할 일이 추가되었습니다.");
         }
 
-        closeModal("todoModal");
+        closeModal("weeklyTodoModal");
       } catch (error) {
         console.error("이번주 할 일 저장 실패:", error);
         alert("이번주 할 일 저장 중 오류가 발생했습니다.");

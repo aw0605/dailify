@@ -1,24 +1,21 @@
 "use server";
 
-import { TodoItem } from "@/types/todo";
 import { createClientForServer } from "./server";
-import { TimeProps } from "@/types/time";
+
+import { TodoItem } from "@/types/todo";
+import { Times } from "@/types/time";
 
 interface WeeklyProps {
-  weeklyTime: TimeProps | null;
+  weeklyTime: Times | null;
   todos: TodoItem[];
 }
 
-const getWeeklyData = async (
-  uid: string,
-  date: { start: Date; end: Date },
-): Promise<WeeklyProps> => {
+const getWeeklyData = async (uid: string, date: Date): Promise<WeeklyProps> => {
   const supabase = await createClientForServer();
 
   const { data, error } = await supabase.rpc("get_weekly_data", {
     uid,
-    start_date: date.start.toISOString().split("T")[0],
-    end_date: date.end.toISOString().split("T")[0],
+    start_date: date,
   });
 
   if (error) {

@@ -12,7 +12,11 @@ const ModalButtons = ({ modalId, disabled }: ButtonGroupProps) => {
 
   return (
     <Container>
-      <Button variant="outline" onClick={() => closeModal(modalId)}>
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => closeModal(modalId)}
+      >
         취소
       </Button>
       <Button type="submit" disabled={disabled}>

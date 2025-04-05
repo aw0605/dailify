@@ -1,14 +1,19 @@
-import useWeeklyStore from "@/zustand/useWeeklyStore";
 import useModalStore from "@/zustand/useModalStore";
 import formatTime from "@/utils/formatTime";
 import GoalTimeModal from "./GoalTimeModal";
 import styled, { css } from "styled-components";
 
-function Time() {
+import { Times } from "@/types/time";
+
+interface TimeProps {
+  weeklyTime: Times | null;
+}
+
+function Time({ weeklyTime }: TimeProps) {
   const openModal = useModalStore((state) => state.openModal);
 
-  const weeklyTime = useWeeklyStore((state) => state.weeklyTime);
-  const { goal_time, actual_time } = weeklyTime;
+  const goal_time = weeklyTime?.goal_time ?? 0;
+  const actual_time = weeklyTime?.actual_time ?? 0;
 
   return (
     <TimesWrapper>

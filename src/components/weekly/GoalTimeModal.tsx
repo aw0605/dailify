@@ -1,7 +1,6 @@
 import useUser from "@/hooks/useUser";
 import useForm from "@/hooks/useForm";
-import useWeeklyStore from "@/zustand/useWeeklyStore";
-import useCalendarStore from "@/zustand/useCalendarStore";
+import useWeeklyQuery from "@/hooks/query/useWeeklyQuery";
 import useModalStore from "@/zustand/useModalStore";
 import { validateTime } from "@/utils/validate";
 import { convertToMs } from "@/utils/convertToMs";
@@ -10,11 +9,10 @@ import ModalButtons from "@/components/common/ui/Modal/ModalButtons";
 import styled, { css } from "styled-components";
 
 function GoalTimeModal() {
-  const { user, userId } = useUser();
-  const selectedWeek = useCalendarStore((state) => state.selectedWeek);
+  const { user } = useUser();
   const closeModal = useModalStore((state) => state.closeModal);
 
-  const updateWeeklyTime = useWeeklyStore((state) => state.updateWeeklyTime);
+  const { updateWeeklyTime } = useWeeklyQuery();
 
   const {
     formValues: time,
@@ -27,8 +25,8 @@ function GoalTimeModal() {
     onSubmit: async () => {
       if (!user) return;
       const goalTime = convertToMs(time);
-      await updateWeeklyTime(userId!, selectedWeek!.start, goalTime);
-      closeModal("goalTimeModal");
+      updateWeeklyTime.mutate(goalTime);
+      closeModal("weeklyGoalTimeModal");
     },
   });
 

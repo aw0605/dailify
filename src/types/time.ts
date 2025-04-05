@@ -4,7 +4,7 @@ export interface TimeFormValuesProps {
   s: number;
 }
 
-export interface TimeProps {
+export interface Times {
   goal_time: number;
   actual_time: number;
 }
