@@ -1,12 +1,13 @@
 "use server";
 
+import { RankerInfo, RankHistory } from "@/types/rank";
 import { createClientForServer } from "./server";
 
 export interface RankProps {
-  top10: [];
+  top10: RankerInfo[];
   currentRank: number;
   prevRank?: number;
-  rankHistory: [];
+  rankHistory: RankHistory[];
 }
 
 const getRankData = async (uid: string): Promise<RankProps> => {
@@ -28,8 +29,6 @@ const getRankData = async (uid: string): Promise<RankProps> => {
 
   const prevRank =
     data.rankHistory.length > 0 ? data.rankHistory[0].rank : undefined;
-
-  console.log("랭크 데이터!!:", { ...data, prevRank });
 
   return { ...data, prevRank };
 };

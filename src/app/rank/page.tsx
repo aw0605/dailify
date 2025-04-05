@@ -1,29 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getRankData, RankProps } from "@/lib/supabase/rank";
-import { useUserQuery } from "@/hooks/query/useUserQuery";
+import useRankQuery from "@/hooks/query/useRankQuery";
 import Layout from "@/components/common/layout/layout";
 import UserInfo from "@/components/rank/UserInfo/UserInfo";
 import RankHistoryList from "@/components/rank/RankHistory/RankHistoryList";
 import TopRankList from "@/components/rank/TopRank/TopRankList";
+import Loading from "@/components/common/ui/Loading";
 import styled, { css } from "styled-components";
 
 import { NAVBAR_HEIGHT } from "@/components/common/layout/Navbar";
 
 function RankPage() {
-  const { userId } = useUserQuery();
-  const [rankData, setRankData] = useState<RankProps | null>(null);
+  const { data: rankData, isLoading } = useRankQuery();
 
-  useEffect(() => {
-    const fetchedData = async () => {
-      if (!userId) return;
-      const data = await getRankData(userId);
-      setRankData(data);
-    };
-
-    fetchedData();
-  }, [userId]);
+  if (isLoading) {
+    return <Loading size="50px" />;
+  }
 
   return (
     <Layout showSide={true}>
