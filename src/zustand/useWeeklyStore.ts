@@ -7,19 +7,15 @@ import {
   setWeeklyTodo,
   toggleWeeklyTodo,
 } from "@/lib/supabase/weekly";
-import { v4 as uuidv4 } from "uuid";
 
-import { TimeProps } from "@/types/time";
+import { Times } from "@/types/time";
 import { TodoItem } from "@/types/todo";
 
 interface WeeklyStoreState {
-  weeklyTime: TimeProps;
+  weeklyTime: Times;
   todos: TodoItem[];
   loading: boolean;
-  fetchWeeklyData: (
-    uid: string,
-    date: { start: Date; end: Date },
-  ) => Promise<void>;
+  fetchWeeklyData: (uid: string, start_date: Date) => Promise<void>;
   updateWeeklyTime: (
     uid: string,
     date: Date,
@@ -36,9 +32,9 @@ const useWeeklyStore = create<WeeklyStoreState>((set, get) => ({
   todos: [],
   loading: false,
 
-  fetchWeeklyData: async (uid, date) => {
+  fetchWeeklyData: async (uid, start_date) => {
     set({ loading: true });
-    const data = await getWeeklyData(uid, date);
+    const data = await getWeeklyData(uid, start_date);
     set({
       weeklyTime: data.weeklyTime || { goal_time: 0, actual_time: 0 },
       todos: data.todos,
@@ -62,9 +58,10 @@ const useWeeklyStore = create<WeeklyStoreState>((set, get) => ({
 
   addTodo: async (todo) => {
     try {
-      await setWeeklyTodo(todo);
-      const tempTodo = { id: uuidv4(), completed: false, ...todo };
-      set((state) => ({ todos: [...state.todos, tempTodo] }));
+      const newTodo = await setWeeklyTodo(todo);
+      set((state) => ({
+        todos: [...state.todos, { id: newTodo.id, completed: false, ...todo }],
+      }));
     } catch (error) {
       console.error("이번주 할 일 추가 실패:", error);
     }

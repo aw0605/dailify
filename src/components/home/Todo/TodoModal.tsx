@@ -1,7 +1,6 @@
-import useUser from "@/hooks/useUser";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import useForm from "@/hooks/useForm";
-import { useShallow } from "zustand/shallow";
-import useTodayStore from "@/zustand/useTodayStore";
+import useTodayQuery from "@/hooks/query/useTodayQuery";
 import useCalendarStore from "@/zustand/useCalendarStore";
 import useModalStore from "@/zustand/useModalStore";
 import { validateTodo } from "@/utils/validate";
@@ -14,18 +13,13 @@ import styled, { css } from "styled-components";
 import { TodoItem } from "@/types/todo";
 
 function TodoModal({ editTodo }: { editTodo?: TodoItem }) {
-  const { user, userId } = useUser();
+  const { user } = useUserQuery();
   const closeModal = useModalStore((state) => state.closeModal);
 
   const selectedDate = useCalendarStore((state) => state.selectedDate);
   const { formattedDate } = formatDate(selectedDate);
 
-  const { addTodo, updateTodo } = useTodayStore(
-    useShallow((state) => ({
-      addTodo: state.addTodo,
-      updateTodo: state.updateTodo,
-    })),
-  );
+  const { addTodo, updateTodo } = useTodayQuery();
 
   const isEdit = !!editTodo;
 
@@ -42,22 +36,19 @@ function TodoModal({ editTodo }: { editTodo?: TodoItem }) {
 
       try {
         if (isEdit) {
-          updateTodo({
-            id: editTodo.id,
+          updateTodo.mutate({
+            ...editTodo,
             subject: todo.subject,
             title: todo.title,
             content: todo.content,
-            completed: editTodo.completed,
-            date: editTodo.date,
           });
           alert("할 일이 수정되었습니다.");
         } else {
-          addTodo({
-            uid: userId!,
-            date: selectedDate!,
+          addTodo.mutate({
             subject: todo.subject,
             title: todo.title,
             content: todo.content,
+            date: selectedDate!,
           });
           alert("할 일이 추가되었습니다.");
         }

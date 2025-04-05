@@ -1,7 +1,6 @@
-import useUser from "@/hooks/useUser";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import useForm from "@/hooks/useForm";
-import useTodayStore from "@/zustand/useTodayStore";
-import useCalendarStore from "@/zustand/useCalendarStore";
+import useTodayQuery from "@/hooks/query/useTodayQuery";
 import useModalStore from "@/zustand/useModalStore";
 import { validateTime } from "@/utils/validate";
 import { convertToMs } from "@/utils/convertToMs";
@@ -10,11 +9,10 @@ import ModalButtons from "@/components/common/ui/Modal/ModalButtons";
 import styled, { css } from "styled-components";
 
 function GoalTimeModal() {
-  const { user, userId } = useUser();
-  const selectedDate = useCalendarStore((state) => state.selectedDate);
+  const { user } = useUserQuery();
   const closeModal = useModalStore((state) => state.closeModal);
 
-  const updateTodayTime = useTodayStore((state) => state.updateTodayTime);
+  const { updateTodayTime } = useTodayQuery();
 
   const {
     formValues: time,
@@ -24,10 +22,10 @@ function GoalTimeModal() {
   } = useForm({
     initialValues: { h: 0, m: 0, s: 0 },
     validate: validateTime,
-    onSubmit: async () => {
+    onSubmit: () => {
       if (!user) return;
       const goalTime = convertToMs(time);
-      await updateTodayTime(userId!, selectedDate!, "goal_time", goalTime);
+      updateTodayTime.mutate({ field: "goal_time", value: goalTime });
       closeModal("goalTimeModal");
     },
   });

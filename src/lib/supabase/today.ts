@@ -2,19 +2,19 @@
 
 import { DdayEvent } from "@/types/dday";
 import { createClientForServer } from "./server";
-import { TimeProps } from "@/types/time";
+import { Times } from "@/types/time";
 import { TodoItem } from "@/types/todo";
 
 interface TodayProps {
   dday: DdayEvent | null;
-  todayTime: TimeProps | null;
+  todayTime: Times | null;
   todos: TodoItem[];
 }
 
 const getTodayData = async (uid: string, date: Date): Promise<TodayProps> => {
   const supabase = await createClientForServer();
 
-  const isoDate = date.toISOString().split("T")[0];
+  const isoDate = date.toISOString();
 
   const { data, error } = await supabase.rpc("get_today_data", {
     uid,
@@ -59,19 +59,22 @@ const setTodayTodo = async (
 
   const isoDate = todo.date.toISOString();
 
-  const { data, error } = await supabase.from("today_todos").insert([
-    {
-      uid: todo.uid,
-      date: isoDate,
-      subject: todo.subject,
-      title: todo.title,
-      content: todo.content || null,
-      completed: false,
-    },
-  ]);
+  const { data, error } = await supabase
+    .from("today_todos")
+    .insert([
+      {
+        uid: todo.uid,
+        date: isoDate,
+        subject: todo.subject,
+        title: todo.title,
+        content: todo.content || null,
+        completed: false,
+      },
+    ])
+    .select();
 
   if (error) throw error;
-  return data;
+  return data[0];
 };
 
 const editTodayTodo = async (

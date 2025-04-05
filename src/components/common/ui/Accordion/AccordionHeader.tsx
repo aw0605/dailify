@@ -1,12 +1,12 @@
-import styled, { css, useTheme } from "styled-components";
+import { formatDateTime } from "@/utils/formatDate";
 import { BsPinAngleFill } from "react-icons/bs";
 import { HiOutlineTrash, HiOutlinePencilAlt } from "react-icons/hi";
 import Button from "../Button";
-import { formatDateTime } from "@/utils/formatDate";
+import styled, { css, useTheme } from "styled-components";
 
 interface AccordionHeaderProps {
   item: any;
-  type?: "monthly" | "todo";
+  type?: "monthly" | "todo" | "unfinish";
   onCheck?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
@@ -26,7 +26,7 @@ export default function AccordionHeader({
   return (
     <AccordionHeaderWrapper>
       <LeftSection>
-        {type !== "monthly" ? (
+        {type === "todo" ? (
           <CheckBox type="checkbox" checked={completed} onChange={onCheck} />
         ) : (
           <PinIcon />
@@ -36,7 +36,11 @@ export default function AccordionHeader({
             {type !== "monthly" && <span>[{subject}]</span>}
             {title}
           </div>
-          {type === "monthly" && <DateText>{formatDateTime(date)}</DateText>}
+          {type !== "todo" && (
+            <DateText>
+              {type === "monthly" ? formatDateTime(date) : date}
+            </DateText>
+          )}
         </Title>
       </LeftSection>
       <RightSection $type={type}>
@@ -94,16 +98,16 @@ const PinIcon = styled(BsPinAngleFill)`
 const Title = styled.div<{ $type: string }>`
   ${({ theme, $type }) => css`
     ${theme.mixins.flexBox({
-      direction: $type === "monthly" ? "column" : "row",
-      align: $type === "monthly" ? "flex-start" : "center",
-      justify: $type === "monthly" ? "center" : "flex-start",
+      direction: $type !== "todo" ? "column" : "row",
+      align: $type !== "todo" ? "flex-start" : "center",
+      justify: $type !== "todo" ? "center" : "flex-start",
     })}
     gap: 3px;
     flex: 1;
     width: 0px;
 
     div {
-      ${theme.typography.title({ size: $type === "monthly" ? 14 : 18 })};
+      ${theme.typography.title({ size: $type !== "todo" ? 14 : 18 })};
       width: 100%;
       white-space: nowrap;
       overflow: hidden;
@@ -126,5 +130,6 @@ const RightSection = styled.div<{ $type: string }>`
   ${({ theme, $type }) => css`
     ${theme.mixins.flexBox({})};
     gap: ${$type === "monthly" ? "10px" : "15px"};
+    display: ${$type === "unfinish" ? "none" : "flex"};
   `}
 `;

@@ -4,19 +4,19 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import { MdHomeFilled } from "react-icons/md";
 import { LiaCalendarWeekSolid, LiaChartBar } from "react-icons/lia";
 import { IoMdTrophy } from "react-icons/io";
 import styled, { css } from "styled-components";
-import useUser from "@/hooks/useUser";
 
 export const NAVBAR_HEIGHT = "50px";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user } = useUserQuery();
 
-  const { user } = useUser();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <Container $isOpen={isMobileMenuOpen}>
@@ -58,8 +58,7 @@ export default function Navbar() {
             />
           </div>
           <div>
-            <p>{user?.nickname}</p>
-            <p>현재 148373위</p>
+            <h1>{user?.nickname}</h1>
           </div>
         </User>
       </Top>
@@ -185,15 +184,14 @@ const User = styled(Link)`
     div:first-child {
       width: 30px;
       height: 30px;
+      border-radius: 100%;
+      overflow: hidden;
       position: relative;
     }
 
-    p:first-child {
+    h1 {
       ${theme.typography.title({ size: 20 })};
       margin-bottom: 2px;
-    }
-    p:last-child {
-      ${theme.typography.p({ size: 14, color: theme.colors.orangeRed })};
     }
 
     ${theme.media.sm`

@@ -1,4 +1,4 @@
-import useUser from "@/hooks/useUser";
+import { useUserQuery } from "@/hooks/query/useUserQuery";
 import useForm from "@/hooks/useForm";
 import useWeeklyQuery from "@/hooks/query/useWeeklyQuery";
 import useCalendarStore from "@/zustand/useCalendarStore";
@@ -13,12 +13,12 @@ import styled, { css } from "styled-components";
 import { TodoItem } from "@/types/todo";
 
 function TodoModal({ editTodo }: { editTodo?: TodoItem }) {
-  const { user, userId } = useUser();
+  const { user, userId } = useUserQuery();
   const closeModal = useModalStore((state) => state.closeModal);
 
   const selectedWeek = useCalendarStore((state) => state.selectedWeek);
   const { formattedDate: startDate } = formatDate(selectedWeek!.start);
-  const { formattedDate: endDate } = formatDate(selectedWeek!.start);
+  const { formattedDate: endDate } = formatDate(selectedWeek!.end);
 
   const { addTodo, updateTodo } = useWeeklyQuery();
 

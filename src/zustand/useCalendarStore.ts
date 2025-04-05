@@ -3,9 +3,13 @@ import { create } from "zustand";
 interface CalendarState {
   selectedDate: Date | null;
   selectedWeek: { start: Date; end: Date } | null;
-  setSelectedDate: (date: Date | null, isWeekly: boolean) => void;
+  selectedMonth: Date | null;
+  setSelectedDate: (date: Date | null) => void;
+  setSelectedMonth: (date: Date | null) => void;
   prevDay: () => void;
   nextDay: () => void;
+  prevMonth: () => void;
+  nextMonth: () => void;
 }
 
 const getMonday = (date: Date) => {
@@ -23,17 +27,18 @@ const useCalendarStore = create<CalendarState>((set, get) => ({
     end.setDate(start.getDate() + 6);
     return { start, end };
   })(),
-  setSelectedDate: (date, isWeekly = false) => {
+  selectedMonth: new Date(),
+  setSelectedDate: (date) => {
     if (!date) return;
 
-    if (isWeekly) {
-      const start = getMonday(date);
-      const end = new Date(start);
-      end.setDate(start.getDate() + 6);
-      set({ selectedDate: date, selectedWeek: { start, end } });
-    } else {
-      set({ selectedDate: date, selectedWeek: null });
-    }
+    const start = getMonday(date);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    set({ selectedDate: date, selectedWeek: { start, end } });
+  },
+  setSelectedMonth: (date) => {
+    if (!date) return;
+    set({ selectedMonth: new Date(date.getFullYear(), date.getMonth(), 1) });
   },
   prevDay: () => {
     const { selectedDate } = get();
@@ -51,6 +56,24 @@ const useCalendarStore = create<CalendarState>((set, get) => ({
       nextDate.setDate(nextDate.getDate() + 1);
 
       set({ selectedDate: nextDate });
+    }
+  },
+  prevMonth: () => {
+    const { selectedMonth } = get();
+    if (selectedMonth) {
+      const prevMonth = new Date(selectedMonth);
+      prevMonth.setMonth(prevMonth.getMonth() - 1);
+
+      set({ selectedMonth: prevMonth });
+    }
+  },
+  nextMonth: () => {
+    const { selectedMonth } = get();
+    if (selectedMonth) {
+      const nextMonth = new Date(selectedMonth);
+      nextMonth.setMonth(nextMonth.getMonth() + 1);
+
+      set({ selectedMonth: nextMonth });
     }
   },
 }));

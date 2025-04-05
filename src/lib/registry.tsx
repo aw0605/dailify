@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useServerInsertedHTML } from "next/navigation";
 import {
   ServerStyleSheet,
@@ -9,6 +10,8 @@ import {
 } from "styled-components";
 import GlobalStyle from "@/styles/GlobalStyle";
 import { theme } from "./../styles/theme/index";
+
+const queryClient = new QueryClient();
 
 export default function StyledComponentsRegistry({
   children,
@@ -25,18 +28,22 @@ export default function StyledComponentsRegistry({
 
   if (typeof window !== "undefined")
     return (
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        {children}
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          {children}
+        </ThemeProvider>
+      </QueryClientProvider>
     );
 
   return (
-    <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        {children as React.ReactNode}
-      </ThemeProvider>
-    </StyleSheetManager>
+    <QueryClientProvider client={queryClient}>
+      <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          {children as React.ReactNode}
+        </ThemeProvider>
+      </StyleSheetManager>
+    </QueryClientProvider>
   );
 }

@@ -1,19 +1,20 @@
 import { useState, useEffect, useRef } from "react";
-import useUser from "./useUser";
-import useCalendarStore from "@/zustand/useCalendarStore";
-import { setTodayTime } from "@/lib/supabase/today";
+import { useUserQuery } from "./query/useUserQuery";
+import useTodayQuery from "./query/useTodayQuery";
 
 interface UseTimerOptions {
   onStopWatchPause?: () => void;
 }
 
 const useStopWatch = ({ onStopWatchPause }: UseTimerOptions = {}) => {
-  const { user, userId } = useUser();
-  const selectedDate = useCalendarStore((state) => state.selectedDate);
+  const { user } = useUserQuery();
+
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
   const workerRef = useRef<Worker | null>(null);
+
+  const { updateTodayTime } = useTodayQuery();
 
   useEffect(() => {
     workerRef.current = new Worker("stopwatchWorker.js");
@@ -40,7 +41,7 @@ const useStopWatch = ({ onStopWatchPause }: UseTimerOptions = {}) => {
     setIsRunning(false);
     if (onStopWatchPause) onStopWatchPause();
     if (!user) return;
-    await setTodayTime(userId!, selectedDate!, "actual_time", elapsedTime);
+    updateTodayTime.mutate({ field: "actual_time", value: elapsedTime });
   };
 
   return {

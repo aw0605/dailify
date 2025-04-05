@@ -1,37 +1,20 @@
-import { useEffect } from "react";
-import useUser from "@/hooks/useUser";
-import { useShallow } from "zustand/shallow";
-import useMonthlyStore from "@/zustand/useMonthlyStore";
+import useMonthlyQuery from "@/hooks/query/useMonthlyQuery";
 import useModalStore from "@/zustand/useModalStore";
 import Accordion from "@/components/common/ui/Accordion/Accordion";
 import AccordionHeader from "@/components/common/ui/Accordion/AccordionHeader";
 import Button from "@/components/common/ui/Button";
 import MonthlyModal from "./MonthlyModal";
+import Skeleton from "@/components/common/ui/Skeleton";
 import styled, { css } from "styled-components";
 
 import { MonthlyEvent } from "@/types/monthly";
-import Skeleton from "@/components/common/ui/Skeleton";
 
 function MonthlyList() {
-  const { userId } = useUser();
   const openModal = useModalStore((state) => state.openModal);
 
-  const { events, fetchMonthlyEvents, deleteEvent, loading } = useMonthlyStore(
-    useShallow((state) => ({
-      events: state.events,
-      fetchMonthlyEvents: state.fetchMonthlyEvents,
-      deleteEvent: state.deleteEvent,
-      loading: state.loading,
-    })),
-  );
+  const { monthlyEvents: events, isLoading, deleteEvent } = useMonthlyQuery();
 
-  useEffect(() => {
-    if (userId) {
-      fetchMonthlyEvents(userId);
-    }
-  }, [userId]);
-
-  if (loading) {
+  if (isLoading) {
     return <Skeleton height="45px" radius="10px" />;
   }
 
@@ -62,7 +45,7 @@ function MonthlyList() {
                 onEdit={() =>
                   openModal("monthlyModal", <MonthlyModal editEvent={event} />)
                 }
-                onDelete={() => deleteEvent(event.id)}
+                onDelete={() => deleteEvent.mutate(event.id)}
               />
             }
             style={{ marginBottom: "10px" }}
@@ -95,5 +78,8 @@ const AlertMsg = styled.h1`
     margin-top: 50px;
     ${theme.mixins.flexBox({})};
     ${theme.typography.title({ size: 18 })}
+    ${theme.media.md`
+      margin: 50px 0;
+    `}
   `}
 `;

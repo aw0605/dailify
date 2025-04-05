@@ -1,5 +1,3 @@
-import { useShallow } from "zustand/shallow";
-import useTodayStore from "@/zustand/useTodayStore";
 import useCalendarStore from "@/zustand/useCalendarStore";
 import useModalStore from "@/zustand/useModalStore";
 import formatTime from "@/utils/formatTime";
@@ -8,18 +6,20 @@ import GoalTimeModal from "./GoalTimeModal";
 import StopWatch from "./StopWatch";
 import styled, { css } from "styled-components";
 
-function Time() {
+import { Times } from "@/types/time";
+import { DdayEvent } from "@/types/dday";
+
+interface TimeProps {
+  dday: DdayEvent | null;
+  todayTime: Times | null;
+}
+
+function Time({ dday, todayTime }: TimeProps) {
   const openModal = useModalStore((state) => state.openModal);
   const selectedDate = useCalendarStore((state) => state.selectedDate);
 
-  const { dday, todayTime } = useTodayStore(
-    useShallow((state) => ({
-      dday: state.dday,
-      todayTime: state.todayTime,
-    })),
-  );
-
-  const { goal_time, actual_time } = todayTime;
+  const goal_time = todayTime?.goal_time ?? 0;
+  const actual_time = todayTime?.actual_time ?? 0;
 
   const ddayStr = dday
     ? `${dday?.title} ${calcDday(new Date(dday!.date), selectedDate!)}`

@@ -18,15 +18,13 @@ const getWeeklyData = async (uid: string, date: Date): Promise<WeeklyProps> => {
     start_date: date,
   });
 
-  if (error) {
+  if (error || !data) {
     console.error("이번주 데이터 불러오는 중 에러 발생!:", error);
     return {
       weeklyTime: { goal_time: 0, actual_time: 0 },
       todos: [],
     };
   }
-
-  console.log("이번주 데이터!:", data);
 
   return data;
 };
@@ -37,7 +35,7 @@ const setWeeklyTime = async (uid: string, date: Date, goalTime: number) => {
   const { data, error } = await supabase
     .from("weekly_time")
     .upsert(
-      { uid, start_date: date.toISOString(), goal_time: goalTime },
+      { uid, start_date: date, goal_time: goalTime },
       { onConflict: "uid, start_date" },
     );
 
@@ -50,21 +48,22 @@ const setWeeklyTodo = async (
 ) => {
   const supabase = await createClientForServer();
 
-  const isoDate = todo.date.toISOString();
-
-  const { data, error } = await supabase.from("weekly_todos").insert([
-    {
-      uid: todo.uid,
-      start_date: isoDate,
-      subject: todo.subject,
-      title: todo.title,
-      content: todo.content || null,
-      completed: false,
-    },
-  ]);
+  const { data, error } = await supabase
+    .from("weekly_todos")
+    .insert([
+      {
+        uid: todo.uid,
+        start_date: todo.date,
+        subject: todo.subject,
+        title: todo.title,
+        content: todo.content || null,
+        completed: false,
+      },
+    ])
+    .select();
 
   if (error) throw error;
-  return data;
+  return data[0];
 };
 
 const editWeeklyTodo = async (
