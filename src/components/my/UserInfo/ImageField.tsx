@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import Image from "next/image";
 import Button from "@/components/common/ui/Button";
 import styled, { css } from "styled-components";
 
@@ -42,7 +43,7 @@ function ImageField({ initialImage, setImageFile }: ImageFieldProps) {
       </ImageHeader>
       <PreviewContainer>
         {previewImage ? (
-          <img src={previewImage} alt="user" />
+          <Image src={previewImage} alt="user" fill />
         ) : (
           <p>이미지를 선택하세요.</p>
         )}
@@ -81,10 +82,9 @@ const PreviewContainer = styled.div`
     border: 2px solid ${theme.colors.gray3};
     border-radius: 10px;
     overflow: hidden;
+    position: relative;
 
     img {
-      width: 100%;
-      height: 100%;
       object-fit: cover;
     }
   `}

@@ -1,7 +1,7 @@
 import useForm from "@/hooks/useForm";
 import { useUserQuery } from "@/hooks/query/useUserQuery";
+import useMyQuery from "@/hooks/query/useMyQuery";
 import useModalStore from "@/zustand/useModalStore";
-import useMyStore from "@/zustand/useMyStore";
 import { validateDday } from "@/utils/validate";
 import ModalButtons from "@/components/common/ui/Modal/ModalButtons";
 import TextField from "@/components/common/ui/TextField";
@@ -11,7 +11,7 @@ function DdayModal() {
   const { userId } = useUserQuery();
   const closeModal = useModalStore((state) => state.closeModal);
 
-  const addEvent = useMyStore((state) => state.addEvent);
+  const { addEvent } = useMyQuery();
 
   const {
     formValues: dday,
@@ -25,8 +25,7 @@ function DdayModal() {
       if (!userId) return;
 
       try {
-        addEvent({
-          uid: userId,
+        addEvent.mutate({
           title: dday.title,
           date: dday.date,
         });

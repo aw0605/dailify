@@ -1,4 +1,4 @@
-import useMyStore from "@/zustand/useMyStore";
+import useMyQuery from "@/hooks/query/useMyQuery";
 import { formatDate } from "@/utils/formatDate";
 import calcDday from "@/utils/calcDday";
 import { HiOutlineTrash } from "react-icons/hi";
@@ -15,7 +15,7 @@ function DdayItem({ item }: DdayItemProps) {
   const theme = useTheme();
   const { formattedDate } = formatDate(new Date(item.date));
 
-  const deleteEvent = useMyStore((state) => state.deleteEvent);
+  const { deleteEvent } = useMyQuery();
 
   return (
     <ItemWrapper>
@@ -23,7 +23,7 @@ function DdayItem({ item }: DdayItemProps) {
       <span className="date">{formattedDate}</span>
       <span className="dday">{calcDday(new Date(item!.date), new Date())}</span>
       <Button
-        onClick={() => deleteEvent(item.id)}
+        onClick={() => deleteEvent.mutate(item.id)}
         variant="ghost"
         color={theme.colors.gray2}
         style={{ padding: "0" }}

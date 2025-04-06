@@ -10,6 +10,7 @@ import { Bar } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import useMyStore from "@/zustand/useMyStore";
 import styled, { css, useTheme } from "styled-components";
+import { StatProps } from "@/types/dashboard";
 
 ChartJS.register(
   BarElement,
@@ -19,16 +20,20 @@ ChartJS.register(
   ChartDataLabels,
 );
 
-const BarChart = () => {
+const BarChart = ({ stat }: { stat: StatProps | null }) => {
   const theme = useTheme();
 
-  const totalStat = useMyStore((state) => state.totalStat);
+  // const totalStat = useMyStore((state) => state.totalStat);
+
+  if (!stat) {
+    return <AlertMsg>등록된 할 일이 없습니다.</AlertMsg>;
+  }
 
   const data: ChartData<"bar", number[], string> = {
     labels: ["완료", "미완료"],
     datasets: [
       {
-        data: [totalStat.completed, totalStat.incompleted],
+        data: [stat.completed, stat.incompleted],
         backgroundColor: [theme.colors.primary, theme.colors.darkOrange],
         hoverBackgroundColor: [theme.colors.orange, theme.colors.orangeRed],
       },
@@ -60,7 +65,7 @@ const BarChart = () => {
         ticks: {
           stepSize: 10,
         },
-        max: totalStat.total,
+        max: stat.total,
         beginAtZero: true,
         grid: {
           display: false,
@@ -78,7 +83,7 @@ const BarChart = () => {
     <Wrapper>
       <InfoContainer>
         <h1>종합 달성률</h1>
-        <h2>{totalStat.rate}%</h2>
+        <h2>{stat.rate}%</h2>
       </InfoContainer>
       <ChartContainer>
         <Bar data={data} options={options} />
@@ -114,4 +119,15 @@ const InfoContainer = styled.div`
 const ChartContainer = styled.div`
   width: 100%;
   height: 300px;
+`;
+
+const AlertMsg = styled.h1`
+  ${({ theme }) => css`
+    margin: 50px 0;
+    ${theme.mixins.flexBox({})};
+    ${theme.typography.title({ size: 18 })}
+    ${theme.media.md`
+      margin: 100px 0;
+    `}
+  `}
 `;

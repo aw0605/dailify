@@ -4,12 +4,10 @@ import DdayItem from "./DdayItem";
 import DdayModal from "./DdayModal";
 import styled, { css } from "styled-components";
 
-import useMyStore from "@/zustand/useMyStore";
+import { DdayEvent } from "@/types/dday";
 
-function DdayList() {
+function DdayList({ events }: { events: DdayEvent[] }) {
   const openModal = useModalStore((state) => state.openModal);
-
-  const ddayEvents = useMyStore((state) => state.ddayEvents);
 
   return (
     <DdayListWrapper>
@@ -25,7 +23,7 @@ function DdayList() {
       </Header>
 
       <ul>
-        {ddayEvents.map((item) => (
+        {events.map((item) => (
           <DdayItem key={item.id} item={item} />
         ))}
       </ul>

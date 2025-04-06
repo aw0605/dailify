@@ -1,34 +1,29 @@
 "use client";
 
-import { useEffect } from "react";
-import { useUserQuery } from "@/hooks/query/useUserQuery";
-import useMyStore from "@/zustand/useMyStore";
+import useMyQuery from "@/hooks/query/useMyQuery";
 import Layout from "@/components/common/layout/layout";
 import DdayList from "@/components/my/Dday/DdayList";
 import TotalStatic from "@/components/my/TotalStatic/TotalStatic";
 import Buttons from "@/components/my/UserInfo/Buttons";
 import UserInfo from "@/components/my/UserInfo/UserInfo";
+import Loading from "@/components/common/ui/Loading";
 
 function MyPage() {
-  const { userId } = useUserQuery();
+  const { myData, isLoading } = useMyQuery();
 
-  const fetchMyData = useMyStore((state) => state.fetchMyData);
-
-  useEffect(() => {
-    if (userId) {
-      fetchMyData(userId);
-    }
-  }, [userId]);
+  if (isLoading) {
+    return <Loading size="50" />;
+  }
 
   return (
     <Layout showSide={true}>
       <div className="main">
         <UserInfo />
         <Buttons />
-        <DdayList />
+        <DdayList events={myData?.ddayEvents ?? []} />
       </div>
       <div className="side">
-        <TotalStatic />
+        <TotalStatic stat={myData?.totalStat ?? null} />
       </div>
     </Layout>
   );
