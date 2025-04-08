@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import useMyQuery from "@/hooks/query/useMyQuery";
 import { formatDate } from "@/utils/formatDate";
 import calcDday from "@/utils/calcDday";
@@ -13,7 +14,11 @@ interface DdayItemProps {
 
 function DdayItem({ item }: DdayItemProps) {
   const theme = useTheme();
-  const { formattedDate } = formatDate(new Date(item.date));
+
+  const { formattedDate } = useMemo(
+    () => formatDate(new Date(item.date)),
+    [item.date],
+  );
 
   const { deleteEvent } = useMyQuery();
 

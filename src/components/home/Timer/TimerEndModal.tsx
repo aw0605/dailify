@@ -16,8 +16,9 @@ function TimerEndModal() {
 export default TimerEndModal;
 
 const TimerEndWrapper = styled.div`
-  width: 200px;
-  text-align: center;
+  ${({ theme }) => css`
+    ${theme.mixins.flexBox({ direction: "column" })}
+  `}
 `;
 
 const Title = styled.div`

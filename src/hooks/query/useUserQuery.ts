@@ -8,6 +8,7 @@ export const useUserQuery = () => {
   const { data: user, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: getUser,
+    staleTime: 60 * 5 * 1000,
   });
 
   const updateUser = useMutation({

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import useTodayQuery from "@/hooks/query/useTodayQuery";
 import useModalStore from "@/zustand/useModalStore";
 import Accordion from "@/components/common/ui/Accordion/Accordion";
@@ -57,7 +58,7 @@ function TodoList({ todos, isLoading }: TodoListProps) {
   );
 }
 
-export default TodoList;
+export default memo(TodoList);
 
 const AlertMsg = styled.h1`
   ${({ theme }) => css`

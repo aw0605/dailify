@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import styled, { css, useTheme } from "styled-components";
 
@@ -10,7 +10,7 @@ interface AccordionProps {
   style?: React.CSSProperties;
 }
 
-export default function Accordion({
+function Accordion({
   type = "todo",
   header,
   children,
@@ -55,6 +55,8 @@ export default function Accordion({
     </AccordionWrapper>
   );
 }
+
+export default memo(Accordion);
 
 const AccordionWrapper = styled.div<{ $color: string; $type: string }>`
   width: 100%;

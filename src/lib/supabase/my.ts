@@ -26,8 +26,6 @@ const getMyData = async (uid: string): Promise<MyProps> => {
     };
   }
 
-  console.log("마이 데이터!!:", data);
-
   return data;
 };
 

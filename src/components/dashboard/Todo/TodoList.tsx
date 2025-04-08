@@ -1,20 +1,10 @@
-import { useShallow } from "zustand/shallow";
-import useDashboardStore from "@/zustand/useDashboardStore";
 import Accordion from "@/components/common/ui/Accordion/Accordion";
 import AccordionHeader from "@/components/common/ui/Accordion/AccordionHeader";
-import Skeleton from "@/components/common/ui/Skeleton";
 import styled, { css } from "styled-components";
 
 import { TodoItem } from "@/types/todo";
 
 function TodoList({ todos }: { todos: TodoItem[] }) {
-  // const { unfinishedTodos, loading } = useDashboardStore(
-  //   useShallow((state) => ({
-  //     unfinishedTodos: state.unfinishedTodos,
-  //     loading: state.loading,
-  //   })),
-  // );
-
   return (
     <div>
       <Title>Unfinished To do</Title>

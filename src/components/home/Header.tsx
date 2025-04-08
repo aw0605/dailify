@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import useCalendarStore from "@/zustand/useCalendarStore";
 import useModalStore from "@/zustand/useModalStore";
 import { formatDate } from "@/utils/formatDate";
@@ -9,7 +10,7 @@ import styled, { css } from "styled-components";
 
 function Header() {
   const { selectedDate: cur, prevDay, nextDay } = useCalendarStore();
-  const { formattedDate, weekday } = formatDate(cur);
+  const { formattedDate, weekday } = useMemo(() => formatDate(cur), [cur]);
 
   const openModal = useModalStore((state) => state.openModal);
 

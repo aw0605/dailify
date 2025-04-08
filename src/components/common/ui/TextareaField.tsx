@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, memo } from "react";
 import styled, { css } from "styled-components";
 import Textarea from "./Textarea";
 
@@ -10,30 +10,40 @@ interface TextareaFieldProps
   helpMsg?: React.ReactNode;
 }
 
-const TextareaField = forwardRef<HTMLTextAreaElement, TextareaFieldProps>(
-  (
-    { label, essential = false, hasError, helpMsg, onFocus, onBlur, ...props },
-    ref,
-  ) => {
-    return (
-      <Container>
-        {label && (
-          <label>
-            {label}
-            {essential && <span>*필수</span>}
-          </label>
-        )}
-        <Textarea
-          ref={ref}
-          aria-invalid={hasError}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          {...props}
-        />
-        {helpMsg && <p>{helpMsg}</p>}
-      </Container>
-    );
-  },
+const TextareaField = memo(
+  forwardRef<HTMLTextAreaElement, TextareaFieldProps>(
+    (
+      {
+        label,
+        essential = false,
+        hasError,
+        helpMsg,
+        onFocus,
+        onBlur,
+        ...props
+      },
+      ref,
+    ) => {
+      return (
+        <Container>
+          {label && (
+            <label>
+              {label}
+              {essential && <span>*필수</span>}
+            </label>
+          )}
+          <Textarea
+            ref={ref}
+            aria-invalid={hasError}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            {...props}
+          />
+          {helpMsg && <p>{helpMsg}</p>}
+        </Container>
+      );
+    },
+  ),
 );
 
 TextareaField.displayName = "TextareaField";

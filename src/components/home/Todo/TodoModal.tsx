@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useUserQuery } from "@/hooks/query/useUserQuery";
 import useForm from "@/hooks/useForm";
 import useTodayQuery from "@/hooks/query/useTodayQuery";
@@ -17,7 +18,10 @@ function TodoModal({ editTodo }: { editTodo?: TodoItem }) {
   const closeModal = useModalStore((state) => state.closeModal);
 
   const selectedDate = useCalendarStore((state) => state.selectedDate);
-  const { formattedDate } = formatDate(selectedDate);
+  const { formattedDate } = useMemo(
+    () => formatDate(selectedDate),
+    [selectedDate],
+  );
 
   const { addTodo, updateTodo } = useTodayQuery();
 

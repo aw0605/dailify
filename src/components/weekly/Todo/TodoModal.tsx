@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import useForm from "@/hooks/useForm";
 import { useUserQuery } from "@/hooks/query/useUserQuery";
 import useWeeklyQuery from "@/hooks/query/useWeeklyQuery";
@@ -17,8 +18,15 @@ function TodoModal({ editTodo }: { editTodo?: TodoItem }) {
   const closeModal = useModalStore((state) => state.closeModal);
 
   const selectedWeek = useCalendarStore((state) => state.selectedWeek);
-  const { formattedDate: startDate } = formatDate(selectedWeek!.start);
-  const { formattedDate: endDate } = formatDate(selectedWeek!.end);
+
+  const { formattedDate: startDate } = useMemo(
+    () => formatDate(selectedWeek!.start),
+    [selectedWeek],
+  );
+  const { formattedDate: endDate } = useMemo(
+    () => formatDate(selectedWeek!.end),
+    [selectedWeek],
+  );
 
   const { addTodo, updateTodo } = useWeeklyQuery();
 

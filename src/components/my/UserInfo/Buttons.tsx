@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useUserQuery } from "@/hooks/query/useUserQuery";
 import Button from "@/components/common/ui/Button";
@@ -7,7 +8,7 @@ function Buttons() {
   const router = useRouter();
   const { deleteUser, logout } = useUserQuery();
 
-  const handleDeleteUser = async () => {
+  const handleDeleteUser = useCallback(async () => {
     try {
       deleteUser.mutate();
       router.push("/login");
@@ -15,8 +16,7 @@ function Buttons() {
       console.error("회원 탈퇴 중 오류 발생:", error);
       alert("회원 탈퇴에 실패했습니다.");
     }
-  };
-
+  }, []);
   return (
     <Container>
       <Button variant="outline" onClick={logout}>

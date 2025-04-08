@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes, useState } from "react";
+import { forwardRef, InputHTMLAttributes, memo, useState } from "react";
 import Input from "./Input";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import styled, { css } from "styled-components";
@@ -10,57 +10,59 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   helpMsg?: React.ReactNode;
 }
 
-const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
-  (
-    {
-      label,
-      essential = false,
-      hasError,
-      helpMsg,
-      onFocus,
-      onBlur,
-      type,
-      ...props
+const TextField = memo(
+  forwardRef<HTMLInputElement, TextFieldProps>(
+    (
+      {
+        label,
+        essential = false,
+        hasError,
+        helpMsg,
+        onFocus,
+        onBlur,
+        type,
+        ...props
+      },
+      ref,
+    ) => {
+      const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+      const togglePasswordVisibility = () => {
+        setIsPasswordVisible((prev) => !prev);
+      };
+
+      return (
+        <Wrapper>
+          {label ? (
+            <label>
+              {label}
+              {essential && <span>*필수</span>}
+            </label>
+          ) : null}
+          <Container>
+            <Input
+              ref={ref}
+              aria-invalid={hasError}
+              type={isPasswordVisible ? "text" : type}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              {...props}
+            />
+
+            {type === "password" && (
+              <PasswordToggleButton
+                type="button"
+                onClick={togglePasswordVisibility}
+              >
+                {isPasswordVisible ? <FaRegEye /> : <FaRegEyeSlash />}
+              </PasswordToggleButton>
+            )}
+          </Container>
+          {helpMsg ? <p>{helpMsg}</p> : null}
+        </Wrapper>
+      );
     },
-    ref,
-  ) => {
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-    const togglePasswordVisibility = () => {
-      setIsPasswordVisible((prev) => !prev);
-    };
-
-    return (
-      <Wrapper>
-        {label ? (
-          <label>
-            {label}
-            {essential && <span>*필수</span>}
-          </label>
-        ) : null}
-        <Container>
-          <Input
-            ref={ref}
-            aria-invalid={hasError}
-            type={isPasswordVisible ? "text" : type}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            {...props}
-          />
-
-          {type === "password" && (
-            <PasswordToggleButton
-              type="button"
-              onClick={togglePasswordVisibility}
-            >
-              {isPasswordVisible ? <FaRegEye /> : <FaRegEyeSlash />}
-            </PasswordToggleButton>
-          )}
-        </Container>
-        {helpMsg ? <p>{helpMsg}</p> : null}
-      </Wrapper>
-    );
-  },
+  ),
 );
 
 TextField.displayName = "TextField";

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Button from "@/components/common/ui/Button";
 import styled, { css } from "styled-components";
@@ -12,20 +12,23 @@ function ImageField({ initialImage, setImageFile }: ImageFieldProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(initialImage);
 
-  const handleAdd = () => {
+  const handleAdd = useCallback(() => {
     if (fileInputRef.current) {
       fileInputRef.current?.click();
     }
-  };
+  }, []);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handleImageChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
 
-    setImageFile(file);
-    const preview = URL.createObjectURL(file);
-    setPreviewImage(preview);
-  };
+      setImageFile(file);
+      const preview = URL.createObjectURL(file);
+      setPreviewImage(preview);
+    },
+    [setImageFile],
+  );
 
   return (
     <Wrapper>
@@ -52,7 +55,7 @@ function ImageField({ initialImage, setImageFile }: ImageFieldProps) {
   );
 }
 
-export default ImageField;
+export default memo(ImageField);
 
 const Wrapper = styled.div`
   width: 100%;

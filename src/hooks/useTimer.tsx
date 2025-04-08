@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import useModalStore from "@/zustand/useModalStore";
 import TimerEndModal from "@/components/home/Timer/TimerEndModal";
 
@@ -10,12 +10,13 @@ const useTimer = ({ onTimerEnd }: UseTimerOptions = {}) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
-  const [worker, setWorker] = useState<Worker | null>(null);
+  const workerRef = useRef<Worker | null>(null);
 
   const openModal = useModalStore((state) => state.openModal);
 
   useEffect(() => {
     const newWorker = new Worker("timerWorker.js");
+    workerRef.current = newWorker;
 
     newWorker.onmessage = (e) => {
       const { type, timeLeft } = e.data;
@@ -32,32 +33,32 @@ const useTimer = ({ onTimerEnd }: UseTimerOptions = {}) => {
       }
     };
 
-    setWorker(newWorker);
     return () => {
       newWorker.terminate();
+      workerRef.current = null;
     };
   }, []);
 
-  const startTimer = (totalMs: number) => {
-    if (worker && totalMs > 0) {
-      worker.postMessage({ type: "start-timer", target: totalMs });
+  const startTimer = useCallback((totalMs: number) => {
+    if (workerRef.current && totalMs > 0) {
+      workerRef.current.postMessage({ type: "start-timer", target: totalMs });
       setIsRunning(true);
     }
-  };
+  }, []);
 
-  const pauseTimer = () => {
-    if (worker) {
-      worker.postMessage({ type: "pause-timer" });
+  const pauseTimer = useCallback(() => {
+    if (workerRef.current) {
+      workerRef.current.postMessage({ type: "pause-timer" });
       setIsRunning(false);
     }
-  };
+  }, []);
 
-  const resumeTimer = () => {
-    if (worker) {
-      worker.postMessage({ type: "resume-timer" });
+  const resumeTimer = useCallback(() => {
+    if (workerRef.current) {
+      workerRef.current.postMessage({ type: "resume-timer" });
       setIsRunning(true);
     }
-  };
+  }, []);
 
   return {
     timeLeft,

@@ -12,7 +12,7 @@ interface AccordionHeaderProps {
   onDelete?: () => void;
 }
 
-export default function AccordionHeader({
+function AccordionHeader({
   item,
   type = "todo",
   onCheck,
@@ -66,6 +66,8 @@ export default function AccordionHeader({
     </AccordionHeaderWrapper>
   );
 }
+
+export default AccordionHeader;
 
 const AccordionHeaderWrapper = styled.div`
   ${({ theme }) => css`

@@ -1,0 +1,41 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.container > div {
+  margin: 20px 0 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.container h1 {
+  font-size: 2rem;
+  color: #ffa426;
+  font-weight: bold;
+}
+
+.container p {
+  font-size: 1rem;
+  color: #3e3e3e;
+}
+
+.button {
+  width: 200px;
+  height: 50px;
+  font-size: 1.125rem;
+  font-weight: bold;
+  border-radius: 5px;
+  background-color: #ffda87;
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.button:hover {
+  background-color: #ffbc25;
+}

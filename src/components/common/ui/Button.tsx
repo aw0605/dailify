@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, memo } from "react";
 import styled, { css, useTheme } from "styled-components";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -9,28 +9,30 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    { leftIcon, size = 16, variant = "solid", color, children, ...props },
-    ref,
-  ) => {
-    const theme = useTheme();
-    const btnColor = color || theme.colors.primary;
+const Button = memo(
+  forwardRef<HTMLButtonElement, ButtonProps>(
+    (
+      { leftIcon, size = 16, variant = "solid", color, children, ...props },
+      ref,
+    ) => {
+      const theme = useTheme();
+      const btnColor = color || theme.colors.primary;
 
-    return (
-      <ButtonWrapper
-        ref={ref}
-        $size={size}
-        $variant={variant}
-        $color={btnColor}
-        disabled={props.disabled}
-        {...props}
-      >
-        {leftIcon && <span>{leftIcon}</span>}
-        <span>{children}</span>
-      </ButtonWrapper>
-    );
-  },
+      return (
+        <ButtonWrapper
+          ref={ref}
+          $size={size}
+          $variant={variant}
+          $color={btnColor}
+          disabled={props.disabled}
+          {...props}
+        >
+          {leftIcon && <span>{leftIcon}</span>}
+          <span>{children}</span>
+        </ButtonWrapper>
+      );
+    },
+  ),
 );
 
 Button.displayName = "Button";

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import useWeeklyQuery from "@/hooks/query/useWeeklyQuery";
 import useModalStore from "@/zustand/useModalStore";
 import Button from "@/components/common/ui/Button";
@@ -66,7 +67,7 @@ function TodoList({ todos, isLoading }: TodoListProps) {
   );
 }
 
-export default TodoList;
+export default memo(TodoList);
 
 const Header = styled.div`
   ${({ theme }) => css`
