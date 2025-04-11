@@ -3,7 +3,6 @@ import { useUserQuery } from "@/hooks/query/useUserQuery";
 import useModalStore from "@/zustand/useModalStore";
 import { HiOutlinePencilAlt } from "react-icons/hi";
 import Button from "@/components/common/ui/Button";
-import EditInfoModal from "./EditInfoModal";
 import styled, { css } from "styled-components";
 
 function UserInfo() {
@@ -22,11 +21,7 @@ function UserInfo() {
           alt={user?.nickname ? user.nickname : "user"}
           fill
         />
-        <Button
-          onClick={() =>
-            openModal("editInfoModal", <EditInfoModal userInfo={user!} />)
-          }
-        >
+        <Button onClick={() => openModal("editInfoModal", { userInfo: user! })}>
           <HiOutlinePencilAlt />
         </Button>
       </ImageContainer>

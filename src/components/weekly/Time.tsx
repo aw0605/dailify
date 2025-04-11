@@ -1,6 +1,5 @@
 import useModalStore from "@/zustand/useModalStore";
 import formatTime from "@/utils/formatTime";
-import GoalTimeModal from "./GoalTimeModal";
 import styled, { css } from "styled-components";
 
 import { Times } from "@/types/time";
@@ -21,7 +20,7 @@ function Time({ weeklyTime }: TimeProps) {
         <h3>이번주 목표 공부 시간</h3>
         <button
           className="time"
-          onClick={() => openModal("weeklyGoalTimeModal", <GoalTimeModal />)}
+          onClick={() => openModal("weeklyGoalTimeModal")}
         >
           {formatTime(goal_time, true)}
         </button>

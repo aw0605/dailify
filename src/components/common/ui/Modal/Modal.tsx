@@ -1,10 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { useShallow } from "zustand/shallow";
 import useModalStore from "@/zustand/useModalStore";
 import styled, { css } from "styled-components";
-import { useShallow } from "zustand/shallow";
+
+const modalComponents: Record<
+  string,
+  React.LazyExoticComponent<React.ComponentType<any>>
+> = {
+  todoModal: lazy(() => import("@/components/home/Todo/TodoModal")),
+  timerModal: lazy(() => import("@/components/home/Timer/TimerModal")),
+  goalTimeModal: lazy(() => import("@/components/home/GoalTimeModal")),
+  monthlyModal: lazy(() => import("@/components/home/Monthly/MonthlyModal")),
+  ddayModal: lazy(() => import("@/components/my/Dday/DdayModal")),
+  editInfoModal: lazy(() => import("@/components/my/UserInfo/EditInfoModal")),
+  weeklyTodoModal: lazy(() => import("@/components/weekly/Todo/TodoModal")),
+  weeklyGoalTimeModal: lazy(() => import("@/components/weekly/GoalTimeModal")),
+  timerEndModal: lazy(() => import("@/components/home/Timer/TimerEndModal")),
+};
 
 export default function ModalContainer() {
   const [mounted, setMounted] = useState(false);
@@ -27,13 +42,20 @@ export default function ModalContainer() {
   return mounted
     ? createPortal(
         <>
-          {modals.map(({ id, content }) => (
-            <ModalOverlay key={id} onClick={() => closeModal(id)}>
-              <ModalContent onClick={(e) => e.stopPropagation()}>
-                {content}
-              </ModalContent>
-            </ModalOverlay>
-          ))}
+          {modals.map(({ id, props }) => {
+            const CurrentModal = modalComponents[id];
+            if (!CurrentModal) return null;
+
+            const { key, ...restProps } = props || {};
+
+            return (
+              <ModalOverlay key={id} onClick={() => closeModal(id)}>
+                <ModalContent onClick={(e) => e.stopPropagation()}>
+                  <CurrentModal {...restProps} />
+                </ModalContent>
+              </ModalOverlay>
+            );
+          })}
         </>,
         document.body,
       )

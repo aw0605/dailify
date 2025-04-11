@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import useModalStore from "@/zustand/useModalStore";
-import TimerEndModal from "@/components/home/Timer/TimerEndModal";
 
 interface UseTimerOptions {
   onTimerEnd?: () => void;
@@ -28,7 +27,7 @@ const useTimer = ({ onTimerEnd }: UseTimerOptions = {}) => {
           setTimeLeft(0);
           setIsRunning(false);
           if (onTimerEnd) onTimerEnd();
-          openModal("timerEndModal", <TimerEndModal />);
+          openModal("timerEndModal");
           break;
       }
     };

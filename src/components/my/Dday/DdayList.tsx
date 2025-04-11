@@ -1,7 +1,6 @@
 import useModalStore from "@/zustand/useModalStore";
 import Button from "@/components/common/ui/Button";
 import DdayItem from "./DdayItem";
-import DdayModal from "./DdayModal";
 import styled, { css } from "styled-components";
 
 import { DdayEvent } from "@/types/dday";
@@ -16,7 +15,7 @@ function DdayList({ events }: { events: DdayEvent[] }) {
         <Button
           variant="ghost"
           size={20}
-          onClick={() => openModal("ddayModal", <DdayModal />)}
+          onClick={() => openModal("ddayModal")}
         >
           +
         </Button>

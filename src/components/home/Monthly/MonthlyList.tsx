@@ -3,7 +3,6 @@ import useModalStore from "@/zustand/useModalStore";
 import Accordion from "@/components/common/ui/Accordion/Accordion";
 import AccordionHeader from "@/components/common/ui/Accordion/AccordionHeader";
 import Button from "@/components/common/ui/Button";
-import MonthlyModal from "./MonthlyModal";
 import Skeleton from "@/components/common/ui/Skeleton";
 import styled, { css } from "styled-components";
 
@@ -25,7 +24,7 @@ function MonthlyList() {
         <Button
           variant="ghost"
           size={20}
-          onClick={() => openModal("monthlyModal", <MonthlyModal />)}
+          onClick={() => openModal("monthlyModal")}
         >
           +
         </Button>
@@ -42,9 +41,7 @@ function MonthlyList() {
               <AccordionHeader
                 type="monthly"
                 item={event}
-                onEdit={() =>
-                  openModal("monthlyModal", <MonthlyModal editEvent={event} />)
-                }
+                onEdit={() => openModal("monthlyModal", { editEvent: event })}
                 onDelete={() => deleteEvent.mutate(event.id)}
               />
             }

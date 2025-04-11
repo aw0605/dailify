@@ -3,7 +3,6 @@ import useTodayQuery from "@/hooks/query/useTodayQuery";
 import useModalStore from "@/zustand/useModalStore";
 import Accordion from "@/components/common/ui/Accordion/Accordion";
 import AccordionHeader from "@/components/common/ui/Accordion/AccordionHeader";
-import TodoModal from "./TodoModal";
 import Skeleton from "@/components/common/ui/Skeleton";
 import styled, { css, useTheme } from "styled-components";
 
@@ -42,9 +41,7 @@ function TodoList({ todos, isLoading }: TodoListProps) {
                     completed: todo.completed,
                   })
                 }
-                onEdit={() =>
-                  openModal("todoModal", <TodoModal editTodo={todo} />)
-                }
+                onEdit={() => openModal("todoModal", { editTodo: todo })}
                 onDelete={() => deleteTodo.mutate(todo.id)}
               />
             }

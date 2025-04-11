@@ -4,8 +4,6 @@ import useModalStore from "@/zustand/useModalStore";
 import { formatDate } from "@/utils/formatDate";
 import { IoAlarmOutline } from "react-icons/io5";
 import Button from "@/components/common/ui/Button";
-import TimerModal from "@/components/home/Timer/TimerModal";
-import TodoModal from "./Todo/TodoModal";
 import styled, { css } from "styled-components";
 
 function Header() {
@@ -34,14 +32,11 @@ function Header() {
         <StyledButton
           variant="outline"
           size={22}
-          onClick={() => openModal("timerModal", <TimerModal />)}
+          onClick={() => openModal("timerModal")}
         >
           <IoAlarmOutline />
         </StyledButton>
-        <StyledButton
-          size={22}
-          onClick={() => openModal("todoModal", <TodoModal />)}
-        >
+        <StyledButton size={22} onClick={() => openModal("todoModal")}>
           +
         </StyledButton>
       </ButtonContainer>

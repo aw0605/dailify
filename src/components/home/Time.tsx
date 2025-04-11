@@ -2,7 +2,6 @@ import useCalendarStore from "@/zustand/useCalendarStore";
 import useModalStore from "@/zustand/useModalStore";
 import formatTime from "@/utils/formatTime";
 import calcDday from "@/utils/calcDday";
-import GoalTimeModal from "./GoalTimeModal";
 import StopWatch from "./StopWatch";
 import styled, { css } from "styled-components";
 
@@ -30,10 +29,7 @@ function Time({ dday, todayTime }: TimeProps) {
       <div className="d-day">{ddayStr}</div>
       <TimeContainer>
         <h3>목표 공부 시간</h3>
-        <button
-          className="time"
-          onClick={() => openModal("goalTimeModal", <GoalTimeModal />)}
-        >
+        <button className="time" onClick={() => openModal("goalTimeModal")}>
           {formatTime(goal_time, true)}
         </button>
       </TimeContainer>

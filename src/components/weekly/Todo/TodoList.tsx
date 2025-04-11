@@ -5,7 +5,6 @@ import Button from "@/components/common/ui/Button";
 import Accordion from "@/components/common/ui/Accordion/Accordion";
 import AccordionHeader from "@/components/common/ui/Accordion/AccordionHeader";
 import Skeleton from "@/components/common/ui/Skeleton";
-import TodoModal from "./TodoModal";
 import styled, { css, useTheme } from "styled-components";
 
 import { TodoItem } from "@/types/todo";
@@ -32,7 +31,7 @@ function TodoList({ todos, isLoading }: TodoListProps) {
         <Button
           variant="ghost"
           size={24}
-          onClick={() => openModal("weeklyTodoModal", <TodoModal />)}
+          onClick={() => openModal("weeklyTodoModal")}
         >
           +
         </Button>
@@ -51,9 +50,7 @@ function TodoList({ todos, isLoading }: TodoListProps) {
                 onCheck={() =>
                   toggleTodo.mutate({ id: todo.id, completed: todo.completed })
                 }
-                onEdit={() =>
-                  openModal("weeklyTodoModal", <TodoModal editTodo={todo} />)
-                }
+                onEdit={() => openModal("weeklyTodoModal", { editTodo: todo })}
                 onDelete={() => deleteTodo.mutate(todo.id)}
               />
             }
