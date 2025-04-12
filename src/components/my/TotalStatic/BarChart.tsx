@@ -8,7 +8,6 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import useMyStore from "@/zustand/useMyStore";
 import styled, { css, useTheme } from "styled-components";
 import { StatProps } from "@/types/dashboard";
 
@@ -22,8 +21,6 @@ ChartJS.register(
 
 const BarChart = ({ stat }: { stat: StatProps | null }) => {
   const theme = useTheme();
-
-  // const totalStat = useMyStore((state) => state.totalStat);
 
   if (!stat) {
     return <AlertMsg>등록된 할 일이 없습니다.</AlertMsg>;
