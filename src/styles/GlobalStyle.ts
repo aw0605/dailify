@@ -32,6 +32,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
+    min-width: 350px;
     line-height: 1;
     font-family: "Noto Sans", Roboto, Arial, sans-serif;
     color: ${({ theme }) => theme.colors.gray1};

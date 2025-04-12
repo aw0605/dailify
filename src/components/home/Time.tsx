@@ -49,6 +49,9 @@ const TimesWrapper = styled.div`
     margin: 10px 0 20px;
     div.d-day {
       ${theme.typography.title({ size: 22 })}
+      ${theme.media.sm`
+        display: none;
+      `}
     }
   `}
 `;

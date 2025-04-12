@@ -9,6 +9,8 @@ import {
   Legend,
   ChartType,
   ChartData,
+  BarController,
+  LineController,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
 import styled, { css, useTheme } from "styled-components";
@@ -23,6 +25,8 @@ ChartJS.register(
   LinearScale,
   Tooltip,
   Legend,
+  BarController,
+  LineController,
 );
 
 const MixedChart = ({ weeklyStat }: { weeklyStat: WeeklyStatProps[] }) => {

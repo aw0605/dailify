@@ -12,7 +12,7 @@ export default function Home() {
   const { todayData, isLoading } = useTodayQuery();
 
   return (
-    <Layout showSide={true}>
+    <Layout showSide={false}>
       <div className="main">
         <Header />
         <Time
