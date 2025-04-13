@@ -22,9 +22,11 @@ function DdayList({ events }: { events: DdayEvent[] }) {
       </Header>
 
       <ul>
-        {events.map((item) => (
-          <DdayItem key={item.id} item={item} />
-        ))}
+        {events.length === 0 ? (
+          <AlertMsg>등록된 이벤트가 없습니다.</AlertMsg>
+        ) : (
+          events.map((item) => <DdayItem key={item.id} item={item} />)
+        )}
       </ul>
     </DdayListWrapper>
   );
@@ -48,5 +50,16 @@ const Header = styled.div`
       width: 20px;
       height: 20px;
     }
+  `}
+`;
+
+const AlertMsg = styled.h1`
+  ${({ theme }) => css`
+    margin-top: 50px;
+    ${theme.mixins.flexBox({})};
+    ${theme.typography.title({ size: 18 })}
+    ${theme.media.md`
+      margin: 50px 0;
+    `}
   `}
 `;
