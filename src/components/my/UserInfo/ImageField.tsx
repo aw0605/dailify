@@ -48,7 +48,7 @@ function ImageField({ initialImage, setImageFile }: ImageFieldProps) {
         {previewImage ? (
           <Image src={previewImage} alt="user" fill />
         ) : (
-          <p>이미지를 선택하세요.</p>
+          <p>이미지를 선택하세요</p>
         )}
       </PreviewContainer>
     </Wrapper>

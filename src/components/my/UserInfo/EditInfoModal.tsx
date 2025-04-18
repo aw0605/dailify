@@ -52,6 +52,7 @@ function EditInfoModal({ userInfo }: { userInfo: UserInfo }) {
           name="nickname"
           value={user.nickname}
           onChange={handleChange}
+          essential={true}
           required
         />
       </TextFieldContainer>

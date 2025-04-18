@@ -54,6 +54,7 @@ function Form() {
           onBlur={handleBlur}
           hasError={Boolean(dirty.email) && Boolean(errors.email)}
           helpMsg={dirty.email ? errors.email : ""}
+          essential={true}
           required
         />
 
@@ -68,6 +69,7 @@ function Form() {
           hasError={Boolean(dirty.password) && Boolean(errors.password)}
           helpMsg={dirty.password ? errors.password : ""}
           autoComplete="off"
+          essential={true}
           required
         />
 
@@ -82,6 +84,7 @@ function Form() {
           hasError={Boolean(dirty.rePassword) && Boolean(errors.rePassword)}
           helpMsg={dirty.rePassword ? errors.rePassword : ""}
           autoComplete="off"
+          essential={true}
           required
         />
       </TextFieldGroup>

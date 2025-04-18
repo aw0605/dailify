@@ -48,6 +48,8 @@ function DdayModal() {
           name="title"
           value={dday.title}
           onChange={handleChange}
+          placeholder="이벤트명을 입력하세요"
+          essential={true}
           required
         />
         <TextField
@@ -56,6 +58,7 @@ function DdayModal() {
           type="date"
           value={dday.date.toISOString().split("T")[0]}
           onChange={handleChange}
+          essential={true}
           required
         />
       </TextFieldContainer>
