@@ -17,6 +17,7 @@ Dailify는 Daily와 Simplify를 합친 단어로 학생, 취준생, 공시생 �
 ## 📀 Preview 및 Link
 
 > ### 🎥 시연영상
+![dailify-시연영상](https://github.com/user-attachments/assets/c7c6886d-3db3-4069-8f9a-e6ac22d374ba)
 
 > ### 🔗 링크
 
